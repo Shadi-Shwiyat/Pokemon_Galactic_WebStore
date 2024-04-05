@@ -7,8 +7,8 @@
             "type2": "poison"
         },
         "sprite": {
-            "default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
-            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1.png"
+            "default": "https://projectpokemon.org/images/normal-sprite/bulbasaur.gif",
+            "shiny": "https://projectpokemon.org/images/shiny-sprite/bulbasaur.gif"
         },
         "height": 28,
         "weight": 15.2,
