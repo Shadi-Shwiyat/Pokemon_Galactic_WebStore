@@ -13,14 +13,35 @@ admin.initializeApp({
   credential: admin.credential.cert(credentials)
 });
 
+app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
+
 //Endpoint
-// Get Requests
+// Post Requests (Create)
 
-// Post Requests
+//TESTING DB for POST
+app.post('/create', async (req, res) => {
+  try {
+    console.log(req.body);
+    const id = req.body.email;
+    const userJson = {
+      email: req.body.email,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName
+    };
+    const response = await db.collection('users').add(userJson);
+    res.status(200).send('User created successfully');
+  } catch (error) {
+    res.status
+  }
+});
 
-// Delete Requests
+// Get Requests (Read)
 
-// Post Requests
+// Put Requests (Update)
+
+// Delete Requests (Delete)
 
       
       
@@ -28,10 +49,6 @@ admin.initializeApp({
       
 
 const db = admin.firestore();
-
-app.use(express.json());
-
-app.use(express.urlencoded({ extended: true }));
 
 // Port for the server
 const PORT = process.env.PORT || 8080;
