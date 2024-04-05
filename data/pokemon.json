@@ -1,0 +1,25 @@
+[
+    {
+        "id": 1,
+        "name": "bulbasaur",
+        "typing": {
+            "type1": "grass",
+            "type2": "poison"
+        },
+        "sprite": {
+            "default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1.png"
+        },
+        "height": 28,
+        "weight": 15.2,
+        "cry": "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg",
+        "generation": "generation-i",
+        "region": "kanto",
+        "flavor-text": "A strange seed was planted on its back at birth. The plant sprouts and grows with this POKéMON.",
+        "ability": "overgrow",
+        "moves": {
+            "move1": "mega-drain",
+            "move2": "leech-seed"
+        }
+    }
+]
