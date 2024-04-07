@@ -16,7 +16,7 @@ const bucket = admin.storage().bucket();
 // Function to upload a single sprite and return its public URL
 const uploadSpriteAndGetURL = async (filePath) => {
   const fileName = path.basename(filePath);
-  const destination = `sprites/${fileName}`;
+  const destination = `sprites/pokemon/${fileName}`;
   await bucket.upload(filePath, {destination});
   
   // Assuming public access is set up for your Firebase Storage bucket,
@@ -49,5 +49,5 @@ const uploadSpritesAndUpdateDatabase = async (dirPath) => {
   }
 };
 
-// Replace with the path to your sprites directory and ensure your Firestore collection name is correct
-uploadSpritesAndUpdateDatabase('../data/sprites/').catch(console.error);
+// Sprites directory and ensure your Firestore collection name is correct
+uploadSpritesAndUpdateDatabase('../data/sprites/pokemon').catch(console.error);

@@ -7,7 +7,7 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-const jsonData = require('./pokemon.json'); // Load your JSON data
+const jsonData = require('../data/pokemon.json'); // Load your JSON data
 
 const importData = async () => {
   const collectionRef = db.collection('PokemonList'); // Specify your collection name

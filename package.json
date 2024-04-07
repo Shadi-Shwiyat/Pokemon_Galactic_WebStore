@@ -4,7 +4,7 @@
     "description": "Team Galactic's online store offering top quality stolen mons galaxy wide!",
     "main": "index.js",
     "scripts": {
-        "start": "nodemon index.js",
+        "start": "nodemon server/index.js",
         "test": "npm run test"
     },
     "author": "Rob Farley, Shadi Shwiyat",

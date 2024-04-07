@@ -8,6 +8,7 @@ Team Galactic's online store offering top quality stolen mons galaxy wide!
 [![Tech Stack](https://skillicons.dev/icons?i=js,nodejs,css,express,react,firebase,firestore,vscode,github)](https://skillicons.dev)
 ## Install Node.js
 - Download the installer from the official website: https://nodejs.org/en/download/
+We used Node version 20.10.0 for this project.
 
 ## Install NVM (Node Version Manager)
 - Download the installer from GitHub: https://github.com/nvm-sh/nvm
@@ -25,7 +26,7 @@ git clone https://github.com/Shadi-Shwiyat/Pokemon_Galactic_WebStore
 ```
 nvm use
 ```
-- Install project dependencies:
+- Install project dependencies that are listed in the package.json file:
 ```
 npm install
 ```
@@ -37,9 +38,44 @@ First you need to create a new project in Firebase and Firestore. You can do thi
 To execute some of the script you need to have credentials for the service account. You can generate a new private key file for your service account by going to the Firebase Console and clicking on the "Project Settings" button. In the "Service Accounts" tab, click on the "Generate New Private Key" button. This will download a JSON file with your service account credentials. You will need to save this file to your project directory and rename it to "serviceAccountKey.json" which I renamed "credentials.json".
 ## Step 1: Navigate to the Database Script Directory
 
+# Endpoints to test
+- To search all attributes of all pokemon:
+Example
+http://localhost:8080/pokemon/search?type=grass&generation=generation-i&region=Kanto
+
+- To get pokemon by id:
+Example
+http://localhost:8080/pokemon/# (replace # with the id of the pokemon you want to get)
+
+- To get pokemon by type:
+Example
+http://localhost:8080/pokemon/type/grass
+
+- To get pokemon by generation:
+Example
+http://localhost:8080/pokemon/generation/generation-i
+
+- To get pokemon by region:
+Example
+http://localhost:8080/pokemon/region/Kanto
+
+- To get pokemon by name:
+Example
+http://localhost:8080/pokemon/name/Bulbasaur
+
+- To get pokemon by moves:
+Example
+http://localhost:8080/pokemon/moves/absorb
+
+- To get pokemon by ability:
+Example
+http://localhost:8080/pokemon/ability/overgrow
 
 
 ### Troubleshooting
+
+## Resources 
+- Pokemon Sprites from https://projectpokemon.org/home/docs/spriteindex_148/
 
 # Contributors
 - [Rob Farley](https://github.com/Nomad-Rob)
