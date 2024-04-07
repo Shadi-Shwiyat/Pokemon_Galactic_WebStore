@@ -15,6 +15,60 @@ const generation_map = {
     "generation-viii": "Galar",
 }
 
+const name_replace_map = {
+    "nidoran-f": "nidoran_f",
+    "nidoran_f": "nidoran♀",
+    "nidoran-m": "nidoran_m",
+    "nidoran_m": "nidoran♂",
+    "mr-mime": "mr.mime",
+    "deoxys-normal": "deoxys",
+    "wormadam-plant": "wormadam",
+    "mime-jr": "mime_jr",
+    "mime_jr": "mime jr.",
+    "giratina-altered": "giratina",
+    "shaymin-land": "shaymin-sky",
+    "shaymin-sky": "shaymin",
+    "basculin-red-striped": "basculin",
+    "darmanitan-standard": "darmanitan",
+    "tornadus-incarnate": "tornadus",
+    "thundurus-incarnate": "thundurus",
+    "landorus-incarnate": "landorus",
+    "keldeo-ordinary": "keldeo",
+    "meloetta-aria": "meloetta",
+    "meowstic-male": "meowstic",
+    "aegislash-shield": "aegislash",
+    "pumpkaboo-average": "pumpkaboo-super",
+    "pumpkaboo-super": "pumpkaboo",
+    "gourgeist-average": "gourgeist-super",
+    "gourgeist-super": "gourgeist",
+    "zygarde-50": "zygarde",
+    "oricorio-baile": "oricorio-sensu",
+    "oricorio-sensu": "oricorio",
+    "lycanroc-midday": "lycanroc-midnight",
+    "lycanroc-midnight": "lycanroc",
+    "wishiwashi-solo": "wishiwashi",
+    "type-null": "typenull",
+    "typenull": "type-null",
+    "minior-red-meteor": "minior-green",
+    "minior-green": "minior",
+    "mimikyu-disguised": "mimikyu",
+    "tapu-koko": "tapukoko",
+    "tapukoko": "tapu koko",
+    "tapu-lele": "tapulele",
+    "tapulele": "tapu lele",
+    "tapu-bulu": "tapubulu",
+    "tapubulu": "tapu bulu",
+    "tapu-fini": "tapufini",
+    "tapufini": "tapu fini",
+    "toxtricity-amped": "toxtricity",
+    "mr-rime": "mr.rime",
+    "eiscue-ice": "eiscue",
+    "indeedee-male": "indeedee",
+    "morpeko-full-belly": "morpeko-hangry-mode",
+    "morpeko-hangry-mode": "morpeko",
+    "urshifu-single-strike": "urshifu"
+}
+
 async function fetchWithRetry(url, options = {}, retries = 33) {
     while (retries > 0) {
         try {
@@ -34,40 +88,75 @@ async function fetchWithRetry(url, options = {}, retries = 33) {
     }
 }
 
+async function fetchSprite(url) {
+    const response = await fetchWithRetry(url);
+    const contentType = response.headers.get('content-type');
+    
+    // Check if response is HTML
+    if (contentType && contentType.includes('text/html')) {
+        const html = await response.text();
+        // Check if HTML contains "Sorry, we could not find that!" in the title
+        if (html.includes('<title>Sorry, we could not find that!</title>')) {
+            // Handle the case where the sprite is not found
+            throw new Error('Sprite not found');
+        }
+    } else {
+        // Return the sprite data
+        return await response.arrayBuffer();
+    }
+}
+
 async function fetchPokemonData() {
     for (let i = 1; i <= 893; i++) {
+        // Set scope for pokemon to check to sprite loading errors
+        let pokemon;
+
         try {
             // Fetching data -------------------------------------------------------------------------------
 
             // Fetch data from pokeAPI
             const pokemon_response = await fetchWithRetry(`https://pokeapi.co/api/v2/pokemon/${i}`);
-            const pokemon = await pokemon_response.json();
+            pokemon = await pokemon_response.json();
 
             const pokemon_species_response = await fetchWithRetry(`https://pokeapi.co/api/v2/pokemon-species/${i}`);
             const pokemon_species = await pokemon_species_response.json();
 
             // Fetch 3d sprite from projectpokemon.org
-            let normal_sprite_response;
-            let shiny_sprite_response;
+            let normal_sprite_data;
+            let shiny_sprite_data;
 
-            if (i >= 810 ) {
-                normal_sprite_response = await fetchWithRetry(`https://projectpokemon.org/images/sprites-models/swsh-normal-sprites/${pokemon.name}.gif`);
-                shiny_sprite_response = await fetchWithRetry(`https://projectpokemon.org/images/sprites-models/swsh-shiny-sprites/${pokemon.name}.gif`);
-            } else {
-                normal_sprite_response = await fetchWithRetry(`https://projectpokemon.org/images/normal-sprite/${pokemon.name}.gif`);
-                shiny_sprite_response = await fetchWithRetry(`https://projectpokemon.org/images/shiny-sprite/${pokemon.name}.gif`);
+            // Check if name is in list of names to replace to avoid sprite error
+            if (name_replace_map.hasOwnProperty(pokemon.name)) {
+                pokemon.name = name_replace_map[pokemon.name];
+                // console.log(pokemon.name);
             }
 
-            // Extract image data
-            const normal_sprite_data = await normal_sprite_response.arrayBuffer();
-            const shiny_sprite_data = await shiny_sprite_response.arrayBuffer();
+            if (i >= 810 ) {
+                normal_sprite_data = await fetchSprite(`https://projectpokemon.org/images/sprites-models/swsh-normal-sprites/${pokemon.name}.gif`);
+                shiny_sprite_data = await fetchSprite(`https://projectpokemon.org/images/sprites-models/swsh-shiny-sprites/${pokemon.name}.gif`);
+            } else {
+                normal_sprite_data = await fetchSprite(`https://projectpokemon.org/images/normal-sprite/${pokemon.name}.gif`);
+                if(i == 122){
+                    shiny_sprite_data = await fetchSprite(`https://projectpokemon.org/images/shiny-sprite/mr._mime.gif`);
+                } else {
+                    shiny_sprite_data = await fetchSprite(`https://projectpokemon.org/images/shiny-sprite/${pokemon.name}.gif`);
+                }
+            }
+            // console.log(normal_sprite_data);
+            // console.log(shiny_sprite_data);
+
+            // Switch name back to readable name for database on some pokemon
+            if (name_replace_map.hasOwnProperty(pokemon.name)) {
+                pokemon.name = name_replace_map[pokemon.name];
+                // console.log(pokemon.name);
+            }
 
             // Process the data
             const id = pokemon.id;
             const name = pokemon.name;
             const typing = pokemon.types.map(type => type.type.name);
-            const normal_sprite_path = `data/sprites/pokemon_${pokemon.id}.gif`;
-            const shiny_sprite_path = `data/sprites/pokemon__shiny_${pokemon.id}.gif`;
+            const normal_sprite_path = `https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/pokemon/pokemon_${pokemon.id}.gif`;
+            const shiny_sprite_path = `https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/pokemon/pokemon_shiny_${pokemon.id}.gif`;
             const sprites = {
                 "default": normal_sprite_path,
                 "shiny": shiny_sprite_path
@@ -82,8 +171,8 @@ async function fetchPokemonData() {
             for (let index = 0; index < total_entries; index++) {
                 if (pokemon_species.flavor_text_entries[index].language.name == 'en') {
                     // console.log('text is englishhhh');
-                    flavor_text = pokemon_species.flavor_text_entries[index].flavor_text.replace(/\\[nft]/g, ' ');
-                    console.log(flavor_text);
+                    flavor_text = pokemon_species.flavor_text_entries[index].flavor_text.replace(/\n|\f|\t/g, ' ').replace(/ +/g, ' ');;
+                    // console.log(flavor_text);
                     break;
                 }
             }
@@ -112,8 +201,8 @@ async function fetchPokemonData() {
             // Write data to files ------------------------------------------------------------------
             
             // Sprites
-            fs.writeFileSync(`data/sprites/pokemon_${pokemon.id}.gif`, Buffer.from(normal_sprite_data));
-            fs.writeFileSync(`data/sprites/pokemon_shiny_${pokemon.id}.gif`, Buffer.from(shiny_sprite_data));
+            fs.writeFileSync(`data/sprites/pokemon/pokemon_${pokemon.id}.gif`, Buffer.from(normal_sprite_data));
+            fs.writeFileSync(`data/sprites/pokemon/pokemon_shiny_${pokemon.id}.gif`, Buffer.from(shiny_sprite_data));
 
             // Pokemon object
             let pokemonList = [];
@@ -129,7 +218,11 @@ async function fetchPokemonData() {
             fs.writeFileSync('data/pokemon.json', JSON.stringify(pokemonList, null, 2));
             console.log(`Pokemon ${name} has been added to pokemon.json`);
         } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
+            if (error.message === 'Sprite not found') {
+                console.log(`Pokemon ${pokemon.name} had issue loading sprite: Not Found`);
+            } else {
+                console.error('There was a problem with the fetch operation:', error);
+            }
         }
 
         if (i == 893) {
