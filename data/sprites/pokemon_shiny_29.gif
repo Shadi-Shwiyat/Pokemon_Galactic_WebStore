@@ -734,7 +734,7 @@ for(var i = 0; i < focusSettings.length; i++) {
 					
 <div id='elUserSignIn_menu' class='ipsMenu ipsMenu_auto ipsHide'>
 	<form accept-charset='utf-8' method='post' action='https://projectpokemon.org/home/login/'>
-		<input type="hidden" name="csrfKey" value="905d328196b93984d6bd85d1ae9c58ab">
+		<input type="hidden" name="csrfKey" value="bd8917e2d0375d21910d6141056bc04e">
 		<input type="hidden" name="ref" value="aHR0cHM6Ly9wcm9qZWN0cG9rZW1vbi5vcmcvaW1hZ2VzL3NoaW55LXNwcml0ZS9uaWRvcmFuLWYuZ2lm">
 		<div data-role="loginForm">
 			
@@ -1040,14 +1040,14 @@ for(var i = 0; i < focusSettings.length; i++) {
 			<ul id='elNavTheme_menu' class='ipsMenu ipsMenu_selectable ipsHide'>
 			
 				<li class='ipsMenu_item ipsMenu_itemChecked'>
-					<form action="//projectpokemon.org/home/theme/?csrfKey=905d328196b93984d6bd85d1ae9c58ab" method="post">
+					<form action="//projectpokemon.org/home/theme/?csrfKey=bd8917e2d0375d21910d6141056bc04e" method="post">
 					<input type="hidden" name="ref" value="aHR0cHM6Ly9wcm9qZWN0cG9rZW1vbi5vcmcvaW1hZ2VzL3NoaW55LXNwcml0ZS9uaWRvcmFuLWYuZ2lm">
 					<button type='submit' name='id' value='30' class='ipsButton ipsButton_link ipsButton_link_secondary'>Chameleon Dark (Default)</button>
 					</form>
 				</li>
 			
 				<li class='ipsMenu_item'>
-					<form action="//projectpokemon.org/home/theme/?csrfKey=905d328196b93984d6bd85d1ae9c58ab" method="post">
+					<form action="//projectpokemon.org/home/theme/?csrfKey=bd8917e2d0375d21910d6141056bc04e" method="post">
 					<input type="hidden" name="ref" value="aHR0cHM6Ly9wcm9qZWN0cG9rZW1vbi5vcmcvaW1hZ2VzL3NoaW55LXNwcml0ZS9uaWRvcmFuLWYuZ2lm">
 					<button type='submit' name='id' value='23' class='ipsButton ipsButton_link ipsButton_link_secondary'>IPS Default </button>
 					</form>
@@ -1467,7 +1467,7 @@ for(var i = 0; i < focusSettings.length; i++) {
 			notification_imgURL: "https://projectpokemon.org/home/uploads/set_resources_30/0cb563f8144768654a2205065d13abd6_notification.png",
 			baseURL: "//projectpokemon.org/home/",
 			jsURL: "//projectpokemon.org/home/applications/core/interface/js/js.php",
-			csrfKey: "905d328196b93984d6bd85d1ae9c58ab",
+			csrfKey: "bd8917e2d0375d21910d6141056bc04e",
 			antiCache: "95a1d4462e1710383307",
 			jsAntiCache: "95a1d4462e1712100103",
 			disableNotificationSounds: true,
@@ -1721,7 +1721,7 @@ $(document).ready(function(){
 </div>
 		
 <!-- Switch to alt theme -->
-<form action="//projectpokemon.org/home/theme/?csrfKey=905d328196b93984d6bd85d1ae9c58ab" method="post" id='focusAltTheme'>
+<form action="//projectpokemon.org/home/theme/?csrfKey=bd8917e2d0375d21910d6141056bc04e" method="post" id='focusAltTheme'>
 	<input type="hidden" name="ref" value="aHR0cHM6Ly9wcm9qZWN0cG9rZW1vbi5vcmcvaW1hZ2VzL3NoaW55LXNwcml0ZS9uaWRvcmFuLWYuZ2lm">
 	<button type='submit' name='id' value='0' id='focusAltThemeSubmit'>Change theme</button>
 </form>

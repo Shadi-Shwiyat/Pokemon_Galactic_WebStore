@@ -20,11 +20,11 @@ async function fetchWithRetry(url, options = {}, retries = 33) {
         try {
             const response = await fetch(url, options);
             if (!response.ok) {
-                console.log(`Response not ok, retrying with ${retries} left`);
+                console.log(`Response not ok, retrying with ${retries} retries left`);
             }
             return response;
         } catch (error) {
-            console.log(`Error fetching data: retrying with ${retries} left`);
+            console.log(`Error fetching data: retrying with ${retries} retries left`);
             retries--;
             if (retries === 0) {
                 throw new Error('Maximum retries exceeded');
@@ -78,17 +78,15 @@ async function fetchPokemonData() {
             const generation = pokemon_species.generation.name;
             const region = generation_map[generation];
             let flavor_text;
-            const index = {
-                "Kanto": 0,
-                "Johto": 3,
-                "Hoenn": 0,
-                "Sinnoh": 1,
-                "Unova": 1,
-                "Kalos": 6,
-                "Alola": 7,
-                "Galar": 7
-            }[region];
-            flavor_text = pokemon_species.flavor_text_entries[index].flavor_text;
+            const total_entries = pokemon_species.flavor_text_entries.length;
+            for (let index = 0; index < total_entries; index++) {
+                if (pokemon_species.flavor_text_entries[index].language.name == 'en') {
+                    // console.log('text is englishhhh');
+                    flavor_text = pokemon_species.flavor_text_entries[index].flavor_text.replace(/\\[nft]/g, ' ');
+                    console.log(flavor_text);
+                    break;
+                }
+            }
             // const total_abilities = pokemon.abilities.length;
             // const randomIndex = Math.floor(Math.random() * total_abilities);
             // const ability = pokemon.abilities[randomIndex].ability.name;
