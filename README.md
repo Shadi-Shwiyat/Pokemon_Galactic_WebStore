@@ -47,6 +47,10 @@ http://localhost:8080/pokemon/search?type=grass&generation=generation-i&region=K
 Example
 http://localhost:8080/pokemon/# (replace # with the id of the pokemon you want to get)
 
+- To get pokemon sprites:
+Example
+http://localhost:8080/sprites/pokemon/pokemon_# (replace # with the id of the pokemon you want to get)
+
 - To get pokemon by type:
 Example
 http://localhost:8080/pokemon/type/grass
@@ -61,7 +65,7 @@ http://localhost:8080/pokemon/region/Kanto
 
 - To get pokemon by name:
 Example
-http://localhost:8080/pokemon/name/Bulbasaur
+http://localhost:8080/pokemon/name/bulbasaur
 
 - To get pokemon by moves:
 Example
@@ -69,7 +73,7 @@ http://localhost:8080/pokemon/moves/absorb
 
 - To get pokemon by ability:
 Example
-http://localhost:8080/pokemon/ability/overgrow
+http://localhost:8080/pokemon/abilities/overgrow
 
 
 ### Troubleshooting
