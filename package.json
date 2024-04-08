@@ -2,15 +2,15 @@
     "name": "pokemon_galactic_webstore",
     "version": "1.0.0",
     "description": "Team Galactic's online store offering top quality stolen mons galaxy wide!",
+    "author": "Rob Farley, Shadi Shwiyat",
+    "license": "ISC",
+    "homepage": "https://github.com/Shadi-Shwiyat/Pokemon_Galactic_WebStore/blob/main/README.md",
     "main": "index.js",
     "scripts": {
         "start": "nodemon server/index.js",
         "test": "npm run test",
         "generate-docs": "jsdoc server -d docs"
     },
-    "author": "Rob Farley, Shadi Shwiyat",
-    "license": "ISC",
-    "homepage": "https://github.com/Shadi-Shwiyat/Pokemon_Galactic_WebStore/blob/main/README.md",
     "dependencies": {
         "body-parser": "^1.20.2",
         "csv-parse": "^5.5.5",
@@ -21,6 +21,9 @@
         "jsdoc": "^4.0.2",
         "jsdoc-toolkit": "^0.0.2",
         "node-fetch": "^3.3.2",
-        "nodemon": "^3.1.0"
+        "nodemon": "^3.1.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-scripts": "^5.0.1"
     }
 }
