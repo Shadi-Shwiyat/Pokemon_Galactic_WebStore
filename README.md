@@ -75,6 +75,10 @@ http://localhost:8080/pokemon/moves/absorb
 Example
 http://localhost:8080/pokemon/abilities/overgrow
 
+## JSDoc
+- To generate JSDoc documentation, run the following command that will generate a directory called docs in the root of the project:
+This lives inside package.json
+npm run generate-docs
 
 ### Troubleshooting
 

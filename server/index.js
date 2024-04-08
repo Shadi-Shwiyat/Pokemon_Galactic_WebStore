@@ -1,24 +1,24 @@
-// Simple Express server with Firebase Admin SDK
+/** Simple Express server with Firebase Admin SDK */
 
-// Import the express library
+/** Import the express library */
 const express = require('express');
 const app = express();
 
-// Import routes
+/** Import routes */
 const pokemonRoutes = require('./pokemonRoutes');
 const userRoutes = require('./userRoutes');
-// const itemRoutes = require('./itemRoutes');
 
+// const itemRoutes = require('./itemRoutes');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Use Routes
+/** Use Routes */
 app.use(pokemonRoutes);
 app.use(userRoutes);
 // app.use(itemRoutes);
 
 
-// Port for the server
+/** Port for the server to run on */
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);

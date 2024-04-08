@@ -1,4 +1,4 @@
-// File is used to initialize the firebase admin SDK
+/** File is used to initialize the firebase admin SDK */
 const admin = require('firebase-admin');
 const credentials = require('../credentials.json');
 
