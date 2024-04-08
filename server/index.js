@@ -17,6 +17,8 @@ app.use(pokemonRoutes);
 app.use(userRoutes);
 // app.use(itemRoutes);
 
+// TESTING REACT APP
+app.use(express.static('../app../build'));
 
 /** Port for the server to run on */
 const PORT = process.env.PORT || 8080;
