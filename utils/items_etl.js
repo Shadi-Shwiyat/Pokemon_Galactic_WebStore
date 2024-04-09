@@ -114,7 +114,7 @@ async function fetchItemData() {
             // Write data to files ------------------------------------------------------------------
             
             // Sprites
-            fs.writeFileSync(`data/sprites/items/${name}.gif`, Buffer.from(sprite_data));
+            fs.writeFileSync(`data/sprites/items/${name}.png`, Buffer.from(sprite_data));
 
             // Pokemon object
             let itemList = [];
