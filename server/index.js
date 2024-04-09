@@ -2,7 +2,11 @@
 
 /** Import the express library */
 const express = require('express');
+const cors = require('cors');
 const app = express();
+
+/** Enable CORS */
+app.use(cors());
 
 /** Import routes */
 const pokemonRoutes = require('./pokemonRoutes');
