@@ -1,0 +1,618 @@
+[
+  {
+    "id": 1,
+    "name": "master-ball",
+    "cost": 99999,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/master-ball.png",
+    "flavor_text": "The best BALL that catches a POKéMON without fail."
+  },
+  {
+    "id": 2,
+    "name": "ultra-ball",
+    "cost": 800,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/ultra-ball.png",
+    "flavor_text": "A better BALL with a higher catch rate than a GREAT BALL."
+  },
+  {
+    "id": 3,
+    "name": "great-ball",
+    "cost": 600,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/great-ball.png",
+    "flavor_text": "A good BALL with a higher catch rate than a POKé BALL."
+  },
+  {
+    "id": 4,
+    "name": "poke-ball",
+    "cost": 200,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/poke-ball.png",
+    "flavor_text": "A tool used for catching wild POKéMON."
+  },
+  {
+    "id": 5,
+    "name": "net-ball",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/net-ball.png",
+    "flavor_text": "A BALL that works well on WATER- and BUG-type POKéMON."
+  },
+  {
+    "id": 6,
+    "name": "dive-ball",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/dive-ball.png",
+    "flavor_text": "A BALL that works better on POKéMON on the ocean floor."
+  },
+  {
+    "id": 7,
+    "name": "timer-ball",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/timer-ball.png",
+    "flavor_text": "More effective as more turns are taken in battle."
+  },
+  {
+    "id": 8,
+    "name": "luxury-ball",
+    "cost": 3000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/luxury-ball.png",
+    "flavor_text": "A cozy BALL that makes POKéMON more friendly."
+  },
+  {
+    "id": 9,
+    "name": "premier-ball",
+    "cost": 20,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/premier-ball.png",
+    "flavor_text": "A rare BALL made in commemoration of some event."
+  },
+  {
+    "id": 10,
+    "name": "dusk-ball",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/dusk-ball.png",
+    "flavor_text": "A somewhat different Poké Ball that makes it easier to catch wild Pokémon at night or in dark places like caves."
+  },
+  {
+    "id": 11,
+    "name": "cherish-ball",
+    "cost": 6300,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/cherish-ball.png",
+    "flavor_text": "A quite rare Poké Ball that has been specially crafted to commemorate an occasion of some sort."
+  },
+  {
+    "id": 12,
+    "name": "potion",
+    "cost": 200,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/potion.png",
+    "flavor_text": "Restores the HP of a POKéMON by 20 points."
+  },
+  {
+    "id": 13,
+    "name": "antidote",
+    "cost": 200,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/antidote.png",
+    "flavor_text": "Heals a poisoned POKéMON."
+  },
+  {
+    "id": 14,
+    "name": "awakening",
+    "cost": 200,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/awakening.png",
+    "flavor_text": "Awakens a sleeping POKéMON."
+  },
+  {
+    "id": 15,
+    "name": "paralyze-heal",
+    "cost": 200,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/paralyze-heal.png",
+    "flavor_text": "Heals a paralyzed POKéMON."
+  },
+  {
+    "id": 16,
+    "name": "full-restore",
+    "cost": 3000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/full-restore.png",
+    "flavor_text": "Fully restores the HP and status of a POKéMON."
+  },
+  {
+    "id": 17,
+    "name": "max-potion",
+    "cost": 2500,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/max-potion.png",
+    "flavor_text": "Fully restores the HP of a POKéMON."
+  },
+  {
+    "id": 18,
+    "name": "super-potion",
+    "cost": 700,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/super-potion.png",
+    "flavor_text": "Restores the HP of a POKéMON by 50 points."
+  },
+  {
+    "id": 19,
+    "name": "full-heal",
+    "cost": 400,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/full-heal.png",
+    "flavor_text": "Heals all the status problems of one POKéMON."
+  },
+  {
+    "id": 20,
+    "name": "revive",
+    "cost": 2000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/revive.png",
+    "flavor_text": "Revives a fainted POKéMON with half its HP."
+  },
+  {
+    "id": 21,
+    "name": "max-revive",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/max-revive.png",
+    "flavor_text": "Revives a fainted POKéMON with all its HP."
+  },
+  {
+    "id": 22,
+    "name": "soda-pop",
+    "cost": 300,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/soda-pop.png",
+    "flavor_text": "A fizzy soda drink that restores HP by 60 points."
+  },
+  {
+    "id": 23,
+    "name": "lemonade",
+    "cost": 400,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/lemonade.png",
+    "flavor_text": "A very sweet drink that restores HP by 80 points."
+  },
+  {
+    "id": 24,
+    "name": "moomoo-milk",
+    "cost": 600,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/moomoo-milk.png",
+    "flavor_text": "A nutritious milk that restores HP by 100 points."
+  },
+  {
+    "id": 25,
+    "name": "elixir",
+    "cost": 3000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/elixir.png",
+    "flavor_text": "Restores the PP of all moves by 10."
+  },
+  {
+    "id": 26,
+    "name": "max-elixir",
+    "cost": 4500,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/max-elixir.png",
+    "flavor_text": "Fully restores the PP of a POKéMON’s moves."
+  },
+  {
+    "id": 27,
+    "name": "berry-juice",
+    "cost": 200,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/berry-juice.png",
+    "flavor_text": "A 100% pure juice that restores HP by 20 points."
+  },
+  {
+    "id": 28,
+    "name": "sacred-ash",
+    "cost": 50000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/sacred-ash.png",
+    "flavor_text": "Fully revives and restores all fainted POKéMON."
+  },
+  {
+    "id": 29,
+    "name": "hp-up",
+    "cost": 10000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/hp-up.png",
+    "flavor_text": "Raises the HP of one POKéMON."
+  },
+  {
+    "id": 30,
+    "name": "protein",
+    "cost": 10000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/protein.png",
+    "flavor_text": "Raises the stat ATTACK of one POKéMON."
+  },
+  {
+    "id": 31,
+    "name": "iron",
+    "cost": 10000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/iron.png",
+    "flavor_text": "Raises the stat DEFENSE of one POKéMON."
+  },
+  {
+    "id": 32,
+    "name": "carbos",
+    "cost": 10000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/carbos.png",
+    "flavor_text": "Raises the stat SPEED of one POKéMON."
+  },
+  {
+    "id": 33,
+    "name": "calcium",
+    "cost": 10000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/calcium.png",
+    "flavor_text": "Raises the stat SP. ATK of one POKéMON."
+  },
+  {
+    "id": 34,
+    "name": "rare-candy",
+    "cost": 10000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/rare-candy.png",
+    "flavor_text": "Raises the level of a POKéMON by one."
+  },
+  {
+    "id": 35,
+    "name": "pp-max",
+    "cost": 10000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/pp-max.png",
+    "flavor_text": "Raises the PP of a move to its maximum points."
+  },
+  {
+    "id": 36,
+    "name": "bright-powder",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/bright-powder.png",
+    "flavor_text": "A hold item that casts a glare to reduce accuracy."
+  },
+  {
+    "id": 37,
+    "name": "macho-brace",
+    "cost": 3000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/macho-brace.png",
+    "flavor_text": "A hold item that promotes growth, but reduces SPEED."
+  },
+  {
+    "id": 38,
+    "name": "exp-share",
+    "cost": 9900,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/exp-share.png",
+    "flavor_text": "A hold item that gets EXP. points from battles."
+  },
+  {
+    "id": 39,
+    "name": "quick-claw",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/quick-claw.png",
+    "flavor_text": "A hold item that occasionally allows the first strike."
+  },
+  {
+    "id": 40,
+    "name": "soothe-bell",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/soothe-bell.png",
+    "flavor_text": "A hold item that calms spirits and fosters friendship."
+  },
+  {
+    "id": 41,
+    "name": "mental-herb",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/mental-herb.png",
+    "flavor_text": "A hold item that snaps POKéMON out of infatuation."
+  },
+  {
+    "id": 42,
+    "name": "choice-band",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/choice-band.png",
+    "flavor_text": "Raises a move’s power, but permits only that move."
+  },
+  {
+    "id": 43,
+    "name": "silver-powder",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/silver-powder.png",
+    "flavor_text": "A hold item that raises the power of BUG-type moves."
+  },
+  {
+    "id": 44,
+    "name": "amulet-coin",
+    "cost": 10000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/amulet-coin.png",
+    "flavor_text": "Doubles money in battle if the holder takes part."
+  },
+  {
+    "id": 45,
+    "name": "cleanse-tag",
+    "cost": 5000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/cleanse-tag.png",
+    "flavor_text": "A hold item that helps repel wild POKéMON."
+  },
+  {
+    "id": 46,
+    "name": "everstone",
+    "cost": 3000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/everstone.png",
+    "flavor_text": "A wondrous stone & a hold item that prevents evolution."
+  },
+  {
+    "id": 47,
+    "name": "focus-band",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/focus-band.png",
+    "flavor_text": "A hold item that occasionally prevents fainting."
+  },
+  {
+    "id": 48,
+    "name": "lucky-egg",
+    "cost": 10000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/lucky-egg.png",
+    "flavor_text": "A hold item that boosts EXP. points earned in battle."
+  },
+  {
+    "id": 49,
+    "name": "scope-lens",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/scope-lens.png",
+    "flavor_text": "A hold item that raises the critical- hit rate."
+  },
+  {
+    "id": 50,
+    "name": "metal-coat",
+    "cost": 2000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/metal-coat.png",
+    "flavor_text": "A hold item that raises the power of STEEL-type moves."
+  },
+  {
+    "id": 51,
+    "name": "leftovers",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/leftovers.png",
+    "flavor_text": "A hold item that gradually restores HP in battle."
+  },
+  {
+    "id": 52,
+    "name": "light-ball",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/light-ball.png",
+    "flavor_text": "A hold item that raises the SP. ATK of PIKACHU."
+  },
+  {
+    "id": 53,
+    "name": "soft-sand",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/soft-sand.png",
+    "flavor_text": "A hold item that raises the power of GROUND-type moves."
+  },
+  {
+    "id": 54,
+    "name": "black-belt",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/black-belt.png",
+    "flavor_text": "A hold item that boosts FIGHTING- type moves."
+  },
+  {
+    "id": 55,
+    "name": "mystic-water",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/mystic-water.png",
+    "flavor_text": "A hold item that raises the power of WATER-type moves."
+  },
+  {
+    "id": 56,
+    "name": "sharp-beak",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/sharp-beak.png",
+    "flavor_text": "A hold item that raises the power of FLYING-type moves."
+  },
+  {
+    "id": 57,
+    "name": "poison-barb",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/poison-barb.png",
+    "flavor_text": "A hold item that raises the power of POISON-type moves."
+  },
+  {
+    "id": 58,
+    "name": "never-melt-ice",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/never-melt-ice.png",
+    "flavor_text": "A hold item that raises the power of ICE-type moves."
+  },
+  {
+    "id": 59,
+    "name": "spell-tag",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/spell-tag.png",
+    "flavor_text": "A hold item that raises the power of GHOST-type moves."
+  },
+  {
+    "id": 60,
+    "name": "charcoal",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/charcoal.png",
+    "flavor_text": "A hold item that raises the power of FIRE-type moves."
+  },
+  {
+    "id": 61,
+    "name": "dragon-fang",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/dragon-fang.png",
+    "flavor_text": "A hold item that raises the power of DRAGON-type moves."
+  },
+  {
+    "id": 62,
+    "name": "silk-scarf",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/silk-scarf.png",
+    "flavor_text": "A hold item that raises the power of NORMAL-type moves."
+  },
+  {
+    "id": 63,
+    "name": "shell-bell",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/shell-bell.png",
+    "flavor_text": "A hold item that restores HP upon striking the foe."
+  },
+  {
+    "id": 64,
+    "name": "thick-club",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/thick-club.png",
+    "flavor_text": "A bone of some sort. It can be sold cheaply."
+  },
+  {
+    "id": 65,
+    "name": "wide-lens",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/wide-lens.png",
+    "flavor_text": "An item to be held by a Pokémon. It is a magnifying lens that slightly boosts the accuracy of moves."
+  },
+  {
+    "id": 66,
+    "name": "life-orb",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/life-orb.png",
+    "flavor_text": "An item to be held by a Pokémon. It boosts the power of moves, but at the cost of some HP on each hit."
+  },
+  {
+    "id": 67,
+    "name": "power-herb",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/power-herb.png",
+    "flavor_text": "A single-use item to be held by a Pokémon. It allows the immediate use of a move that charges on the first turn."
+  },
+  {
+    "id": 68,
+    "name": "toxic-orb",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/toxic-orb.png",
+    "flavor_text": "An item to be held by a Pokémon. It is a bizarre orb that badly poisons the holder in battle."
+  },
+  {
+    "id": 69,
+    "name": "flame-orb",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/flame-orb.png",
+    "flavor_text": "An item to be held by a Pokémon. It is a bizarre orb that inflicts a burn on the holder in battle."
+  },
+  {
+    "id": 70,
+    "name": "focus-sash",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/focus-sash.png",
+    "flavor_text": "An item to be held by a Pokémon. If it has full HP, the holder will endure one potential KO attack, leaving 1 HP."
+  },
+  {
+    "id": 71,
+    "name": "destiny-knot",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/destiny-knot.png",
+    "flavor_text": "A long, thin, bright red string to be held by a Pokémon. If the holder becomes infatuated, the foe does too."
+  },
+  {
+    "id": 72,
+    "name": "choice-scarf",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/choice-scarf.png",
+    "flavor_text": "An item to be held by a Pokémon. This scarf boosts Speed, but allows the use of only one kind of move."
+  },
+  {
+    "id": 73,
+    "name": "choice-specs",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/choice-specs.png",
+    "flavor_text": "An item to be held by a Pokémon. These distinctive glasses boost Sp. Atk, but allow only one kind of move to be used."
+  },
+  {
+    "id": 74,
+    "name": "luck-incense",
+    "cost": 11000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/luck-incense.png",
+    "flavor_text": "An item to be held by a Pokémon. It doubles a battle’s prize money if the holding Pokémon joins in."
+  },
+  {
+    "id": 75,
+    "name": "razor-claw",
+    "cost": 5000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/razor-claw.png",
+    "flavor_text": "An item to be held by a Pokémon. It is a sharply hooked claw that ups the holder’s critical-hit ratio."
+  },
+  {
+    "id": 76,
+    "name": "razor-fang",
+    "cost": 5000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/razor-fang.png",
+    "flavor_text": "An item to be held by a Pokémon. It may cause the foe to flinch when the holder inflicts damage."
+  },
+  {
+    "id": 77,
+    "name": "moon-ball",
+    "cost": 3600,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/moon-ball.png",
+    "flavor_text": "A Poké Ball for catching Pokémon that evolve using the Moon Stone."
+  },
+  {
+    "id": 78,
+    "name": "heavy-ball",
+    "cost": 3600,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/heavy-ball.png",
+    "flavor_text": "A Poké Ball for catching very heavy Pokémon."
+  },
+  {
+    "id": 79,
+    "name": "eviolite",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/eviolite.png",
+    "flavor_text": "A mysterious evolutionary lump. When held, it raises the Defense and Sp. Def of a Pokémon that can still evolve."
+  },
+  {
+    "id": 80,
+    "name": "air-balloon",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/air-balloon.png",
+    "flavor_text": "When held by a Pokémon, the Pokémon will float into the air. When the holder is attacked, this item will burst."
+  },
+  {
+    "id": 81,
+    "name": "red-card",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/red-card.png",
+    "flavor_text": "A card with a mysterious power. When the holder is struck by a foe, the attacker is removed from battle."
+  },
+  {
+    "id": 82,
+    "name": "eject-button",
+    "cost": 4000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/eject-button.png",
+    "flavor_text": "If the holder is hit by an attack, it will switch with another Pokémon in your party."
+  },
+  {
+    "id": 83,
+    "name": "dark-gem",
+    "cost": 200,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/dark-gem.png",
+    "flavor_text": "A gem with an essence of darkness. When held, it strengthens the power of a Dark-type move only once."
+  },
+  {
+    "id": 84,
+    "name": "dream-ball",
+    "cost": 3900,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/dream-ball.png",
+    "flavor_text": "A special Poké Ball that appears out of nowhere in a bag at the Entree Forest. It can catch any Pokémon."
+  },
+  {
+    "id": 85,
+    "name": "assault-vest",
+    "cost": 1000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/assault-vest.png",
+    "flavor_text": "An item to be held by a Pokémon. This offensive vest raises Sp. Def but prevents the use of status moves."
+  },
+  {
+    "id": 86,
+    "name": "venusaurite",
+    "cost": 33000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/venusaurite.png",
+    "flavor_text": "One variety of the mysterious Mega Stones. Have Venusaur hold it, and this stone will enable it to Mega Evolve during battle."
+  },
+  {
+    "id": 87,
+    "name": "metagrossite",
+    "cost": 33000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/metagrossite.png",
+    "flavor_text": "One of a variety of mysterious Mega Stones. Have Metagross hold it, and this stone will enable it to Mega Evolve during battle."
+  },
+  {
+    "id": 88,
+    "name": "beast-ball",
+    "cost": 6000,
+    "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/beast-ball.png",
+    "flavor_text": "A special Poké Ball designed to catch Ultra Beasts. It has a low success rate for catching others."
+  }
+]
