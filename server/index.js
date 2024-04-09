@@ -7,6 +7,7 @@ const app = express();
 /** Import routes */
 const pokemonRoutes = require('./pokemonRoutes');
 const userRoutes = require('./userRoutes');
+const itemsRoutes = require('./itemsRoutes');
 
 // const itemRoutes = require('./itemRoutes');
 app.use(express.json());
@@ -15,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 /** Use Routes */
 app.use(pokemonRoutes);
 app.use(userRoutes);
-// app.use(itemRoutes);
+app.use(itemsRoutes);
 
 // TESTING REACT APP
 app.use(express.static('../app../build'));

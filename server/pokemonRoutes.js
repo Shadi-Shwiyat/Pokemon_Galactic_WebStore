@@ -68,7 +68,7 @@ router.get('/pokemon/search', async (req, res) => {
 
   /** Check for each query parameter and apply filters accordingly */
   if (req.query.type) {
-    query = query.where('typing', 'array-contains', req.query.type);
+    query = query.where('name', 'array-contains', req.query.type);
   }
   if (req.query.generation) {
     query = query.where('generation', '==', req.query.generation);
@@ -84,6 +84,15 @@ router.get('/pokemon/search', async (req, res) => {
   }
   if (req.query.abilities) {
     query = query.where('abilities', 'array-contains', req.query.abilities);
+  }
+  if (req.query.id) {
+    query = query.where('id', '==', req.query.id);
+  }
+  if (req.query.sprite) {
+    query = query.where('sprite', '==', req.query.sprite);
+  }
+  if (req.query.name) {
+    query = query.where('name', '==', req.query.name);
   }
 
   try {
@@ -108,6 +117,16 @@ router.get('/pokemon/:id', async (req, res) => {
   } else {
     res.status(200).json({ id: doc.id, ...doc.data() });
   }
+});
+
+/** Get all Pokemon */
+router.get('/pokemon', async (req, res) => {
+  const snapshot = await db.collection('PokemonList').get();
+  const pokemon = [];
+  snapshot.forEach((doc) => {
+    pokemon.push({ id: doc.id, ...doc.data() });
+  });
+  res.status(200).json(pokemon);
 });
 
 /** Get Pokemon Sprite by ID NOT GIF */
