@@ -106,6 +106,27 @@ async function fetchSprite(url) {
     }
 }
 
+function calculateCost(baseStatTotal, catchRate) {
+    // Define a linear relationship between base stat total and catch rate to determine cost
+    if (catchRate == 3){
+        baseStatTotal = baseStatTotal / 13;
+    }
+    if (catchRate >= 155) {
+        baseStatTotal = baseStatTotal * 4;
+    }
+    if (catchRate < 155 && catchRate >= 120) {
+        baseStatTotal = baseStatTotal * 3;
+    }
+    if (catchRate < 120 && catchRate >= 70) {
+        baseStatTotal = baseStatTotal * 2;
+    }
+    if (catchRate < 45 && catchRate > 3) {
+        baseStatTotal = baseStatTotal / 2;
+    }
+    const cost = ((baseStatTotal * 2) / (catchRate / 3)) ** 3;
+    return Math.round(cost);
+}
+
 async function fetchPokemonData() {
     for (let i = 1; i <= 893; i++) {
         // Set scope for pokemon to check to sprite loading errors
@@ -122,8 +143,8 @@ async function fetchPokemonData() {
             const pokemon_species = await pokemon_species_response.json();
 
             // Fetch 3d sprite from projectpokemon.org
-            let normal_sprite_data;
-            let shiny_sprite_data;
+            // let normal_sprite_data;
+            // let shiny_sprite_data;
 
             // Check if name is in list of names to replace to avoid sprite error
             if (name_replace_map.hasOwnProperty(pokemon.name)) {
@@ -131,17 +152,17 @@ async function fetchPokemonData() {
                 // console.log(pokemon.name);
             }
 
-            if (i >= 810 ) {
-                normal_sprite_data = await fetchSprite(`https://projectpokemon.org/images/sprites-models/swsh-normal-sprites/${pokemon.name}.gif`);
-                shiny_sprite_data = await fetchSprite(`https://projectpokemon.org/images/sprites-models/swsh-shiny-sprites/${pokemon.name}.gif`);
-            } else {
-                normal_sprite_data = await fetchSprite(`https://projectpokemon.org/images/normal-sprite/${pokemon.name}.gif`);
-                if(i == 122){
-                    shiny_sprite_data = await fetchSprite(`https://projectpokemon.org/images/shiny-sprite/mr._mime.gif`);
-                } else {
-                    shiny_sprite_data = await fetchSprite(`https://projectpokemon.org/images/shiny-sprite/${pokemon.name}.gif`);
-                }
-            }
+            // if (i >= 810 ) {
+            //     normal_sprite_data = await fetchSprite(`https://projectpokemon.org/images/sprites-models/swsh-normal-sprites/${pokemon.name}.gif`);
+            //     shiny_sprite_data = await fetchSprite(`https://projectpokemon.org/images/sprites-models/swsh-shiny-sprites/${pokemon.name}.gif`);
+            // } else {
+            //     normal_sprite_data = await fetchSprite(`https://projectpokemon.org/images/normal-sprite/${pokemon.name}.gif`);
+            //     if(i == 122){
+            //         shiny_sprite_data = await fetchSprite(`https://projectpokemon.org/images/shiny-sprite/mr._mime.gif`);
+            //     } else {
+            //         shiny_sprite_data = await fetchSprite(`https://projectpokemon.org/images/shiny-sprite/${pokemon.name}.gif`);
+            //     }
+            // }
             // console.log(normal_sprite_data);
             // console.log(shiny_sprite_data);
 
@@ -161,6 +182,7 @@ async function fetchPokemonData() {
                 "default": normal_sprite_path,
                 "shiny": shiny_sprite_path
             }
+
             const height = pokemon.height / 10;
             const weight = pokemon.weight / 100;
             const cry = pokemon.cries.latest;
@@ -176,15 +198,43 @@ async function fetchPokemonData() {
                     break;
                 }
             }
+
             // const total_abilities = pokemon.abilities.length;
             // const randomIndex = Math.floor(Math.random() * total_abilities);
             // const ability = pokemon.abilities[randomIndex].ability.name;
             const abilities = pokemon.abilities.map(ability => ability.ability.name);
             const moves = pokemon.moves.map(move => move.move.name);
 
+            const stats = {
+                "hp": pokemon.stats[0].base_stat,
+                "attack": pokemon.stats[1].base_stat,
+                "defense": pokemon.stats[2].base_stat,
+                "special-attack": pokemon.stats[3].base_stat,
+                "special-defense": pokemon.stats[4].base_stat,
+                "speed": pokemon.stats[5].base_stat
+            }
+            let base_stat_total = 0;
+            for (const stat in stats) {
+                base_stat_total += stats[stat];
+            }
+            // console.log(`Base stat total: ${base_stat_total}`);
+            const catch_rate = pokemon_species.capture_rate;
+            // console.log(`Catch rate: ${catch_rate}`);
+            const base_cost = calculateCost(base_stat_total, catch_rate);
+            // console.log(`Base cost: ${base_cost}`);
+            let shiny_cost;
+            if (catch_rate == 3) {
+                shiny_cost = base_cost * 3;
+            } else {
+                shiny_cost = base_cost * 2;
+            }
+            // console.log(`Shiny cost: ${shiny_cost}`);
+
             const pokemon_object = {
                 id: id,
                 name: name,
+                base_cost: base_cost,
+                shiny_cost: shiny_cost,
                 typing: typing,
                 sprites: sprites,
                 height: height,
@@ -194,15 +244,17 @@ async function fetchPokemonData() {
                 region: region,
                 flavor_text: flavor_text,
                 abilities: abilities,
-                moves: moves
+                stats: stats,
+                base_stat_total: base_stat_total,
+                moves: moves,
             }
             // console.log(pokemon_object);
 
             // Write data to files ------------------------------------------------------------------
             
             // Sprites
-            fs.writeFileSync(`data/sprites/pokemon/pokemon_${pokemon.id}.gif`, Buffer.from(normal_sprite_data));
-            fs.writeFileSync(`data/sprites/pokemon/pokemon_shiny_${pokemon.id}.gif`, Buffer.from(shiny_sprite_data));
+            // fs.writeFileSync(`data/sprites/pokemon/pokemon_${pokemon.id}.gif`, Buffer.from(normal_sprite_data));
+            // fs.writeFileSync(`data/sprites/pokemon/pokemon_shiny_${pokemon.id}.gif`, Buffer.from(shiny_sprite_data));
 
             // Pokemon object
             let pokemonList = [];
