@@ -7,35 +7,38 @@ function App() {
   const [spriteUrl, setSpriteUrl] = useState('');
 
   useEffect(() => {
-    // Function to fetch a random Pokémon sprite URL
     const fetchPokemonSprite = async () => {
-      // Generate a random Pokémon ID
-      const pokemonId = Math.floor(Math.random() * 893) + 1; // There are 893 Pokémon
-      const pokemonName = `pokemon_${pokemonId}`; // Assuming names are like pokemon_1, pokemon_2, etc.
+      // Generate a random Pokémon ID within the range of existing Pokémon
+      const pokemonId = Math.floor(Math.random() * 893) + 1; // Assuming there are 893 Pokémon
+      const pokemonName = `pokemon_${pokemonId}`; // Construct the name for the Pokémon GIF
 
       try {
-        // Fetch the signed URL from your backend using the generated name
+        // Fetch the signed URL for the Pokémon GIF from your Express backend
         const response = await fetch(`https://pokemon-galactic-webstore.web.app/pokemon-gif/${pokemonName}`);
-        console.log(await response.text());
-        const spriteUrl = await response.url; // The URL should be a direct link to the image
-        
-        
-
-        setSpriteUrl(spriteUrl);
+        if (response.ok) {
+          // If the request is successful, use the redirected URL (signed URL)
+          const spriteUrl = response.url; // The final URL after redirection
+          setSpriteUrl(spriteUrl); // Set the sprite URL for rendering the image
+        } else {
+          // Log the error status if the request was not successful
+          console.error("Failed to load sprite. Response status:", response.status);
+        }
       } catch (error) {
+        // Log any errors that occur during the fetch operation
         console.error("Failed to fetch Pokémon sprite:", error);
       }
     };
 
+    // Invoke the function to fetch the Pokémon sprite when the component mounts
     fetchPokemonSprite();
-  }, []); // Empty dependency array ensures this effect runs only once on mount
+  }, []); // The empty dependency array ensures this effect runs only once after the initial render
 
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>Edit <code>src/App.js</code> and save to reload.</p>
-        {/* Display the fetched Pokémon sprite if available */}
+        <p>Random Pokemon</p>
+        {/* Display the fetched Pokémon sprite if the URL has been set */}
         {spriteUrl && <img src={spriteUrl} alt="Random Pokémon" />}
         <a
           className="App-link"

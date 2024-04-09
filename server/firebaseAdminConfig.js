@@ -4,6 +4,7 @@ const credentials = require('../credentials.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(credentials),
+  databaseURL: "https://pokemon-galactic-webstore.firebaseio.com",
   storageBucket: "pokemon-galactic-webstore.appspot.com"
 });
 
