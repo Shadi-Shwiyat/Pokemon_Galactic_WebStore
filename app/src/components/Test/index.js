@@ -1,7 +1,7 @@
 // In one of your React components
 import React, { useEffect } from 'react';
 
-function App() {
+function Test() {
   useEffect(() => {
     fetch('/api')
       .then(response => response.json())
@@ -11,4 +11,4 @@ function App() {
   return <div>Hello from React!</div>;
 }
 
-export default App;
+export default Test;

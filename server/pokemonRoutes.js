@@ -2,11 +2,61 @@
 
 const express = require('express');
 const router = express.Router();
-const { admin, db } = require('../server/firebaseAdminConfig'); // Import the Firebase Admin SDK
+const { admin, db, bucket} = require('../server/firebaseAdminConfig'); // Import the Firebase Admin SDK
 
 /** Pokemon Routes */////////////////////////////////////////////////////////////////////////////////
 /** Post Requests (Create) *////////////////////////////////////////////////////////////////////////////////
+// Create a new Pokemon
+router.post('/pokemon', async (req, res) => {
+  const { id, name, generation, region } = req.body;
 
+  // Validation for required fields
+  if (!id || !name || !generation || !region) {
+    return res.status(400).json({ message: 'ID, name, generation, and region are required' });
+  }
+
+  // Check for existing ID or Name
+  const existingCheckQuery = db.collection('PokemonList').where('id', '==', id).get()
+    .then(snapshot => {
+      if (!snapshot.empty) return 'ID';
+      return db.collection('PokemonList').where('name', '==', name).get();
+    })
+    .then(snapshot => {
+      if (!snapshot.empty) return 'Name';
+      return null;
+    });
+
+  // Check for existing Generation and Region
+  const generationExists = db.collection('Generations').doc(generation).get()
+    .then(doc => doc.exists);
+  const regionExists = db.collection('Regions').doc(region).get()
+    .then(doc => doc.exists);
+
+  try {
+    const [existingType, genExists, regExists] = await Promise.all([existingCheckQuery, generationExists, regionExists]);
+
+    if (existingType === 'ID') {
+      return res.status(409).json({ message: 'A Pokemon with this ID already exists' });
+    }
+
+    if (existingType === 'Name') {
+      return res.status(409).json({ message: 'A Pokemon with this name already exists' });
+    }
+
+    if (!genExists || !regExists) {
+      return res.status(400).json({ message: 'Generation or Region does not exist' });
+    }
+
+    // If checks pass, create the new Pokemon
+    await db.collection('PokemonList').doc(String(id)).set(req.body);
+    res.status(201).json({ message: 'Pokemon created successfully', id });
+
+  } catch (error) {
+    console.error('Error creating Pokemon:', error);
+    res.status(500).json({ message: 'Error creating Pokemon', error: error.message });
+  }
+});  
+  
 
 /** Get Requests (Read) *////////////////////////////////////////////////////////////////////////////////
 
@@ -60,7 +110,7 @@ router.get('/pokemon/:id', async (req, res) => {
   }
 });
 
-/** Get Pokemon Sprite by ID */
+/** Get Pokemon Sprite by ID NOT GIF */
 router.get('/pokemon/sprite/:id', async (req, res) => {
   const doc = await db.collection('PokemonSprites').doc(req.params.id).get();
   if (!doc.exists) {
@@ -68,6 +118,23 @@ router.get('/pokemon/sprite/:id', async (req, res) => {
   } else {
     res.status(200).json({ id: doc.id, ...doc.data() });
   }
+});
+
+/** Get Pokemon Sprite actually .gif */
+router.get('/pokemon-gif/:name', (req, res) => {
+  const fileName = req.params.name;
+  const file = bucket.file(`sprites/pokemon/${fileName}.gif`);
+
+  file.getSignedUrl({
+    action: 'read',
+    expires: '03-09-2491' // Far future date
+  }).then(signedUrls => {
+    // signedUrls[0] contains the file's URL
+    res.redirect(signedUrls[0]);
+  }).catch(err => {
+    console.error('Error fetching signed URL:', err);
+    res.status(500).send('Could not get file.');
+  });
 });
 
 /** Get a list of all Pokemon by type */
