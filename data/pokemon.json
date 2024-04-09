@@ -2,8 +2,8 @@
   {
     "id": 1,
     "name": "bulbasaur",
-    "base_cost": 76225,
-    "shiny_cost": 152450,
+    "base_cost": 333333,
+    "shiny_cost": 999999,
     "typing": [
       "grass",
       "poison"

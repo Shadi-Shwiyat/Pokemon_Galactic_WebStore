@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "master-ball",
-    "cost": 99999,
+    "cost": 999999,
     "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/master-ball.png",
     "flavor_text": "The best BALL that catches a POKéMON without fail."
   },
@@ -58,7 +58,7 @@
   {
     "id": 9,
     "name": "premier-ball",
-    "cost": 20,
+    "cost": 6000,
     "sprite": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/premier-ball.png",
     "flavor_text": "A rare BALL made in commemoration of some event."
   },
