@@ -87,9 +87,9 @@ router.get('/item/cost/:cost', async (req, res) => {
 });
 
 /** Get Item Sprite gif */
-router.get('/items-gif/:name', (req, res) => {
+router.get('/items-png/:name', (req, res) => {
   const fileName = req.params.name;
-  const file = bucket.file(`sprites/items/${fileName}.gif`);
+  const file = bucket.file(`sprites/items/${fileName}.png`);
 
   file.getSignedUrl({
     action: 'read',
