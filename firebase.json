@@ -5,7 +5,18 @@
   },
   "hosting": {
     "site": "pokemon-galactic-webstore",
-    "public": "app/public",
+    "public": "app/build",
+    "headers": [
+      {
+        "source": "/pokemon-gif/**",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "http://localhost:3000"
+          }
+        ]
+      }
+    ],
     "ignore": [
       "firebase.json",
       "**/.*",
