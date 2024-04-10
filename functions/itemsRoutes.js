@@ -1,7 +1,7 @@
 /** Items routes */
 const express = require('express');
 const router = express.Router();
-const { admin, db, bucket} = require('../server/firebaseAdminConfig'); // Import the Firebase Admin SDK
+const { admin, bucket } = require('../functions/firebaseAdminConfig'); // Import the Firebase Admin SDK
 
 /** Item Routes */////////////////////////////////////////////////////////////////////////////////
 /** Post Requests (Create) *////////////////////////////////////////////////////////////////////////////////
