@@ -13,15 +13,12 @@ app.use(cors({ origin: true }));
 
 // Your middleware and routes
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 /** Import routes */
 const pokemonRoutes = require('./pokemonRoutes');
 const userRoutes = require('./userRoutes');
 const itemsRoutes = require('./itemsRoutes');
-
-// const itemRoutes = require('./itemRoutes');
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 /** Use Routes */
 app.use(pokemonRoutes);
@@ -29,7 +26,7 @@ app.use(userRoutes);
 app.use(itemsRoutes);
 
 // TESTING REACT APP
-app.use(express.static('../app/build'));
+// app.use(express.static('../app/build'));
 
 // /** Port for the server to run on local*/
 // const PORT = process.env.PORT || 8080;
