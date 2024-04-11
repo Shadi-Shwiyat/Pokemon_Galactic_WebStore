@@ -1,13 +1,4 @@
-body {
-    background: url(../assets/galactic.png);
-    background-color: #39352F;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 100% auto;
-}
-
 .container {
-
     display: flex !important;
     flex-direction: column;
     justify-content: center;
