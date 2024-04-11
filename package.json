@@ -7,7 +7,7 @@
     "homepage": "https://github.com/Shadi-Shwiyat/Pokemon_Galactic_WebStore/blob/main/README.md",
     "main": "app/src/App.js",
     "scripts": {
-        "start": "nodemon server/index.js",
+        "start": "nodemon functions/index.js",
         "test": "npm run test",
         "generate-docs": "jsdoc server -d docs"
     },
