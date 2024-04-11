@@ -1,0 +1,86 @@
+body {
+    background: url(../assets/galactic.png);
+    background-color: #39352F;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% auto;
+}
+
+.container {
+
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    max-width: 500px;
+    width: 100%;
+    margin: auto;
+}
+
+.container > form {
+    width: 70%;
+    border: 1px solid #dfdfdf;
+    padding: 20px;
+    border-radius: 5px;
+    background: #fff;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    margin-block-start: 0;
+}
+
+input {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 6px;
+}
+
+label {
+    padding-bottom: 10px;
+    padding-left: 3px;
+}
+
+pre {
+    width: 70%;
+    color: #fff;
+    font-size: larger;
+}
+
+button {
+    background: #e7dc00 !important;
+    padding: 5px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #fffb00 !important;
+    cursor: pointer;
+}
+
+p {
+    color: rgb(255, 0, 0);
+}
+
+.text {
+    margin: 2px;
+    padding: 5px;
+    color: #dfdfdf;
+}
+
+.success {
+    display: none;
+}
+
+span{
+    color: rgb(217, 255, 0);
+    cursor: pointer;
+}

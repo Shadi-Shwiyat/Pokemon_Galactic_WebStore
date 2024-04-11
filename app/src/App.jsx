@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
+import './styles/App.css';
+import logo from './assets/logo_test.png'
+import { Pokemon } from './components/pokemon_page.jsx'
+import { SignUp } from './components/sign_up.jsx'
+import { Login } from './components/login.jsx'
 
 function App() {
   const [spriteUrl, setSpriteUrl] = useState('');
+
+  const isLoggedIn = false;
 
   useEffect(() => {
     // Generate a random Pokémon ID within the range of existing Pokémon
@@ -30,22 +36,18 @@ function App() {
     fetchPokemonSprite();
   }, []); // The empty dependency array ensures this effect runs only once after the initial render
 
+  let content;
+  if (isLoggedIn) {
+    content = <Pokemon spriteUrl={spriteUrl}/>;
+  } else {
+    content = <Login />;
+  }
+
   return (
     <>
-      <div className="App">
-        <header className="App-header">
-          <p>Random Pokemon</p>
-          {/* Display the fetched Pokémon sprite if the URL has been set */}
-          {spriteUrl && <img src={spriteUrl} alt="Random Pokémon" />}
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <img src={logo} alt="logo.png" className='logo' />
+      <div>
+        {content}
       </div>
     </>
   );
