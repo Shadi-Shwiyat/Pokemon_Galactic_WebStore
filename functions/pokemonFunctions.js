@@ -14,21 +14,78 @@ const runCorsAndMethod = (req, res, method, callback) => {
 };
 
 // Create a new Pokemon 
-exports.createPokemon = functions.https.onRequest((req, res) => {
-  runCorsAndMethod(req, res, 'POST', async () => {
-    const { id, name, generation, region } = req.body;
+exports.createPokemon = functions.https.onRequest(async (req, res) => {
+  // Add CORS support
+  if (req.method === 'OPTIONS') {
+    res.set('Access-Control-Allow-Methods', 'POST');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+    res.set('Access-Control-Max-Age', '3600');
+    res.status(204).send('');
+    return;
+  }
+
+  // Only allow POST requests
+  if (req.method !== 'POST') {
+    res.status(405).send({message: 'Only POST requests are accepted'});
+    return;
+  }
+
+  try {
+    const {
+      id, name, abilities, base_cost, base_stat_total, cry, flavor_text, generation, height,
+      moves, region, shiny_cost, sprites, stats, typing, weight
+    } = req.body;
+
+    // Validate all fields are present and correctly formed
+    if (
+      typeof id !== 'number' ||
+      typeof name !== 'string' || name.trim() === '' ||
+      !Array.isArray(abilities) || abilities.length === 0 ||
+      typeof base_cost !== 'number' ||
+      typeof base_stat_total !== 'number' ||
+      typeof cry !== 'string' || cry.trim() === '' ||
+      typeof flavor_text !== 'string' || flavor_text.trim() === '' ||
+      typeof generation !== 'string' || generation.trim() === '' ||
+      typeof height !== 'number' ||
+      !Array.isArray(moves) || moves.length === 0 ||
+      typeof region !== 'string' || region.trim() === '' ||
+      typeof shiny_cost !== 'number' ||
+      typeof sprites !== 'object' || !sprites.default || !sprites.shiny ||
+      typeof stats !== 'object' || Object.values(stats).some(v => typeof v !== 'number') ||
+      !Array.isArray(typing) || typing.length === 0 ||
+      typeof weight !== 'number'
+    ) {
+      return res.status(400).send({message: 'Missing or invalid fields'});
+    }
+
     const db = admin.firestore();
 
-    const pokemonRef = db.collection('PokemonList').doc(String(id));
-    const doc = await pokemonRef.get();
-    if (doc.exists) {
+    // Check if the Pokemon ID already exists
+    const pokemonRefById = db.collection('PokemonList').doc(String(id));
+    const docById = await pokemonRefById.get();
+    if (docById.exists) {
       return res.status(409).send({message: 'A Pokemon with this ID already exists'});
     }
-    
-    await pokemonRef.set({id, name, generation, region});
+
+    // Check if the Pokemon name already exists
+    const querySnapshot = await db.collection('PokemonList').where('name', '==', name).get();
+    if (!querySnapshot.empty) {
+      return res.status(409).send({message: 'A Pokemon with this name already exists'});
+    }
+
+    // If validation passes, and both checks are unique, set the document
+    await pokemonRefById.set({
+      id, name, abilities, base_cost, base_stat_total, cry, flavor_text, generation, height,
+      moves, region, shiny_cost, sprites, stats, typing, weight
+    });
+
     return res.status(201).send({message: 'Pokemon created successfully'});
-  });
+  } catch (error) {
+    console.error('Error creating Pokemon:', error);
+    return res.status(500).send({message: 'Internal Server Error'});
+  }
 });
+
 
 // Get a single Pokemon by ID
 exports.getPokemonById = functions.https.onRequest((req, res) => {
@@ -65,10 +122,31 @@ exports.searchPokemon = functions.https.onRequest((req, res) => {
       return res.status(404).send({message: 'No Pokémon found matching the criteria'});
     }
 
-    const pokemon = snapshot.docs.map(doc => doc.data());
+    const selectedCriteria = {};
+    if (type) selectedCriteria.type = type;
+    if (generation) selectedCriteria.generation = generation;
+    if (name) selectedCriteria.name = name;
+    if (region) selectedCriteria.region = region;
+    if (moves) selectedCriteria.moves = moves;
+    if (abilities) selectedCriteria.abilities = abilities;
+    if (id) selectedCriteria.id = id;
+    if (sprite) selectedCriteria.sprite = sprite;
+
+    const pokemon = snapshot.docs.map(doc => {
+      const data = doc.data();
+      const filteredData = {};
+      Object.keys(selectedCriteria).forEach(key => {
+        if (data[key]) {
+          filteredData[key] = data[key];
+        }
+      });
+      return filteredData;
+    });
+
     return res.status(200).json(pokemon);
   });
 });
+
 
 // Get all Pokemon
 exports.getAllPokemon = functions.https.onRequest((req, res) => {
