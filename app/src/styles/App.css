@@ -1,0 +1,61 @@
+.App {
+  text-align: center;
+}
+
+body {
+  background-color: #313131;
+  background-repeat: no-repeat;
+  background-position: relative;
+  background-size: 100% auto;
+}
+
+.logo {
+  position: fixed;
+  z-index: 999;
+  top: 0px;
+  left: 0px;
+  height: 99px;
+}
+
+.g {
+  position: fixed;
+  z-index: 999;
+  bottom: 26px; /* Set to 30px from the bottom */
+  right: 20px; /* Set to 30px from the right */
+  height: 163px;
+}
+
+.App-header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.random_poke {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 33%;
+  left: 40%;
+}
+
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
