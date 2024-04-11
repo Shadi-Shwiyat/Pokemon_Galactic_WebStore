@@ -24,12 +24,8 @@
     ],
     "rewrites": [
       {
-        "source": "/pokemon-gif/**",
-        "function": "api"
-      },
-      {
         "source": "**",
-        "destination": "/index.html"
+        "function": "app"
       }
     ]
   },
