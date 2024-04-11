@@ -1,5 +1,5 @@
+const { admin } = require('./firebaseAdminConfig');
 const functions = require('firebase-functions');
-const admin = require('firebase-admin');
 const cors = require('cors')({origin: true});
 
 
@@ -60,23 +60,44 @@ exports.getItemById = functions.https.onRequest((req, res) => {
 
 // Get Item Sprite PNG
 exports.getItemSprite = functions.https.onRequest((req, res) => {
-  runCorsAndMethod(req, res, 'GET', async () => {
-    const { name } = req.query;
-    const bucket = admin.storage().bucket();
+    cors(req, res, async () => {
+        if (req.method !== 'GET') {
+            return res.status(405).send({ message: 'Only GET method is allowed' });
+        }
 
-    try {
-      const file = bucket.file(`sprites/items/${name}.png`);
-      const signedUrls = await file.getSignedUrl({
-        action: 'read',
-        expires: '03-09-2491'
-      });
-      res.redirect(signedUrls[0]);
-    } catch (error) {
-      console.error('Error fetching signed URL:', error);
-      res.status(500).send('Could not get file.');
-    }
-  });
+        const { name } = req.query;
+        if (!name) {
+            console.error('No name provided in query');
+            return res.status(400).send('No name provided.');
+        }
+
+        const bucket = admin.storage().bucket();
+        const filePath = `sprites/items/${name}.png`;
+        const file = bucket.file(filePath);
+
+        try {
+            // Check if the file exists before attempting to generate a signed URL
+            const [exists] = await file.exists();
+            if (!exists) {
+                console.error(`File does not exist at path: ${filePath}`);
+                return res.status(404).send('File not found.');
+            }
+
+            // Generate the signed URL
+            const [signedUrl] = await file.getSignedUrl({
+                action: 'read',
+                expires: Date.now() + 1000 * 60 * 60, // URL expires in 1 hour
+            });
+
+            console.log(`Signed URL generated: ${signedUrl}`);
+            return res.redirect(signedUrl);
+        } catch (error) {
+            console.error('Error generating signed URL:', error);
+            return res.status(500).send(`Internal Server Error. More details: ${error.message}`);
+        }
+    });
 });
+
 
 // Function to create a new item
 exports.createItem = functions.https.onRequest(async (req, res) => {
