@@ -79,20 +79,64 @@ exports.getItemSprite = functions.https.onRequest((req, res) => {
 });
 
 // Function to create a new item
-exports.createItem = functions.https.onRequest((req, res) => {
-  runCorsAndMethod(req, res, 'POST', async () => {
-    const itemData = req.body;
+exports.createItem = functions.https.onRequest(async (req, res) => {
+  // Add CORS support
+  if (req.method === 'OPTIONS') {
+    res.set('Access-Control-Allow-Methods', 'POST');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+    res.set('Access-Control-Max-Age', '3600');
+    res.status(204).send('');
+    return;
+  }
+
+  // Only allow POST requests
+  if (req.method !== 'POST') {
+    res.status(405).send({message: 'Only POST requests are accepted'});
+    return;
+  }
+
+  try {
+    const { cost, flavor_text, id, name, sprite, type } = req.body;
+
+    // Validate all fields are present and correctly formed
+    if (
+      typeof cost !== 'number' ||
+      typeof flavor_text !== 'string' || flavor_text.trim() === '' ||
+      typeof id !== 'number' ||
+      typeof name !== 'string' || name.trim() === '' ||
+      typeof sprite !== 'string' || sprite.trim() === '' ||
+      typeof type !== 'string' || type.trim() === ''
+    ) {
+      return res.status(400).send({message: 'Missing or invalid fields'});
+    }
+
     const db = admin.firestore();
 
-    try {
-      const newItemRef = await db.collection('ItemList').add(itemData);
-      return res.status(201).send({ message: 'Item created successfully', id: newItemRef.id });
-    } catch (error) {
-      console.error('Error creating item:', error);
-      return res.status(500).send({ message: 'Error creating item' });
+    // Check if the item ID already exists
+    const itemRefById = db.collection('ItemList').doc(String(id));
+    const docById = await itemRefById.get();
+    if (docById.exists) {
+      return res.status(409).send({message: 'An item with this ID already exists'});
     }
-  });
+
+    // Check if the item name already exists
+    const querySnapshot = await db.collection('ItemList').where('name', '==', name).get();
+    if (!querySnapshot.empty) {
+      return res.status(409).send({message: 'An item with this name already exists'});
+    }
+
+    // If validation passes, and both checks are unique, set the document
+    await itemRefById.set({
+      cost, flavor_text, id, name, sprite, type
+    });
+
+    return res.status(201).send({message: 'Item created successfully', id: itemRefById.id});
+  } catch (error) {
+    console.error('Error creating item:', error);
+    return res.status(500).send({message: 'Internal Server Error'});
+  }
 });
+
 
 // Function to update an existing item
 exports.updateItem = functions.https.onRequest((req, res) => {
