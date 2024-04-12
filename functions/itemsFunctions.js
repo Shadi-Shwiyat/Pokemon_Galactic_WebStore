@@ -1,5 +1,5 @@
+const { admin } = require('./firebaseAdminConfig');
 const functions = require('firebase-functions');
-const admin = require('firebase-admin');
 const cors = require('cors')({origin: true});
 
 
@@ -60,39 +60,104 @@ exports.getItemById = functions.https.onRequest((req, res) => {
 
 // Get Item Sprite PNG
 exports.getItemSprite = functions.https.onRequest((req, res) => {
-  runCorsAndMethod(req, res, 'GET', async () => {
-    const { name } = req.query;
-    const bucket = admin.storage().bucket();
+    cors(req, res, async () => {
+        if (req.method !== 'GET') {
+            return res.status(405).send({ message: 'Only GET method is allowed' });
+        }
 
-    try {
-      const file = bucket.file(`sprites/items/${name}.png`);
-      const signedUrls = await file.getSignedUrl({
-        action: 'read',
-        expires: '03-09-2491'
-      });
-      res.redirect(signedUrls[0]);
-    } catch (error) {
-      console.error('Error fetching signed URL:', error);
-      res.status(500).send('Could not get file.');
-    }
-  });
+        const { name } = req.query;
+        if (!name) {
+            console.error('No name provided in query');
+            return res.status(400).send('No name provided.');
+        }
+
+        const bucket = admin.storage().bucket();
+        const filePath = `sprites/items/${name}.png`;
+        const file = bucket.file(filePath);
+
+        try {
+            // Check if the file exists before attempting to generate a signed URL
+            const [exists] = await file.exists();
+            if (!exists) {
+                console.error(`File does not exist at path: ${filePath}`);
+                return res.status(404).send('File not found.');
+            }
+
+            // Generate the signed URL
+            const [signedUrl] = await file.getSignedUrl({
+                action: 'read',
+                expires: Date.now() + 1000 * 60 * 60, // URL expires in 1 hour
+            });
+
+            console.log(`Signed URL generated: ${signedUrl}`);
+            return res.redirect(signedUrl);
+        } catch (error) {
+            console.error('Error generating signed URL:', error);
+            return res.status(500).send(`Internal Server Error. More details: ${error.message}`);
+        }
+    });
 });
+
 
 // Function to create a new item
-exports.createItem = functions.https.onRequest((req, res) => {
-  runCorsAndMethod(req, res, 'POST', async () => {
-    const itemData = req.body;
+exports.createItem = functions.https.onRequest(async (req, res) => {
+  // Add CORS support
+  if (req.method === 'OPTIONS') {
+    res.set('Access-Control-Allow-Methods', 'POST');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+    res.set('Access-Control-Max-Age', '3600');
+    res.status(204).send('');
+    return;
+  }
+
+  // Only allow POST requests
+  if (req.method !== 'POST') {
+    res.status(405).send({message: 'Only POST requests are accepted'});
+    return;
+  }
+
+  try {
+    const { cost, flavor_text, id, name, sprite, type } = req.body;
+
+    // Validate all fields are present and correctly formed
+    if (
+      typeof cost !== 'number' ||
+      typeof flavor_text !== 'string' || flavor_text.trim() === '' ||
+      typeof id !== 'number' ||
+      typeof name !== 'string' || name.trim() === '' ||
+      typeof sprite !== 'string' || sprite.trim() === '' ||
+      typeof type !== 'string' || type.trim() === ''
+    ) {
+      return res.status(400).send({message: 'Missing or invalid fields'});
+    }
+
     const db = admin.firestore();
 
-    try {
-      const newItemRef = await db.collection('ItemList').add(itemData);
-      return res.status(201).send({ message: 'Item created successfully', id: newItemRef.id });
-    } catch (error) {
-      console.error('Error creating item:', error);
-      return res.status(500).send({ message: 'Error creating item' });
+    // Check if the item ID already exists
+    const itemRefById = db.collection('ItemList').doc(String(id));
+    const docById = await itemRefById.get();
+    if (docById.exists) {
+      return res.status(409).send({message: 'An item with this ID already exists'});
     }
-  });
+
+    // Check if the item name already exists
+    const querySnapshot = await db.collection('ItemList').where('name', '==', name).get();
+    if (!querySnapshot.empty) {
+      return res.status(409).send({message: 'An item with this name already exists'});
+    }
+
+    // If validation passes, and both checks are unique, set the document
+    await itemRefById.set({
+      cost, flavor_text, id, name, sprite, type
+    });
+
+    return res.status(201).send({message: 'Item created successfully', id: itemRefById.id});
+  } catch (error) {
+    console.error('Error creating item:', error);
+    return res.status(500).send({message: 'Internal Server Error'});
+  }
 });
+
 
 // Function to update an existing item
 exports.updateItem = functions.https.onRequest((req, res) => {

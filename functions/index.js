@@ -1,7 +1,3 @@
-// This is the entry point of the Cloud Function
-const admin = require('firebase-admin');
-admin.initializeApp();
-
 // Import the functions from the other files
 const { createPokemon, getPokemonById, searchPokemon, getAllPokemon, getPokemonSpriteById, getPokemonGifByName, getPokemonByType, getPokemonByGeneration, getPokemonByName, getPokemonByRegion, getPokemonByMoves, getPokemonByAbilities } = require('./pokemonFunctions');
 const { searchItems, getItemById, getItemSprite, createItem, updateItem, deleteItem } = require('./itemsFunctions');
