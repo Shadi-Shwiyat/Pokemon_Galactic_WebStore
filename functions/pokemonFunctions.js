@@ -105,16 +105,17 @@ exports.searchPokemon = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
     const { type, generation, name, region, moves, abilities, id, sprite } = req.query;
     const db = admin.firestore();
-    let query = db.collection('PokemonList').orderBy('id');
+    let query = db.collection('PokemonList');
 
-    if (type) query = query.where('type', 'array-contains', type);
+    // Check and add each query filter only if the parameter exists
+    if (type) query = query.where('typing', 'array-contains', type);
     if (generation) query = query.where('generation', '==', generation);
     if (name) query = query.where('name', '==', name);
     if (region) query = query.where('region', '==', region);
     if (moves) query = query.where('moves', 'array-contains', moves);
     if (abilities) query = query.where('abilities', 'array-contains', abilities);
-    if (id) query = query.where('id', '==', id);
-    if (sprite) query = query.where('sprite', '==', sprite);
+    if (id) query = query.where('id', '==', parseInt(id)); // Ensure 'id' is treated as a number
+    if (sprite) query = query.where(`sprites.${sprite}`, '!=', null); // Check if sprite exists
 
     try {
       const snapshot = await query.get();
@@ -130,6 +131,7 @@ exports.searchPokemon = functions.https.onRequest((req, res) => {
     }
   });
 });
+
 
 
 // Get all Pokemon
