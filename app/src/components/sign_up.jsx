@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "../styles/Sign-up.css";
+import "../styles/sign-up.css";
 import { Login } from './login.jsx'
 
 export function SignUp() {

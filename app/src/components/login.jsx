@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import "../styles/Sign-up.css";
+import "../styles/sign-up.css";
 import { SignUp } from "./sign_up";
 
-export function Login() {
+export function Login({ onLogin }) {
     const initialValues = {
         username: "",
         password: "",
@@ -21,6 +21,7 @@ export function Login() {
         e.preventDefault();
         setFormErrors(validate(formValues));
         setIsSubmit(true);
+        onLogin();
     };
 
     useEffect(() => {
@@ -84,7 +85,7 @@ export function Login() {
                                 />
                             </div>
                             <p>{formErrors.password}</p>
-                            <button className="fluid ui button blue">Submit</button>
+                            <button className="fluid ui button">Submit</button>
                         </div>
                     </form>
                     <div className="text">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/App.css';
 
-export function Pokemon({spriteUrl}) {
+export function Cart({spriteUrl}) {
   const [pokemonGifUrl, setPokemonGifUrl] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -39,7 +39,7 @@ export function Pokemon({spriteUrl}) {
   return (
     <>
       <div className='random_poke'>
-        <h1>Random Pokémon GIF</h1>
+        <h1>CART PAGE</h1>
         <img src={pokemonGifUrl} alt="Random Pokémon" className='poke_gif' />
       </div>
       <button className='random_button' onClick={handleNewPokemonClick}>New Pokemon</button>

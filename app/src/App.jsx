@@ -2,22 +2,31 @@ import React, { useEffect, useState } from 'react';
 import './styles/App.css';
 import logo from './assets/logo_test.png'
 import g from './assets/g.png'
-import { Pokemon } from './components/pokemon_page.jsx'
+import { Header } from './components/header.jsx'
 import { Login } from './components/login.jsx'
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Initialize isLoggedIn state
 
-  const isLoggedIn = true;
+  // Function to set isLoggedIn state to true
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
 
   let content;
   if (isLoggedIn) {
-    content = <Pokemon />;
+    content = (
+      <>
+        <Header />
+      </>
+    );
   } else {
-    content = <Login />;
+    content = <Login onLogin={handleLogin}/>;
   }
 
   return (
     <>
+    
       <img src={logo} alt="logo.png" className='logo' />
       <div className='content'>
         {content}
