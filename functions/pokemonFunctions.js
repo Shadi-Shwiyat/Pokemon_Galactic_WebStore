@@ -14,18 +14,16 @@ const runCorsAndMethod = (req, res, method, callback) => {
 
 // Helper function to set up pagination
 const setupPagination = async (query, req) => {
-  const pageSize = parseInt(req.query.pageSize) || 10; // Default page size
-  const pageToken = req.query.pageToken; // Document snapshot ID to start after
+  const pageSize = parseInt(req.query.pageSize) || 10;  // Default page size
+  const pageToken = req.query.pageToken;  // Document ID to start after
 
   if (pageToken) {
-    // Get the snapshot for the last document of the previous page
-    const lastDoc = await admin.firestore().collection('PokemonList').doc(pageToken).get();
-    if (!lastDoc.exists) {
+    const lastDocSnapshot = await admin.firestore().collection('PokemonList').doc(pageToken).get();
+    if (!lastDocSnapshot.exists) {
       throw new Error("Invalid pageToken: Document does not exist.");
     }
-    return query.startAfter(lastDoc).limit(pageSize);
+    return query.startAfter(lastDocSnapshot).limit(pageSize);
   } else {
-    // No pageToken provided, simply limit the query
     return query.limit(pageSize);
   }
 };
@@ -162,10 +160,10 @@ exports.getAllPokemon = functions.https.onRequest((req, res) => {
     const db = admin.firestore();
     let query = db.collection('PokemonList').orderBy('id');
 
-    // Setup pagination using the helper function
-    query = setupPagination(query, req);
-
     try {
+      // Setup pagination using the helper function
+      query = await setupPagination(query, req);
+
       const snapshot = await query.get();
       const pokemon = snapshot.docs.map(doc => doc.data());
 
@@ -178,7 +176,7 @@ exports.getAllPokemon = functions.https.onRequest((req, res) => {
       res.status(200).json({ pokemon, nextPageToken });
     } catch (error) {
       console.error('Error fetching all Pokémon:', error);
-      return res.status(500).send({ message: 'Internal Server Error' });
+      return res.status(500).send({ message: 'Internal Server Error', error: error.message });
     }
   });
 });
