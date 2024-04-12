@@ -12,23 +12,6 @@ const runCorsAndMethod = (req, res, method, callback) => {
   });
 };
 
-// Helper function to set up pagination
-const setupPagination = async (query, req) => {
-  const pageSize = parseInt(req.query.pageSize) || 10;  // Default page size
-  const pageToken = req.query.pageToken;  // Document ID to start after
-
-  if (pageToken) {
-    const lastDocSnapshot = await admin.firestore().collection('PokemonList').doc(pageToken).get();
-    if (!lastDocSnapshot.exists) {
-      throw new Error("Invalid pageToken: Document does not exist.");
-    }
-    return query.startAfter(lastDocSnapshot).limit(pageSize);
-  } else {
-    return query.limit(pageSize);
-  }
-};
-
-
 // Create a new Pokemon 
 exports.createPokemon = functions.https.onRequest(async (req, res) => {
   // Add CORS support
@@ -120,38 +103,35 @@ exports.getPokemonById = functions.https.onRequest((req, res) => {
 // Search for a Pokemon based on various criteria
 exports.searchPokemon = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
+    const { type, generation, name, region, moves, abilities, id, sprite } = req.query;
     const db = admin.firestore();
-    let query = db.collection('PokemonList').orderBy('id');
+    let query = db.collection('PokemonList');
 
-    // Adding filters based on query parameters
-    if (req.query.type) query = query.where('type', 'array-contains', req.query.type);
-    if (req.query.generation) query = query.where('generation', '==', req.query.generation);
-    if (req.query.name) query = query.where('name', '==', req.query.name);
-    if (req.query.region) query = query.where('region', '==', req.query.region);
-    if (req.query.moves) query = query.where('moves', 'array-contains', req.query.moves);
-    if (req.query.abilities) query = query.where('abilities', 'array-contains', req.query.abilities);
-    if (req.query.id) query = query.where('id', '==', req.query.id);
-    if (req.query.sprite) query = query.where('sprite', '==', req.query.sprite);
-
-    // Setup pagination
-    query = setupPagination(query, req);
+    // Check and add each query filter only if the parameter exists
+    if (type) query = query.where('typing', 'array-contains', type);
+    if (generation) query = query.where('generation', '==', generation);
+    if (name) query = query.where('name', '==', name);
+    if (region) query = query.where('region', '==', region);
+    if (moves) query = query.where('moves', 'array-contains', moves);
+    if (abilities) query = query.where('abilities', 'array-contains', abilities);
+    if (id) query = query.where('id', '==', parseInt(id)); // Ensure 'id' is treated as a number
+    if (sprite) query = query.where(`sprites.${sprite}`, '!=', null); // Check if sprite exists
 
     try {
       const snapshot = await query.get();
-      const pokemon = snapshot.docs.map(doc => doc.data());
-
-      let nextPageToken = null;
-      if (!snapshot.empty && pokemon.length === parseInt(req.query.pageSize)) {
-        nextPageToken = snapshot.docs[snapshot.docs.length - 1].id; // Use the last document ID as the next page token
+      if (snapshot.empty) {
+        return res.status(404).send({ message: 'No Pokémon found matching the criteria' });
       }
 
-      return res.status(200).json({ pokemon, nextPageToken });
+      const pokemon = snapshot.docs.map(doc => doc.data());
+      return res.status(200).json(pokemon);
     } catch (error) {
       console.error('Error searching Pokémon:', error);
       return res.status(500).send({ message: 'Internal Server Error' });
     }
   });
 });
+
 
 
 // Get all Pokemon
@@ -161,22 +141,13 @@ exports.getAllPokemon = functions.https.onRequest((req, res) => {
     let query = db.collection('PokemonList').orderBy('id');
 
     try {
-      // Setup pagination using the helper function
-      query = await setupPagination(query, req);
-
       const snapshot = await query.get();
       const pokemon = snapshot.docs.map(doc => doc.data());
 
-      // Prepare the next page token if there's more data
-      let nextPageToken = null;
-      if (!snapshot.empty && pokemon.length === parseInt(req.query.pageSize)) {
-        nextPageToken = snapshot.docs[snapshot.docs.length - 1].id; // Last document's ID as the next page token
-      }
-
-      res.status(200).json({ pokemon, nextPageToken });
+      res.status(200).json(pokemon);
     } catch (error) {
       console.error('Error fetching all Pokémon:', error);
-      return res.status(500).send({ message: 'Internal Server Error', error: error.message });
+      return res.status(500).send({ message: 'Internal Server Error' });
     }
   });
 });
@@ -223,25 +194,20 @@ exports.getPokemonGifByName = functions.https.onRequest((req, res) => {
 // Get a Pokemon by type
 exports.getPokemonByType = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
+    const { type } = req.query;
     const db = admin.firestore();
-    let query = db.collection('PokemonList').where('typing', 'array-contains', req.query.type).orderBy('id');
-
-    // Setup pagination
-    query = setupPagination(query, req);
+    let query = db.collection('PokemonList').where('typing', 'array-contains', type).orderBy('id');
 
     try {
       const snapshot = await query.get();
-      const pokemon = snapshot.docs.map(doc => doc.data());
-
-      let nextPageToken = null;
-      if (!snapshot.empty && pokemon.length === parseInt(req.query.pageSize)) {
-        nextPageToken = snapshot.docs[snapshot.docs.length - 1].id; // Use the last document ID as the next page token
+      if (snapshot.empty) {
+        return res.status(404).send({ message: 'No Pokémon found for the given type' });
       }
-
-      return res.status(200).json({ pokemon, nextPageToken });
+      const pokemon = snapshot.docs.map(doc => doc.data());
+      return res.status(200).json(pokemon);
     } catch (error) {
       console.error('Error fetching Pokémon by type:', error);
-      return res.status(500).send({ message: 'Internal Server Error' });
+      return res.status(500).send({ message: 'Error fetching Pokémon by type' });
     }
   });
 });
@@ -311,27 +277,25 @@ exports.getPokemonByRegion = functions.https.onRequest((req, res) => {
 // Get a Pokemon by moves
 exports.getPokemonByMoves = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
+    const { moves } = req.query; // Assuming moves are passed as a comma-separated list
     const db = admin.firestore();
-    const movesArray = req.query.moves ? req.query.moves.split(',') : [];
-
+    
+    // Convert moves to an array, assuming it's passed as a comma-separated string
+    const movesArray = moves ? moves.split(',') : [];
+    
     let query = db.collection('PokemonList').where('moves', 'array-contains-any', movesArray).orderBy('id');
-
-    // Setup pagination
-    query = setupPagination(query, req);
-
+    
     try {
       const snapshot = await query.get();
-      const pokemon = snapshot.docs.map(doc => doc.data());
-
-      let nextPageToken = null;
-      if (!snapshot.empty && pokemon.length === parseInt(req.query.pageSize)) {
-        nextPageToken = snapshot.docs[snapshot.docs.length - 1].id;
+      if (snapshot.empty) {
+        return res.status(404).send({ message: 'No Pokémon found with the specified moves' });
       }
-
-      return res.status(200).json({ pokemon, nextPageToken });
+      
+      const pokemon = snapshot.docs.map(doc => doc.data());
+      return res.status(200).json(pokemon);
     } catch (error) {
       console.error('Error fetching Pokémon by moves:', error);
-      return res.status(500).send({ message: 'Internal Server Error' });
+      return res.status(500).send({ message: 'Error fetching Pokémon by moves' });
     }
   });
 });
@@ -339,27 +303,25 @@ exports.getPokemonByMoves = functions.https.onRequest((req, res) => {
 // Get a Pokemon by abilities
 exports.getPokemonByAbilities = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
+    const { abilities } = req.query; // Assuming abilities are passed as a comma-separated list
     const db = admin.firestore();
-    const abilitiesArray = req.query.abilities ? req.query.abilities.split(',') : [];
-
+    
+    // Convert abilities to an array if it's passed as a comma-separated string
+    const abilitiesArray = abilities ? abilities.split(',') : [];
+    
     let query = db.collection('PokemonList').where('abilities', 'array-contains-any', abilitiesArray).orderBy('id');
-
-    // Setup pagination
-    query = setupPagination(query, req);
-
+    
     try {
       const snapshot = await query.get();
-      const pokemon = snapshot.docs.map(doc => doc.data());
-
-      let nextPageToken = null;
-      if (!snapshot.empty && pokemon.length === parseInt(req.query.pageSize)) {
-        nextPageToken = snapshot.docs[snapshot.docs.length - 1].id;
+      if (snapshot.empty) {
+        return res.status(404).send({ message: 'No Pokémon found with the specified abilities' });
       }
-
-      return res.status(200).json({ pokemon, nextPageToken });
+      
+      const pokemon = snapshot.docs.map(doc => doc.data());
+      return res.status(200).json(pokemon);
     } catch (error) {
       console.error('Error fetching Pokémon by abilities:', error);
-      return res.status(500).send({ message: 'Internal Server Error' });
+      return res.status(500).send({ message: 'Error fetching Pokémon by abilities' });
     }
   });
 });
