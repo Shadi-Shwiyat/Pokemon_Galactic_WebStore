@@ -12,6 +12,25 @@ const runCorsAndMethod = (req, res, method, callback) => {
   });
 };
 
+// Helper function to set up pagination
+const setupPagination = async (query, req) => {
+  const pageSize = parseInt(req.query.pageSize) || 10; // Default page size
+  const pageToken = req.query.pageToken; // Document snapshot ID to start after
+
+  if (pageToken) {
+    // Get the snapshot for the last document of the previous page
+    const lastDoc = await admin.firestore().collection('PokemonList').doc(pageToken).get();
+    if (!lastDoc.exists) {
+      throw new Error("Invalid pageToken: Document does not exist.");
+    }
+    return query.startAfter(lastDoc).limit(pageSize);
+  } else {
+    // No pageToken provided, simply limit the query
+    return query.limit(pageSize);
+  }
+};
+
+
 // Create a new Pokemon 
 exports.createPokemon = functions.https.onRequest(async (req, res) => {
   // Add CORS support
@@ -103,49 +122,35 @@ exports.getPokemonById = functions.https.onRequest((req, res) => {
 // Search for a Pokemon based on various criteria
 exports.searchPokemon = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
-    const { type, generation, name, region, moves, abilities, id, sprite, startAfter, limit = 15 } = req.query;
     const db = admin.firestore();
-    let query = db.collection('PokemonList').orderBy('id'); // You might need to adjust this based on your indexing strategy
+    let query = db.collection('PokemonList').orderBy('id');
 
-    // Apply search filters
-    if (type) query = query.where('type', 'array-contains', type);
-    if (generation) query = query.where('generation', '==', generation);
-    if (name) query = query.where('name', '==', name);
-    if (region) query = query.where('region', '==', region);
-    if (moves) query = query.where('moves', 'array-contains', moves);
-    if (abilities) query = query.where('abilities', 'array-contains', abilities);
-    if (id) query = query.where('id', '==', id);
-    if (sprite) query = query.where('sprite', '==', sprite);
+    // Adding filters based on query parameters
+    if (req.query.type) query = query.where('type', 'array-contains', req.query.type);
+    if (req.query.generation) query = query.where('generation', '==', req.query.generation);
+    if (req.query.name) query = query.where('name', '==', req.query.name);
+    if (req.query.region) query = query.where('region', '==', req.query.region);
+    if (req.query.moves) query = query.where('moves', 'array-contains', req.query.moves);
+    if (req.query.abilities) query = query.where('abilities', 'array-contains', req.query.abilities);
+    if (req.query.id) query = query.where('id', '==', req.query.id);
+    if (req.query.sprite) query = query.where('sprite', '==', req.query.sprite);
 
-    // Pagination logic
-    if (startAfter) {
-      // Retrieve the document to start after
-      const startAfterDoc = await db.collection('PokemonList').doc(startAfter).get();
-      if (startAfterDoc.exists) {
-        query = query.startAfter(startAfterDoc);
-      }
-    }
-    query = query.limit(parseInt(limit, 15));
+    // Setup pagination
+    query = setupPagination(query, req);
 
     try {
       const snapshot = await query.get();
-      if (snapshot.empty) {
-        return res.status(404).send({message: 'No Pokémon found matching the criteria'});
-      }
-
       const pokemon = snapshot.docs.map(doc => doc.data());
 
-      // Determine the next page token
-      const lastVisible = snapshot.docs[snapshot.docs.length-1];
-      const nextPageToken = lastVisible ? lastVisible.id : null;
+      let nextPageToken = null;
+      if (!snapshot.empty && pokemon.length === parseInt(req.query.pageSize)) {
+        nextPageToken = snapshot.docs[snapshot.docs.length - 1].id; // Use the last document ID as the next page token
+      }
 
-      return res.status(200).json({
-        pokemon,
-        nextPageToken
-      });
+      return res.status(200).json({ pokemon, nextPageToken });
     } catch (error) {
       console.error('Error searching Pokémon:', error);
-      return res.status(500).send({message: 'Internal Server Error'});
+      return res.status(500).send({ message: 'Internal Server Error' });
     }
   });
 });
@@ -155,32 +160,26 @@ exports.searchPokemon = functions.https.onRequest((req, res) => {
 exports.getAllPokemon = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
     const db = admin.firestore();
-    let query = db.collection('PokemonList').orderBy('id'); // Make sure to order by a field
+    let query = db.collection('PokemonList').orderBy('id');
 
-    // Pagination parameters
-    const limit = 15; // Items per page
-    const { startAfter } = req.query; // ID of the last item of the previous page
+    // Setup pagination using the helper function
+    query = setupPagination(query, req);
 
-    if (startAfter) {
-      const startAfterDoc = await db.collection('PokemonList').doc(startAfter).get();
-      if (startAfterDoc.exists) {
-        query = query.startAfter(startAfterDoc);
+    try {
+      const snapshot = await query.get();
+      const pokemon = snapshot.docs.map(doc => doc.data());
+
+      // Prepare the next page token if there's more data
+      let nextPageToken = null;
+      if (!snapshot.empty && pokemon.length === parseInt(req.query.pageSize)) {
+        nextPageToken = snapshot.docs[snapshot.docs.length - 1].id; // Last document's ID as the next page token
       }
+
+      res.status(200).json({ pokemon, nextPageToken });
+    } catch (error) {
+      console.error('Error fetching all Pokémon:', error);
+      return res.status(500).send({ message: 'Internal Server Error' });
     }
-
-    query = query.limit(limit);
-
-    const snapshot = await query.get();
-    const pokemon = snapshot.docs.map(doc => doc.data());
-
-    // Assuming you have a field to order by (e.g., 'id'), and you send the last 'id' as 'startAfter' for the next page
-    const lastVisible = snapshot.docs[snapshot.docs.length-1];
-    const nextPageToken = lastVisible ? lastVisible.id : null; // Send this back for the next page query
-
-    res.status(200).json({
-      pokemon,
-      nextPageToken
-    });
   });
 });
 
@@ -226,36 +225,25 @@ exports.getPokemonGifByName = functions.https.onRequest((req, res) => {
 // Get a Pokemon by type
 exports.getPokemonByType = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
-    const { type, startAfter } = req.query;
     const db = admin.firestore();
-    let query = db.collection('PokemonList').where('typing', 'array-contains', type).orderBy('id');
+    let query = db.collection('PokemonList').where('typing', 'array-contains', req.query.type).orderBy('id');
 
-    const limit = 15;
-    if (startAfter) {
-      const startAfterDoc = await db.collection('PokemonList').doc(startAfter).get();
-      if (startAfterDoc.exists) {
-        query = query.startAfter(startAfterDoc);
-      }
-    }
-    query = query.limit(limit);
+    // Setup pagination
+    query = setupPagination(query, req);
 
     try {
       const snapshot = await query.get();
-      if (snapshot.empty) {
-        return res.status(404).send({message: 'No Pokémon found for the given type'});
-      }
       const pokemon = snapshot.docs.map(doc => doc.data());
 
-      const lastVisible = snapshot.docs[snapshot.docs.length-1];
-      const nextPageToken = lastVisible ? lastVisible.id : null;
+      let nextPageToken = null;
+      if (!snapshot.empty && pokemon.length === parseInt(req.query.pageSize)) {
+        nextPageToken = snapshot.docs[snapshot.docs.length - 1].id; // Use the last document ID as the next page token
+      }
 
-      return res.status(200).json({
-        pokemon,
-        nextPageToken
-      });
+      return res.status(200).json({ pokemon, nextPageToken });
     } catch (error) {
-      console.error('Error fetching Pokemon by type:', error);
-      return res.status(500).send({message: 'Error fetching Pokemon by type'});
+      console.error('Error fetching Pokémon by type:', error);
+      return res.status(500).send({ message: 'Internal Server Error' });
     }
   });
 });
@@ -263,18 +251,9 @@ exports.getPokemonByType = functions.https.onRequest((req, res) => {
 // Get a Pokemon by generation
 exports.getPokemonByGeneration = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
-    const { generation, startAfter } = req.query;
+    const { generation } = req.query;
     const db = admin.firestore();
     let query = db.collection('PokemonList').where('generation', '==', generation).orderBy('id');
-
-    const limit = 15;
-    if (startAfter) {
-      const startAfterDoc = await db.collection('PokemonList').doc(startAfter).get();
-      if (startAfterDoc.exists) {
-        query = query.startAfter(startAfterDoc);
-      }
-    }
-    query = query.limit(limit);
 
     try {
       const snapshot = await query.get();
@@ -282,14 +261,7 @@ exports.getPokemonByGeneration = functions.https.onRequest((req, res) => {
         return res.status(404).send({ message: 'No Pokémon found for the given generation' });
       }
       const pokemon = snapshot.docs.map(doc => doc.data());
-
-      const lastVisible = snapshot.docs[snapshot.docs.length-1];
-      const nextPageToken = lastVisible ? lastVisible.id : null;
-
-      return res.status(200).json({
-        pokemon,
-        nextPageToken
-      });
+      return res.status(200).json(pokemon);
     } catch (error) {
       console.error('Error fetching Pokémon by generation:', error);
       return res.status(500).send({ message: 'Error fetching Pokémon by generation' });
@@ -320,33 +292,17 @@ exports.getPokemonByName = functions.https.onRequest((req, res) => {
 // Get a Pokemon by region
 exports.getPokemonByRegion = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
-    const { region, startAfter } = req.query;
+    const { region } = req.query;
     const db = admin.firestore();
     let query = db.collection('PokemonList').where('region', '==', region).orderBy('id');
-
-    const limit = 15;
-    if (startAfter) {
-      const startAfterDoc = await db.collection('PokemonList').doc(startAfter).get();
-      if (startAfterDoc.exists) {
-        query = query.startAfter(startAfterDoc);
-      }
-    }
-    query = query.limit(limit);
 
     try {
       const snapshot = await query.get();
       if (snapshot.empty) {
         return res.status(404).send({ message: 'No Pokémon found for the given region' });
       }
-      const pokemon = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-      const lastVisible = snapshot.docs[snapshot.docs.length-1];
-      const nextPageToken = lastVisible ? lastVisible.id : null;
-
-      return res.status(200).json({
-        pokemon,
-        nextPageToken
-      });
+      const pokemon = snapshot.docs.map(doc => doc.data());
+      return res.status(200).json(pokemon);
     } catch (error) {
       console.error('Error fetching Pokémon by region:', error);
       return res.status(500).send({ message: 'Error fetching Pokémon by region' });
@@ -357,49 +313,27 @@ exports.getPokemonByRegion = functions.https.onRequest((req, res) => {
 // Get a Pokemon by moves
 exports.getPokemonByMoves = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
-    const { moves, startAfter } = req.query; // Assuming moves are passed as a comma-separated list
     const db = admin.firestore();
-    
-    // Convert moves to an array, assuming it's passed as a comma-separated string
-    const movesArray = moves ? moves.split(',') : [];
-    
-    // Starting the query
-    // Note: This assumes you are looking for Pokémon that have any of the moves listed in movesArray.
-    // If you need Pokémon that have all the moves, this query would be more complex and might require a different approach.
+    const movesArray = req.query.moves ? req.query.moves.split(',') : [];
+
     let query = db.collection('PokemonList').where('moves', 'array-contains-any', movesArray).orderBy('id');
 
-    const limit = 15; // Define how many documents to return in one page
-    
-    // Implementing pagination
-    if (startAfter) {
-      // Fetch the document to start after
-      const startAfterDoc = await db.collection('PokemonList').doc(startAfter).get();
-      if (startAfterDoc.exists) {
-        query = query.startAfter(startAfterDoc);
-      }
-    }
-    
-    query = query.limit(limit);
-    
+    // Setup pagination
+    query = setupPagination(query, req);
+
     try {
       const snapshot = await query.get();
-      if (snapshot.empty) {
-        return res.status(404).send({ message: 'No Pokémon found with the specified moves' });
+      const pokemon = snapshot.docs.map(doc => doc.data());
+
+      let nextPageToken = null;
+      if (!snapshot.empty && pokemon.length === parseInt(req.query.pageSize)) {
+        nextPageToken = snapshot.docs[snapshot.docs.length - 1].id;
       }
-      
-      const pokemon = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      
-      // Determine the next page token
-      const lastVisible = snapshot.docs[snapshot.docs.length-1];
-      const nextPageToken = lastVisible ? lastVisible.id : null;
-      
-      return res.status(200).json({
-        pokemon,
-        nextPageToken
-      });
+
+      return res.status(200).json({ pokemon, nextPageToken });
     } catch (error) {
       console.error('Error fetching Pokémon by moves:', error);
-      return res.status(500).send({ message: 'Error fetching Pokémon by moves' });
+      return res.status(500).send({ message: 'Internal Server Error' });
     }
   });
 });
@@ -407,48 +341,27 @@ exports.getPokemonByMoves = functions.https.onRequest((req, res) => {
 // Get a Pokemon by abilities
 exports.getPokemonByAbilities = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
-    const { abilities, startAfter } = req.query; // Assuming abilities are passed as a comma-separated list
     const db = admin.firestore();
-    
-    // Convert abilities to an array if it's passed as a comma-separated string
-    const abilitiesArray = abilities ? abilities.split(',') : [];
-    
-    // Start the query
-    // This assumes you're looking for Pokémon that have any of the abilities listed in abilitiesArray
+    const abilitiesArray = req.query.abilities ? req.query.abilities.split(',') : [];
+
     let query = db.collection('PokemonList').where('abilities', 'array-contains-any', abilitiesArray).orderBy('id');
 
-    const limit = 15; // Define the number of documents to return in one page
-    
-    // Implementing pagination
-    if (startAfter) {
-      // Fetch the document specified by startAfter
-      const startAfterDoc = await db.collection('PokemonList').doc(startAfter).get();
-      if (startAfterDoc.exists) {
-        query = query.startAfter(startAfterDoc);
-      }
-    }
-    
-    query = query.limit(limit);
-    
+    // Setup pagination
+    query = setupPagination(query, req);
+
     try {
       const snapshot = await query.get();
-      if (snapshot.empty) {
-        return res.status(404).send({ message: 'No Pokémon found with the specified abilities' });
+      const pokemon = snapshot.docs.map(doc => doc.data());
+
+      let nextPageToken = null;
+      if (!snapshot.empty && pokemon.length === parseInt(req.query.pageSize)) {
+        nextPageToken = snapshot.docs[snapshot.docs.length - 1].id;
       }
-      
-      const pokemon = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      
-      // Determine the nextPageToken for pagination
-      const lastVisible = snapshot.docs[snapshot.docs.length-1];
-      const nextPageToken = lastVisible ? lastVisible.id : null;
-      
-      return res.status(200).json({
-        pokemon,
-        nextPageToken
-      });
+
+      return res.status(200).json({ pokemon, nextPageToken });
     } catch (error) {
       console.error('Error fetching Pokémon by abilities:', error);
-      return res.status(500).send({ message: 'Error fetching Pokémon by abilities' });
+      return res.status(500).send({ message: 'Internal Server Error' });
     }
   });
 });
