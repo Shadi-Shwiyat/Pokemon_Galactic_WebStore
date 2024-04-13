@@ -10,10 +10,10 @@ async function getRandomPokemon() {
         const pokemon = doc.data();
         pokemon.level = Math.floor(Math.random() * 100) + 1; // Assign random level from 1 to 100
 
-        // Select one random ability
-        if (pokemon.abilities && pokemon.abilities.length > 0) {
-            pokemon.ability = pokemon.abilities[Math.floor(Math.random() * pokemon.abilities.length)];
-        }
+         // Select one random ability and replace the array
+         if (pokemon.abilities && pokemon.abilities.length > 0) {
+          pokemon.abilities = [pokemon.abilities[Math.floor(Math.random() * pokemon.abilities.length)]];
+      }
 
         // Select two random moves
         if (pokemon.moves && pokemon.moves.length > 0) {
