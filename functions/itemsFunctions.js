@@ -191,3 +191,142 @@ exports.deleteItem = functions.https.onRequest((req, res) => {
     }
   });
 });
+
+
+// MARKETPLACE FUNCTIONS for ITEMS below //
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Create a new item in Marketplace
+exports.createMarketplaceItem = functions.https.onRequest(async (req, res) => {
+  if (req.method === 'OPTIONS') {
+    res.set('Access-Control-Allow-Methods', 'POST');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+    res.set('Access-Control-Max-Age', '3600');
+    res.status(204).send('');
+    return;
+  }
+
+  if (req.method !== 'POST') {
+    res.status(405).send({message: 'Only POST requests are accepted'});
+    return;
+  }
+
+  try {
+    const {
+      id, name, abilities, base_cost, base_stat_total, cry, flavor_text, generation, height,
+      moves, region, shiny_cost, sprites, stats, typing, weight
+    } = req.body;
+
+    // Validate all fields are present and correctly formed
+    if (
+      typeof id !== 'number' ||
+      typeof name !== 'string' || name.trim() === '' ||
+      !Array.isArray(abilities) || abilities.length === 0 ||
+      typeof base_cost !== 'number' ||
+      typeof base_stat_total !== 'number' ||
+      typeof cry !== 'string' || cry.trim() === '' ||
+      typeof flavor_text !== 'string' || flavor_text.trim() === '' ||
+      typeof generation !== 'string' || generation.trim() === '' ||
+      typeof height !== 'number' ||
+      !Array.isArray(moves) || moves.length === 0 ||
+      typeof region !== 'string' || region.trim() === '' ||
+      typeof shiny_cost !== 'number' ||
+      typeof sprites !== 'object' || !sprites.default || !sprites.shiny ||
+      typeof stats !== 'object' || Object.values(stats).some(v => typeof v !== 'number') ||
+      !Array.isArray(typing) || typing.length === 0 ||
+      typeof weight !== 'number'
+    ) {
+      return res.status(400).send({message: 'Missing or invalid fields'});
+    }
+
+    const db = admin.firestore();
+
+    // Check if the item ID already exists
+    const itemRefById = db.collection('Marketplace').doc(String(id));
+    const docById = await itemRefById.get();
+    if (docById.exists) {
+      return res.status(409).send({message: 'An item with this ID already exists'});
+    }
+
+    // Check if the item name already exists
+    const querySnapshot = await db.collection('Marketplace').where('name', '==', name).get();
+    if (!querySnapshot.empty) {
+      return res.status(409).send({message: 'An item with this name already exists'});
+    }
+
+    // Set the document in Marketplace collection
+    await itemRefById.set({
+      id, name, abilities, base_cost, base_stat_total, cry, flavor_text, generation, height,
+      moves, region, shiny_cost, sprites, stats, typing, weight
+    });
+
+    return res.status(201).send({message: 'Item created successfully'});
+  } catch (error) {
+    console.error('Error creating item:', error);
+    return res.status(500).send({message: 'Internal Server Error'});
+  }
+});
+
+// Get marketplace item by ID
+exports.getMarketplaceItemById = functions.https.onRequest((req, res) => {
+  runCorsAndMethod(req, res, 'GET', async () => {
+    const { id } = req.query;
+    const db = admin.firestore();
+
+    const doc = await db.collection('Marketplace').doc(id).get();
+    if (!doc.exists) {
+      return res.status(404).send({message: 'Item not found'});
+    }
+    return res.status(200).json(doc.data());
+  });
+});
+
+// Search for an item in the Marketplace based on various criteria
+exports.searchMarketplace = functions.https.onRequest((req, res) => {
+  runCorsAndMethod(req, res, 'GET', async () => {
+    const { type, generation, name, region, moves, abilities, id, sprite } = req.query;
+    const db = admin.firestore();
+    let query = db.collection('Marketplace');
+
+    // Check and add each query filter only if the parameter exists
+    if (type) query = query.where('typing', 'array-contains', type);
+    if (generation) query = query.where('generation', '==', generation);
+    if (name) query = query.where('name', '==', name);
+    if (region) query = query.where('region', '==', region);
+    if (moves) query = query.where('moves', 'array-contains', moves);
+    if (abilities) query = query.where('abilities', 'array-contains', abilities);
+    if (id) query = query.where('id', '==', parseInt(id)); // Ensure 'id' is treated as a number
+    if (sprite) query = query.where(`sprites.${sprite}`, '!=', null); // Check if sprite exists
+
+    try {
+      const snapshot = await query.get();
+      if (snapshot.empty) {
+        return res.status(404).send({ message: 'No items found matching the criteria' });
+      }
+
+      const items = snapshot.docs.map(doc => doc.data());
+      return res.status(200).json(items);
+    } catch (error) {
+      console.error('Error searching items:', error);
+      return res.status(500).send({ message: 'Internal Server Error' });
+    }
+  });
+});
+
+// Get all items in the Marketplace
+exports.getAllItems = functions.https.onRequest((req, res) => {
+  runCorsAndMethod(req, res, 'GET', async () => {
+    const db = admin.firestore();
+    let query = db.collection('Marketplace').orderBy('id');
+
+    try {
+      const snapshot = await query.get();
+      const items = snapshot.docs.map(doc => doc.data());
+
+      res.status(200).json(items);
+    } catch (error) {
+      console.error('Error fetching all items:', error);
+      return res.status(500).send({ message: 'Internal Server Error' });
+    }
+  });
+});
