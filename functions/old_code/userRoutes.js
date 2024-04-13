@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { admin } = require('./firebaseAdminConfig'); // Import the Firebase Admin SDK
+const { admin } = require('../firebaseAdminConfig'); // Import the Firebase Admin SDK
 
 
 /** User Auth Endpionts *////////////////////////////////////////////////////////////////////////////////
