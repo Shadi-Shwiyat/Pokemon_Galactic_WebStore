@@ -9,6 +9,18 @@ async function getRandomPokemon() {
     snapshot.forEach(doc => {
         const pokemon = doc.data();
         pokemon.level = Math.floor(Math.random() * 100) + 1; // Assign random level from 1 to 100
+
+        // Select one random ability
+        if (pokemon.abilities && pokemon.abilities.length > 0) {
+            pokemon.ability = pokemon.abilities[Math.floor(Math.random() * pokemon.abilities.length)];
+        }
+
+        // Select two random moves
+        if (pokemon.moves && pokemon.moves.length > 0) {
+            let shuffledMoves = pokemon.moves.sort(() => 0.5 - Math.random());
+            pokemon.moves = shuffledMoves.slice(0, 2);
+        }
+
         pokemonList.push(pokemon);
     });
 
@@ -28,7 +40,6 @@ function calculateMarketPrice(level, cost) {
   } else if (level === 1) {
       price = cost * 0.5;
   } else {
-      // Linear interpolation between 0.5 and 2 times the cost
       price = cost * (0.5 + (1.5 * (level - 1) / 99));
   }
   return Math.round(price); // Round to the nearest whole number
