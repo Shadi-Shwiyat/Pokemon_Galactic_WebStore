@@ -114,20 +114,19 @@ exports.searchPokemon = functions.https.onRequest((req, res) => {
     if (region) query = query.where('region', '==', region);
     if (moves) query = query.where('moves', 'array-contains', moves);
     if (abilities) query = query.where('abilities', 'array-contains', abilities);
-    if (id) query = query.where('id', '==', parseInt(id)); // Ensure 'id' is treated as a number
-    if (sprite) query = query.where(`sprites.${sprite}`, '!=', null); // Check if sprite exists
+    if (id) query = query.where('id', '==', parseInt(id));
+    if (sprite) query = query.where(`sprites.${sprite}`, '!=', null);
 
     try {
       const snapshot = await query.get();
       if (snapshot.empty) {
-        return res.status(404).send({ message: 'No Pokémon found matching the criteria' });
+        return res.status(404).send({message: 'No Pokémon found matching the criteria'});
       }
-
       const pokemon = snapshot.docs.map(doc => doc.data());
       return res.status(200).json(pokemon);
     } catch (error) {
       console.error('Error searching Pokémon:', error);
-      return res.status(500).send({ message: 'Internal Server Error' });
+      return res.status(500).send({message: 'Internal Server Error'});
     }
   });
 });
@@ -385,7 +384,7 @@ exports.createPokemonMarketplace = functions.https.onRequest(async (req, res) =>
   }
 });
 
-// Get a single Pokemon by ID
+// Get a single Pokemon by ID from the Marketplace
 exports.getPokemonByIdMarketplace = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
     const { id } = req.query;
@@ -398,7 +397,7 @@ exports.getPokemonByIdMarketplace = functions.https.onRequest((req, res) => {
   });
 });
 
-// Search for a Pokemon based on various criteria
+// Search for a Pokemon based on various criteria in the Marketplace
 exports.searchPokemonMarketplace = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
     const { type, generation, name, region, moves, abilities, id, sprite } = req.query;
@@ -428,7 +427,7 @@ exports.searchPokemonMarketplace = functions.https.onRequest((req, res) => {
   });
 });
 
-// Get all Pokemon
+// Get all Pokemon from the Marketplace
 exports.getAllPokemonMarketplace = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
     const db = admin.firestore();
@@ -444,7 +443,7 @@ exports.getAllPokemonMarketplace = functions.https.onRequest((req, res) => {
   });
 });
 
-// Get a Pokemon sprite by ID (NOT GIF)
+// Get a Pokemon sprite by ID (NOT GIF) from the Marketplace
 exports.getPokemonSpriteByIdMarketplace = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
     const { id } = req.query;
@@ -457,7 +456,7 @@ exports.getPokemonSpriteByIdMarketplace = functions.https.onRequest((req, res) =
   });
 });
 
-// Get a Pokemon GIF sprite by name
+// Get a Pokemon GIF sprite by name from the Marketplace
 exports.getPokemonGifByNameMarketplace = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
     const { name } = req.query;
@@ -476,7 +475,7 @@ exports.getPokemonGifByNameMarketplace = functions.https.onRequest((req, res) =>
   });
 });
 
-// Get a Pokemon by type
+// Get a Pokemon by type from the Marketplace
 exports.getPokemonByTypeMarketplace = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
     const { type } = req.query;
@@ -496,7 +495,7 @@ exports.getPokemonByTypeMarketplace = functions.https.onRequest((req, res) => {
   });
 });
 
-// Get a Pokemon by generation
+// Get a Pokemon by generation from the Marketplace
 exports.getPokemonByGenerationMarketplace = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
     const { generation } = req.query;
@@ -516,7 +515,7 @@ exports.getPokemonByGenerationMarketplace = functions.https.onRequest((req, res)
   });
 });
 
-// Get a Pokemon by name
+// Get a Pokemon by name from the Marketplace
 exports.getPokemonByNameMarketplace = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
     const { name } = req.query;
@@ -536,7 +535,7 @@ exports.getPokemonByNameMarketplace = functions.https.onRequest((req, res) => {
   });
 });
 
-// Get a Pokemon by region
+// Get a Pokemon by region from the Marketplace
 exports.getPokemonByRegionMarketplace = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
     const { region } = req.query;
@@ -556,7 +555,7 @@ exports.getPokemonByRegionMarketplace = functions.https.onRequest((req, res) => 
   });
 });
 
-// Get a Pokemon by moves
+// Get a Pokemon by moves from the Marketplace
 exports.getPokemonByMovesMarketplace = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
     const { moves } = req.query;
@@ -577,7 +576,7 @@ exports.getPokemonByMovesMarketplace = functions.https.onRequest((req, res) => {
   });
 });
 
-// Get a Pokemon by abilities
+// Get a Pokemon by abilities from the Marketplace
 exports.getPokemonByAbilitiesMarketplace = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
     const { abilities } = req.query;

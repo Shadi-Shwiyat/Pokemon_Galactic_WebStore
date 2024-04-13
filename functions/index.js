@@ -1,5 +1,5 @@
 // Import the functions from the other files
-const { createPokemon, getPokemonById, searchPokemon, getAllPokemon, getPokemonSpriteById, getPokemonGifByName, getPokemonByType, getPokemonByGeneration, getPokemonByName, getPokemonByRegion, getPokemonByMoves, getPokemonByAbilities, getAllPokemonMarketplace, getPokemonByAbilitiesMarketplace, getPokemonByGenerationMarketplace, getPokemonByIdMarketplace, getPokemonByMovesMarketplace, getPokemonByNameMarketplace, getPokemonByRegionMarketplace, getPokemonByTypeMarketplace, getPokemonGifByNameMarketplace, getPokemonSpriteByIdMarketplace } = require('./pokemonFunctions');
+const { createPokemon, getPokemonById, searchPokemon, getAllPokemon, getPokemonSpriteById, getPokemonGifByName, getPokemonByType, getPokemonByGeneration, getPokemonByName, getPokemonByRegion, getPokemonByMoves, getPokemonByAbilities, getAllPokemonMarketplace, getPokemonByAbilitiesMarketplace, getPokemonByGenerationMarketplace, getPokemonByIdMarketplace, getPokemonByMovesMarketplace, getPokemonByNameMarketplace, getPokemonByRegionMarketplace, getPokemonByTypeMarketplace, getPokemonGifByNameMarketplace, getPokemonSpriteByIdMarketplace, searchPokemonMarketplace, createPokemonMarketplace } = require('./pokemonFunctions');
 const { searchItems, getItemById, getItemSprite, createItem, updateItem, deleteItem, getAllItems, getMarketplaceItemById, createMarketplaceItem } = require('./itemsFunctions');
 const { updateMarketplace } = require('./marketplaceFunctions'); // Import the new scheduled function
 
@@ -28,6 +28,9 @@ exports.getPokemonByRegionMarketplace = getPokemonByRegionMarketplace;
 exports.getPokemonByTypeMarketplace = getPokemonByTypeMarketplace;
 exports.getPokemonGifByNameMarketplace = getPokemonGifByNameMarketplace;
 exports.getPokemonSpriteByIdMarketplace = getPokemonSpriteByIdMarketplace;
+exports.searchPokemonMarketplace = searchPokemonMarketplace;
+exports.createPokemonMarketplace = createPokemonMarketplace;
+
 
 
 // Export the items functions to be used
