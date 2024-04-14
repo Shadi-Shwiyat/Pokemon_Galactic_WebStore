@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "../styles/sign-up.css";
 import { Login } from './login.jsx'
 
-export function SignUp() {
+export function SignUp({ onLogin }) {
     const initialValues = {
         username: "",
         email: "",
@@ -63,7 +63,7 @@ export function SignUp() {
     return (
         <>
             {currentPage === "login" ? (
-                <Login />
+                <Login onLogin={onLogin}/>
             ) : (
                 <div className="container">
                     {Object.keys(formErrors).length === 0 && isSubmit ? (
@@ -88,7 +88,7 @@ export function SignUp() {
                                     onChange={handleChange}
                                 />
                             </div>
-                            <p>{formErrors.username}</p>
+                            <p className="error">{formErrors.username}</p>
                             <div className="field">
                                 <label>Email</label>
                                 <input
@@ -99,7 +99,7 @@ export function SignUp() {
                                     onChange={handleChange}
                                 />
                             </div>
-                            <p>{formErrors.email}</p>
+                            <p className="error">{formErrors.email}</p>
                             <div className="field">
                                 <label>Password</label>
                                 <input
@@ -110,7 +110,7 @@ export function SignUp() {
                                     onChange={handleChange}
                                 />
                             </div>
-                            <p>{formErrors.password}</p>
+                            <p className="error">{formErrors.password}</p>
                             <div className="field">
                                 <label>Confirm Password</label>
                                 <input
@@ -121,11 +121,11 @@ export function SignUp() {
                                     onChange={handleChange}
                                 />
                             </div>
-                            <p>{formErrors.confirmPassword}</p>
-                            <button className="fluid ui button blue">Submit</button>
+                            <p className="error">{formErrors.confirmPassword}</p>
+                            <button className="fluid ui signup-button">Submit</button>
                         </div>
                     </form>
-                    <div className="text">
+                    <div className="create-account">
                         Already have an account? <span onClick={handleLoginClick}>Login</span>
                     </div>
                 </div>

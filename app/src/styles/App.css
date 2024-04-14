@@ -3,18 +3,92 @@
 }
 
 body {
-  background-color: #313131;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image: url('../assets/galaxy.png');
+  background-color: #060605;
   background-repeat: no-repeat;
-  background-position: relative;
-  background-size: 100% auto;
+  background-position: center;
+  background-size: 100% 123%;
+}
+body::before {
+  content: ""; /* Necessary for pseudo-elements */
+  /* Position the pseudo-element to cover the entire body */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Set the background color to create a darkening effect */
+  background-color: rgba(0, 0, 0, 0.23); /* Adjust the alpha (last value) to control darkness */
 }
 
-.logo {
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.filter-button {
+  background-color: rgba(0, 0, 0, 0.0) !important;
+  width: 60px;
+  height: 42px;
+  opacity: 1;
+  border-radius: 9px;
+  border-color: #EDFF01;
+  box-shadow: 0 0 10px 2px #EDFF01;
   position: fixed;
+  top: 13.9%;
+  left: 12.6%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.1s; /* Add transition for smooth effect */
+}
+
+.filter-button:hover {
+  cursor: pointer;
+  box-shadow: 0 0 15px 3px #EDFF01;
+}
+
+.filter-icon {
+  width: 36px;
+  height: 28px;
+}
+
+.filter-form {
+  position: fixed;
+  top: 13.8%;
+  left: 12.5%;
+  padding: 10px;
+  border-radius: 9px;
+  border: 2px solid #EDFF01;
+  box-shadow: 0 0 15px 3px #EDFF01;
+  background-color: rgba(0, 0, 0, .8);
+  height: 0;
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: height 0.3s ease, width 0.3s ease, opacity 0.3s ease;
+}
+
+.display.filter-form { /* Display form when button is hidden */
+  height: 200px;
+  width: 300px;
+  opacity: 1;
+}
+
+/* Hide button when form is visible */
+.hide.filter-button {
+  opacity: 0;
+}
+
+.form-header {
   z-index: 999;
-  top: 0px;
-  left: 0px;
-  height: 99px;
+  color: #EDFF01;
 }
 
 .g {
@@ -25,6 +99,17 @@ body {
   height: 163px;
 }
 
+/* h1 {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 33%;
+  left: 46%;
+} */
+
 header {
   min-height: 100vh;
   display: flex;
@@ -34,23 +119,7 @@ header {
   color: #EDFF01;
 }
 
-.nav-links span {
-  text-decoration: none;
-  color: inherit;
-}
-
-.nav-links {
-  display: flex;
-  margin-top: 30px;
-  list-style-type: none;
-}
-
-.nav-links li {
-  margin-right: 46px;
-  cursor: pointer;
-}
-
-/*Navbar hover animation*/
+/*------------- Navbar hover animation ------------*/
 .hover-underline-animation {
   display: inline-block;
   position: relative;
@@ -74,30 +143,28 @@ transition: transform 0.25s ease-out;
 transform: scaleX(1);
 transform-origin: bottom left;
 }
+/*-----------------------------------------------*/
 
-.random_poke {
-  color: white;
+.logo {
+  position: fixed;
+  z-index: 999;
+  top: 26px;
+  left: 30px;
+  height: 60px;
+}
+
+.nav-links span {
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-links {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 33%;
-  left: 40%;
+  margin-top: 40px;
+  list-style-type: none;
 }
 
-.random_button {
-  position: fixed;
-  top: 69%;
-  left: 45.5%;
-  width: 160px;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.nav-links li {
+  margin-right: 46px;
+  cursor: pointer;
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './styles/App.css';
-import logo from './assets/logo_test.png'
+import logo from './assets/logo.png'
 import g from './assets/g.png'
 import { Header } from './components/header.jsx'
 import { Login } from './components/login.jsx'

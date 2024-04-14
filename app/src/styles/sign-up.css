@@ -7,6 +7,7 @@
     max-width: 500px;
     width: 100%;
     margin: auto;
+    z-index: 999;
 }
 
 .container > form {
@@ -15,6 +16,7 @@
     padding: 20px;
     border-radius: 5px;
     background: #fff;
+    z-index: 999;
 }
 
 .field {
@@ -45,14 +47,14 @@ pre {
     font-size: larger;
 }
 
-button {
+.signup-button {
     background: #e7dc00 !important;
     padding: 5px;
     border-radius: 10px;
     width: 100%;
 }
 
-button:hover {
+.signup-button:hover {
     background-color: #fffb00 !important;
     cursor: pointer;
 }
@@ -61,10 +63,11 @@ p {
     color: rgb(255, 0, 0);
 }
 
-.text {
+.create-account {
     margin: 2px;
     padding: 5px;
     color: #dfdfdf;
+    z-index: 999;
 }
 
 .success {

@@ -49,7 +49,7 @@ export function Login({ onLogin }) {
 
     return (
         <>
-            {currentPage === "signup" ? <SignUp /> : (
+            {currentPage === "signup" ? <SignUp onLogin={onLogin}/> : (
                 <div className="container">
                     {Object.keys(formErrors).length === 0 && isSubmit ? (
                         <div className="ui message success">
@@ -85,10 +85,10 @@ export function Login({ onLogin }) {
                                 />
                             </div>
                             <p>{formErrors.password}</p>
-                            <button className="fluid ui button">Submit</button>
+                            <button className="fluid ui signup-button">Submit</button>
                         </div>
                     </form>
-                    <div className="text">
+                    <div className="create-account">
                         Dont have an account? <span onClick={handleCreateAccountClick}>Create Account</span>
                     </div>
                 </div>

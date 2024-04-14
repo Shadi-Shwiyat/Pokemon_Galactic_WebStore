@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { Pokemon } from './pokemon_page.jsx';
+import { Market } from './market.jsx';
+import { Pokemon } from './pokemon.jsx';
 import { Items } from './items.jsx';
 import { About } from './about.jsx';
 import { Cart } from './cart.jsx';
 
 export function Header() {
-  const [currentPage, setCurrentPage] = useState('pokemon');
+  const [currentPage, setCurrentPage] = useState('market');
 
   const renderPage = () => {
     switch (currentPage) {
+      case 'market':
+        return <Market />;
       case 'pokemon':
         return <Pokemon />;
       case 'items':
@@ -27,6 +30,9 @@ export function Header() {
       <header>
         <nav>
           <ul className='nav-links'>
+            <li onClick={() => setCurrentPage('market')}>
+              <span className="hover-underline-animation">Market</span>
+            </li>
             <li onClick={() => setCurrentPage('pokemon')}>
               <span className="hover-underline-animation">Pokemon</span>
             </li>
