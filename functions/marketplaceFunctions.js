@@ -1,7 +1,8 @@
 const { admin } = require('./firebaseAdminConfig');
 const functions = require('firebase-functions');
+const cors = require('cors')({origin: true});
 
-// Helper function to randomly select documents and assign a random level
+// Helper function to randomly select documents, assign a random level, and determine if shiny
 async function getRandomPokemon() {
     const db = admin.firestore();
     const snapshot = await db.collection('PokemonList').get();
@@ -10,16 +11,27 @@ async function getRandomPokemon() {
         const pokemon = doc.data();
         pokemon.level = Math.floor(Math.random() * 100) + 1; // Assign random level from 1 to 100
 
-         // Select one random ability and replace the array
-         if (pokemon.abilities && pokemon.abilities.length > 0) {
-          pokemon.abilities = [pokemon.abilities[Math.floor(Math.random() * pokemon.abilities.length)]];
-      }
+        // Select one random ability and replace the array
+        if (pokemon.abilities && pokemon.abilities.length > 0) {
+            pokemon.abilities = [pokemon.abilities[Math.floor(Math.random() * pokemon.abilities.length)]];
+        }
 
         // Select two random moves
         if (pokemon.moves && pokemon.moves.length > 0) {
             let shuffledMoves = pokemon.moves.sort(() => 0.5 - Math.random());
             pokemon.moves = shuffledMoves.slice(0, 2);
         }
+
+        // Determine sprite and cost
+        const isShiny = Math.random() < 0.1; // 10% chance to be shiny
+        pokemon.sprite = isShiny ? pokemon.sprites.shiny : pokemon.sprites.default;
+        const costFactor = isShiny ? pokemon.shiny_cost : pokemon.base_cost;
+        pokemon.marketplace_cost = calculateMarketPrice(pokemon.level, costFactor);
+
+        // Remove unused properties
+        delete pokemon.sprites;
+        delete pokemon.base_cost;
+        delete pokemon.shiny_cost;
 
         pokemonList.push(pokemon);
     });
@@ -61,15 +73,66 @@ exports.updateMarketplace = functions.pubsub.schedule('0 2 * * *').timeZone('Ame
         // Add new random pokemon with calculated marketplace costs
         randomPokemon.forEach(pokemon => {
             const newDocRef = marketplaceRef.doc(); // Create a new document reference
-            const base_marketplace = calculateMarketPrice(pokemon.level, pokemon.base_cost);
-            const shiny_marketplace = calculateMarketPrice(pokemon.level, pokemon.shiny_cost);
-            transaction.set(newDocRef, {
-                ...pokemon,
-                base_marketplace,
-                shiny_marketplace
-            });
+            transaction.set(newDocRef, pokemon);
         });
     });
 
-    console.log('Marketplace updated with new random Pokemon set, including marketplace values.');
+    console.log('Marketplace updated with new random Pokemon set.');
 });
+
+// Purchase a Pokemon from the Marketplace
+exports.purchasePokemon = functions.https.onRequest((req, res) => {
+    cors(req, res, async () => {
+      if (req.method !== 'POST') {
+        return res.status(405).send('Method Not Allowed');
+      }
+      const { userId, pokemonId } = req.body;
+  
+      if (!userId || !pokemonId) {
+        return res.status(400).send('User ID and Pokemon ID are required');
+      }
+  
+      const db = admin.firestore();
+      const userRef = db.collection('users').doc(userId);
+      const pokemonRef = db.collection('Marketplace').doc(pokemonId);
+  
+      try {
+        await db.runTransaction(async (transaction) => {
+          const userDoc = await transaction.get(userRef);
+          const pokemonDoc = await transaction.get(pokemonRef);
+  
+          if (!pokemonDoc.exists) {
+            throw new Error('Pokemon not found in marketplace');
+          }
+  
+          if (!userDoc.exists) {
+            throw new Error('User not found');
+          }
+  
+          const user = userDoc.data();
+          const pokemon = pokemonDoc.data();
+          const price = pokemon.marketplace_cost;
+  
+          if (user.pokeDollars < price) {
+            throw new Error('Insufficient PokeDollars');
+          }
+  
+          // Deduct the price from user's PokeDollars
+          transaction.update(userRef, {
+            pokeDollars: admin.firestore.FieldValue.increment(-price)
+          });
+  
+          // Add Pokemon to user's collection
+          const userPokemonRef = userRef.collection('pokemons').doc(pokemonId);
+          transaction.set(userPokemonRef, pokemon);
+  
+          // Optional: Remove Pokemon from marketplace
+          transaction.delete(pokemonRef);
+        });
+  
+        res.status(200).send('Purchase successful');
+      } catch (error) {
+        res.status(500).send(error.message);
+      }
+    });
+  });

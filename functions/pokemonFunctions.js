@@ -344,14 +344,14 @@ exports.createPokemonMarketplace = functions.https.onRequest(async (req, res) =>
   }
   try {
     const {
-      id, name, abilities, base_cost, base_stat_total, cry, flavor_text, generation, height,
-      moves, region, shiny_cost, sprites, stats, typing, weight
+      id, name, abilities, marketplace_cost, base_stat_total, cry, flavor_text, generation, height,
+      moves, region, sprites, stats, typing, weight, base_cost, shiny_cost
     } = req.body;
     if (
       typeof id !== 'number' ||
       typeof name !== 'string' || name.trim() === '' ||
       !Array.isArray(abilities) || abilities.length === 0 ||
-      typeof base_cost !== 'number' ||
+      typeof marketplace_cost !== 'number' ||
       typeof base_stat_total !== 'number' ||
       typeof cry !== 'string' || cry.trim() === '' ||
       typeof flavor_text !== 'string' || flavor_text.trim() === '' ||
@@ -359,7 +359,6 @@ exports.createPokemonMarketplace = functions.https.onRequest(async (req, res) =>
       typeof height !== 'number' ||
       !Array.isArray(moves) || moves.length === 0 ||
       typeof region !== 'string' || region.trim() === '' ||
-      typeof shiny_cost !== 'number' ||
       typeof sprites !== 'object' || !sprites.default || !sprites.shiny ||
       typeof stats !== 'object' || Object.values(stats).some(v => typeof v !== 'number') ||
       !Array.isArray(typing) || typing.length === 0 ||
@@ -400,13 +399,14 @@ exports.getPokemonByIdMarketplace = functions.https.onRequest((req, res) => {
 // Search for a Pokemon based on various criteria in the Marketplace
 exports.searchPokemonMarketplace = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
-    const { type, generation, name, region, moves, abilities, id, sprite } = req.query;
+    const { type, generation, name, region, moves, abilities, id, sprite, marketplace_cost} = req.query;
     const db = admin.firestore();
     let query = db.collection('Marketplace'); // Updated to 'Marketplace'
 
     if (type) query = query.where('typing', 'array-contains', type);
     if (generation) query = query.where('generation', '==', generation);
     if (name) query = query.where('name', '==', name);
+    if (marketplace_cost) query = query.where('marketplace_cost', '==', parseInt(marketplace_cost));
     if (region) query = query.where('region', '==', region);
     if (moves) query = query.where('moves', 'array-contains', moves);
     if (abilities) query = query.where('abilities', 'array-contains', abilities);
