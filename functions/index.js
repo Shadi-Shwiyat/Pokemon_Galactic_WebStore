@@ -2,7 +2,7 @@
 const { createPokemon, getPokemonById, searchPokemon, getAllPokemon, getPokemonSpriteById, getPokemonGifByName, getPokemonByType, getPokemonByGeneration, getPokemonByName, getPokemonByRegion, getPokemonByMoves, getPokemonByAbilities, getAllPokemonMarketplace, getPokemonByAbilitiesMarketplace, getPokemonByGenerationMarketplace, getPokemonByIdMarketplace, getPokemonByMovesMarketplace, getPokemonByNameMarketplace, getPokemonByRegionMarketplace, getPokemonByTypeMarketplace, getPokemonGifByNameMarketplace, getPokemonSpriteByIdMarketplace, searchPokemonMarketplace, createPokemonMarketplace } = require('./pokemonFunctions');
 const { searchItems, getItemById, getItemSprite, createItem, updateItem, deleteItem, getAllItems, getMarketplaceItemById, createMarketplaceItem } = require('./itemsFunctions');
 const { updateMarketplace, purchasePokemon } = require('./marketplaceFunctions');
-const { signup, signin, verifyEmail, resetPassword, updatePassword, signout, getUserPokemons} = require('./authenticationFunctions')
+const { signup, signin, verifyToken, verifyEmail, resetPassword, updatePassword, signout, getUserPokemons} = require('./authenticationFunctions')
 
 // Export the pokemon functions to be used
 exports.createPokemon = createPokemon;
@@ -50,6 +50,7 @@ exports.createMarketplaceItem = createMarketplaceItem;
 // Export the authentication functions to be used
 exports.signup = signup;
 exports.signin = signin;
+exports.verifyToken = verifyToken;
 exports.verifyEmail = verifyEmail;
 exports.resetPassword = resetPassword;
 exports.updatePassword = updatePassword;

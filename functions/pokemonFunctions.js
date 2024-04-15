@@ -103,7 +103,7 @@ exports.getPokemonById = functions.https.onRequest((req, res) => {
 // Search for a Pokemon based on various criteria
 exports.searchPokemon = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
-    const { type, generation, name, region, moves, abilities, id, sprite } = req.query;
+    const { type, generation, name, region, moves, abilities, id, sprite, min_marketplace_cost, max_marketplace_cost, match_all_filters } = req.query;
     const db = admin.firestore();
     let query = db.collection('PokemonList');
 
@@ -117,12 +117,33 @@ exports.searchPokemon = functions.https.onRequest((req, res) => {
     if (id) query = query.where('id', '==', parseInt(id));
     if (sprite) query = query.where(`sprites.${sprite}`, '!=', null);
 
+    // Applying marketplace_cost range filter
+    if (min_marketplace_cost && max_marketplace_cost) {
+      query = query.where('marketplace_cost', '>=', parseInt(min_marketplace_cost))
+                   .where('marketplace_cost', '<=', parseInt(max_marketplace_cost));
+    } else if (min_marketplace_cost) {
+      query = query.where('marketplace_cost', '>=', parseInt(min_marketplace_cost));
+    } else if (max_marketplace_cost) {
+      query = query.where('marketplace_cost', '<=', parseInt(max_marketplace_cost));
+    }
+
     try {
       const snapshot = await query.get();
       if (snapshot.empty) {
         return res.status(404).send({message: 'No Pokémon found matching the criteria'});
       }
-      const pokemon = snapshot.docs.map(doc => doc.data());
+
+      let pokemon = snapshot.docs.map(doc => doc.data());
+
+      // Implementing match all filters functionality
+      if (match_all_filters === 'true') {
+        Object.keys(req.query).forEach(key => {
+          if (key !== 'match_all_filters' && req.query[key]) {
+            pokemon = pokemon.filter(p => p[key] === req.query[key]);
+          }
+        });
+      }
+
       return res.status(200).json(pokemon);
     } catch (error) {
       console.error('Error searching Pokémon:', error);
@@ -137,7 +158,7 @@ exports.searchPokemon = functions.https.onRequest((req, res) => {
 exports.getAllPokemon = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
     const db = admin.firestore();
-    let query = db.collection('PokemonList').orderBy('id');
+    let query = db.collection('PokemonSprites').orderBy('id');
 
     try {
       const snapshot = await query.get();
@@ -331,6 +352,7 @@ exports.getPokemonByAbilities = functions.https.onRequest((req, res) => {
 
 // Create a new Pokemon in the Marketplace
 exports.createPokemonMarketplace = functions.https.onRequest(async (req, res) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     res.set('Access-Control-Allow-Methods', 'POST');
     res.set('Access-Control-Allow-Headers', 'Content-Type');
@@ -338,15 +360,20 @@ exports.createPokemonMarketplace = functions.https.onRequest(async (req, res) =>
     res.status(204).send('');
     return;
   }
+
+  // Only allow POST method for creating a new Pokemon
   if (req.method !== 'POST') {
     res.status(405).send({message: 'Only POST requests are accepted'});
     return;
   }
+
   try {
     const {
       id, name, abilities, marketplace_cost, base_stat_total, cry, flavor_text, generation, height,
-      moves, region, sprites, stats, typing, weight, base_cost, shiny_cost
+      moves, region, sprite, stats, typing, weight, is_shiny, level
     } = req.body;
+
+    // Validate all required fields
     if (
       typeof id !== 'number' ||
       typeof name !== 'string' || name.trim() === '' ||
@@ -359,66 +386,77 @@ exports.createPokemonMarketplace = functions.https.onRequest(async (req, res) =>
       typeof height !== 'number' ||
       !Array.isArray(moves) || moves.length === 0 ||
       typeof region !== 'string' || region.trim() === '' ||
-      typeof sprites !== 'object' || !sprites.default || !sprites.shiny ||
+      typeof sprite !== 'string' || sprite.trim() === '' ||
       typeof stats !== 'object' || Object.values(stats).some(v => typeof v !== 'number') ||
       !Array.isArray(typing) || typing.length === 0 ||
-      typeof weight !== 'number'
+      typeof weight !== 'number' ||
+      typeof is_shiny !== 'boolean' ||
+      typeof level !== 'number'
     ) {
       return res.status(400).send({message: 'Missing or invalid fields'});
     }
+
     const db = admin.firestore();
-    const pokemonRefById = db.collection('Marketplace').doc(String(id)); // Changed to 'Marketplace'
-    const docById = await pokemonRefById.get();
-    if (docById.exists) {
-      return res.status(409).send({message: 'A Pokemon with this ID already exists'});
-    }
-    await pokemonRefById.set({
-      id, name, abilities, base_cost, base_stat_total, cry, flavor_text, generation, height,
-      moves, region, shiny_cost, sprites, stats, typing, weight
+    // Use Firestore's ability to generate a unique document ID automatically
+    const newPokemonRef = db.collection('Marketplace').doc();
+
+    // Set the document with the new Pokemon data
+    await newPokemonRef.set({
+      id, name, abilities, marketplace_cost, base_stat_total, cry, flavor_text, generation, height,
+      moves, region, sprite, stats, typing, weight, is_shiny, level
     });
-    return res.status(201).send({message: 'Pokemon created successfully'});
+
+    return res.status(201).send({message: 'Pokemon created successfully', id: newPokemonRef.id});
   } catch (error) {
     console.error('Error creating Pokemon:', error);
     return res.status(500).send({message: 'Internal Server Error'});
   }
 });
 
-// Get a single Pokemon by ID from the Marketplace
-exports.getPokemonByIdMarketplace = functions.https.onRequest((req, res) => {
-  runCorsAndMethod(req, res, 'GET', async () => {
-    const { id } = req.query;
-    const db = admin.firestore();
-    const doc = await db.collection('Marketplace').doc(id).get(); // Updated to 'Marketplace'
-    if (!doc.exists) {
-      return res.status(404).send({message: 'Pokémon not found'});
-    }
-    return res.status(200).json(doc.data());
-  });
-});
 
-// Search for a Pokemon based on various criteria in the Marketplace
 exports.searchPokemonMarketplace = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
-    const { type, generation, name, region, moves, abilities, id, sprite, marketplace_cost} = req.query;
+    const { type, generation, name, region, moves, abilities, id, sprite, min_marketplace_cost, max_marketplace_cost, match_all_filters } = req.query;
     const db = admin.firestore();
-    let query = db.collection('Marketplace'); // Updated to 'Marketplace'
+    let query = db.collection('Marketplace');
 
+    // Applying filters
     if (type) query = query.where('typing', 'array-contains', type);
     if (generation) query = query.where('generation', '==', generation);
     if (name) query = query.where('name', '==', name);
-    if (marketplace_cost) query = query.where('marketplace_cost', '==', parseInt(marketplace_cost));
     if (region) query = query.where('region', '==', region);
     if (moves) query = query.where('moves', 'array-contains', moves);
     if (abilities) query = query.where('abilities', 'array-contains', abilities);
     if (id) query = query.where('id', '==', parseInt(id));
     if (sprite) query = query.where(`sprites.${sprite}`, '!=', null);
 
+    // Applying marketplace_cost range filter
+    if (min_marketplace_cost && max_marketplace_cost) {
+      query = query.where('marketplace_cost', '>=', parseInt(min_marketplace_cost))
+                   .where('marketplace_cost', '<=', parseInt(max_marketplace_cost));
+    } else if (min_marketplace_cost) {
+      query = query.where('marketplace_cost', '>=', parseInt(min_marketplace_cost));
+    } else if (max_marketplace_cost) {
+      query = query.where('marketplace_cost', '<=', parseInt(max_marketplace_cost));
+    }
+
     try {
       const snapshot = await query.get();
       if (snapshot.empty) {
         return res.status(404).send({message: 'No Pokémon found matching the criteria'});
       }
-      const pokemon = snapshot.docs.map(doc => doc.data());
+
+      let pokemon = snapshot.docs.map(doc => doc.data());
+
+      // Implementing match all filters functionality
+      if (match_all_filters === 'true') {
+        Object.keys(req.query).forEach(key => {
+          if (key !== 'match_all_filters' && req.query[key]) {
+            pokemon = pokemon.filter(p => p[key] === req.query[key]);
+          }
+        });
+      }
+
       return res.status(200).json(pokemon);
     } catch (error) {
       console.error('Error searching Pokémon:', error);
@@ -446,13 +484,23 @@ exports.getAllPokemonMarketplace = functions.https.onRequest((req, res) => {
 // Get a Pokemon sprite by ID (NOT GIF) from the Marketplace
 exports.getPokemonSpriteByIdMarketplace = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
-    const { id } = req.query;
+    const { id } = req.query; // This 'id' is the internal Pokémon ID, not a Firestore document ID
     const db = admin.firestore();
-    const spriteDoc = await db.collection('Marketplace').doc(id).get(); // Updated to 'Marketplace'
-    if (!spriteDoc.exists) {
-      return res.status(404).send({message: 'Pokémon sprite not found'});
+
+    // Query the Marketplace collection for documents where the 'id' field matches the provided ID
+    const querySnapshot = await db.collection('Marketplace').where('id', '==', parseInt(id)).get();
+
+    if (querySnapshot.empty) {
+      return res.status(404).send({ message: 'Pokémon sprite not found' });
     }
-    return res.status(200).json(spriteDoc.data());
+
+    // Assuming only one document should match, but handle the case where multiple could match
+    const sprites = querySnapshot.docs.map(doc => ({
+      id: doc.id, // This is the Firestore document ID
+      sprite: doc.data().sprite // This is the sprite URL from the document
+    }));
+
+    return res.status(200).json(sprites);
   });
 });
 
