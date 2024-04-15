@@ -202,12 +202,7 @@ select {
   height: auto;
   position: fixed;
   left: 32%;
-}
-.arrow-icon {
-  width: 23px;
-  height: auto;
-  position: fixed;
-  left: 32%;
+  pointer-events: none;
 }
 .shiny-input {
   padding-right: 13px!important;
