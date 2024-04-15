@@ -41,22 +41,25 @@ exports.signin = functions.https.onRequest((req, res) => {
     if (req.method !== 'POST') {
       return res.status(405).send('Method Not Allowed');
     }
+
     const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).send('Email and password are required');
-    }
     try {
-      const user = await admin.auth().getUserByEmail(email);
+      // Authenticate the user with email and password
+      const userCredential = await admin.auth().signInWithEmailAndPassword(email, password);
+      const user = userCredential.user;
       const token = await admin.auth().createCustomToken(user.uid);
-      
+
       const db = admin.firestore();
       const userDoc = db.collection('users').doc(user.uid);
       const doc = await userDoc.get();
+
       if (doc.exists) {
         const lastLogin = doc.data().lastLogin.toDate();
         const now = new Date();
         const diff = now - lastLogin;
-        if (diff >= 86400000) { // 24 hours in milliseconds
+
+        // Update pokeDollars and last login if more than 24 hours have passed
+        if (diff >= 86400000) {
           await userDoc.update({
             pokeDollars: admin.firestore.FieldValue.increment(25000),
             lastLogin: admin.firestore.FieldValue.serverTimestamp()
@@ -64,9 +67,34 @@ exports.signin = functions.https.onRequest((req, res) => {
         }
       }
 
-      res.status(200).send({ token });
+      // Send token and user UUID as response
+      res.status(200).send({ token, uuid: user.uid });
     } catch (error) {
       res.status(500).send(error.message);
+    }
+  });
+});
+
+// Verify Token for user sign in
+exports.verifyToken = functions.https.onRequest((req, res) => {
+  cors(req, res, async () => {
+    if (req.method !== 'POST') {
+      return res.status(405).send('Method Not Allowed');
+    }
+
+    const token = req.body.token;
+    if (!token) {
+      return res.status(400).send('Token is required');
+    }
+
+    try {
+      const decodedToken = await admin.auth().verifyIdToken(token);
+      const uid = decodedToken.uid;
+
+      // Now that the user is verified, perform any further server-side logic here
+      res.status(200).send({ uid, message: 'Authentication successful' });
+    } catch (error) {
+      res.status(401).send('Unauthorized: ' + error.message);
     }
   });
 });
@@ -180,7 +208,6 @@ exports.getUserPokemons = functions.https.onRequest((req, res) => {
 
       res.status(200).json(pokemons);
     } catch (error) {
-      console.error('Error fetching user Pokémon:', error);
       res.status(500).send('Internal Server Error');
     }
   });
