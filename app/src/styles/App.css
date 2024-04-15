@@ -32,38 +32,48 @@ code {
     monospace;
 }
 
+
+/* ------------------ Filter button styling ---------------- */
 .filter-button {
   background-color: rgba(0, 0, 0, 0.0) !important;
   width: 60px;
-  height: 42px;
+  height: 46px;
   opacity: 1;
   border-radius: 9px;
   border-color: #EDFF01;
   box-shadow: 0 0 10px 2px #EDFF01;
   position: fixed;
-  top: 13.9%;
-  left: 12.6%;
+  top: 11.3%;
+  left: 9.9%;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: opacity 0.1s; /* Add transition for smooth effect */
+  z-index: 33;
 }
-
 .filter-button:hover {
   cursor: pointer;
   box-shadow: 0 0 15px 3px #EDFF01;
 }
-
+/* Hide button when form is visible */
+.hide.filter-button {
+  opacity: 0;
+}
 .filter-icon {
   width: 36px;
   height: 28px;
 }
+/* ------------------------------------------------------ */
 
+
+/* ---------------------- Filter form styling ------------------- */
 .filter-form {
   position: fixed;
-  top: 13.8%;
-  left: 12.5%;
-  padding: 10px;
+  top: 11.3%;
+  left: 9.9%;
+  padding: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
   border-radius: 9px;
   border: 2px solid #EDFF01;
   box-shadow: 0 0 15px 3px #EDFF01;
@@ -74,22 +84,211 @@ code {
   overflow: hidden;
   transition: height 0.3s ease, width 0.3s ease, opacity 0.3s ease;
 }
-
 .display.filter-form { /* Display form when button is hidden */
-  height: 200px;
-  width: 300px;
+  height: 783px;
+  width: 430px;
   opacity: 1;
 }
 
-/* Hide button when form is visible */
-.hide.filter-button {
-  opacity: 0;
-}
 
-.form-header {
-  z-index: 999;
-  color: #EDFF01;
+/* ------------- Form entries ------------- */
+.form-entry {
+  display: flex;
+  flex-direction: row; /* Display label and input side by side */
+  align-items: center; /* Align items vertically */
+  margin-bottom: 16px; /* Adjust margin as needed */
 }
+.two-line-entry {
+  display: flex;
+  flex-direction: row; /* Display side by side */
+  justify-content: space-between; /* Separate the two entries */
+}
+.typing-entry {
+  display: flex;
+  margin-bottom: 13px;
+}
+.two-line-entry-cost {
+  display: flex;
+  flex-direction: row; /* Display side by side */
+}
+.id-entry {
+  margin-right: 30px;
+}
+/* ---------------------------------------- */
+
+
+/* ------------- Form labels ------------- */
+.form-label {
+  color: #EDFF01;
+  font-size: 23px;
+}
+.name-label {
+  margin-right: 27px;
+}
+.id-label {
+  margin-right: 66px;
+}
+.shiny-label {
+  margin-right: 30px;
+}
+.type-label {
+  margin-right: 39px;
+}
+.move-label {
+  margin-right: 23px;
+}
+.ability-label {
+  margin-right: 25px;
+}
+.region-label {
+  margin-right: 19.5px;
+}
+.generation-label {
+  margin-right: 23px;
+}
+.max-label {
+  margin-left: 13px;
+  margin-right: 13px;
+  text-wrap: nowrap;
+}
+.match-label {
+  text-wrap: nowrap;
+}
+.cost-label {
+  margin-right: 46px;
+}
+.match-label {
+  margin-right: 23px;
+}
+/* ---------------------------------------- */
+
+
+/* ------------- Form inputs ------------- */
+.form-input {
+  flex: 1; /* Take up remaining space */
+  font-size: 23px;
+  height: 30px;
+  padding-left: 16px;
+  padding-bottom: 9px;
+  color: white;
+  border-radius: 13px;
+  border-color: #EDFF01;
+  box-shadow: 0 0 5px 2px #EDFF01;
+  background-color: rgba(0, 0, 0, 1);
+}
+.form-input::placeholder {
+  color: #eeff015f;
+  font-size: 19px;
+}
+.form-input:hover {
+  box-shadow: 0 0 16px 2px #EDFF01;
+}
+.name-input {
+  width: 103px;
+}
+.id-input {
+  width: 66px;
+  padding-left: 19px;
+}
+select {
+  height: 43px!important;
+  font-size: 23px!important;
+  padding-bottom: 0px!important;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.arrow-icon {
+  width: 23px;
+  height: auto;
+  position: fixed;
+  left: 32%;
+}
+.arrow-icon {
+  width: 23px;
+  height: auto;
+  position: fixed;
+  left: 32%;
+}
+.shiny-input {
+  padding-right: 13px!important;
+  width: 103px;
+}
+.shiny-input options {
+  font-size: 23px!important;
+  padding-right: 16px;
+}
+/* ------ Typing section ------ */
+.type-row {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+}
+.type-image {
+  width: 80px;
+  height: auto;
+  cursor: pointer;
+  margin-bottom: 6px;
+  margin-right: 9px;
+}
+.type-selected {
+  box-shadow: 0 0 6px 3px #EDFF01;
+  border-radius: 19px;
+}
+/* ---------------------------- */
+.cost-input {
+  width: 107px;
+}
+.cost-input::placeholder {
+  text-align: start;
+  padding-left: 31px;
+}
+/* ---------------------------------------- */
+
+
+/* ------------- Form buttons ------------- */
+.close-icon {
+  width: 30px;
+  margin-left: 33px;
+  height: auto;
+  position: relative;
+}
+.close-icon:hover {
+  cursor: pointer;
+}
+.form-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 0;
+  margin-top: 23px;
+}
+.form-buttons button {
+  width: 190px;
+  height: 60px;
+  border-radius: 19px;
+  border-color: #EDFF01;
+  box-shadow: 0 0 9px 2px #EDFF01;
+  font-size: 40px;
+}
+.form-clear {
+  background-color: black;
+  color: white;
+}
+.form-clear:hover {
+  cursor: pointer;
+  box-shadow: 0 0 16px 2px #EDFF01;
+}
+.form-submit {
+  background-color: #EDFF01;
+  color: black;
+}
+.form-submit:hover {
+  cursor: pointer;
+  box-shadow: 0 0 16px 2px #EDFF01;
+}
+/* ---------------------------------------- */
+
+
+/* ------------------------------------------------------------ */
 
 .g {
   position: fixed;
@@ -98,17 +297,6 @@ code {
   right: 20px; /* Set to 30px from the right */
   height: 163px;
 }
-
-/* h1 {
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 33%;
-  left: 46%;
-} */
 
 header {
   min-height: 100vh;

@@ -24,6 +24,7 @@ async function getRandomPokemon() {
 
         // Determine sprite and cost
         const isShiny = Math.random() < 0.1; // 10% chance to be shiny
+        pokemon.is_shiny = isShiny; // Save shiny attribute as true or false
         pokemon.sprite = isShiny ? pokemon.sprites.shiny : pokemon.sprites.default;
         const costFactor = isShiny ? pokemon.shiny_cost : pokemon.base_cost;
         pokemon.marketplace_cost = calculateMarketPrice(pokemon.level, costFactor);
