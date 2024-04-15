@@ -26,8 +26,9 @@ function App() {
 
   return (
     <>
-    
-      <img src={logo} alt="logo.png" className='logo' />
+      <a href="galacticwebstore.com">
+        <img src={logo} alt="logo.png" className='logo' />
+      </a>
       <div className='content'>
         {content}
       </div>

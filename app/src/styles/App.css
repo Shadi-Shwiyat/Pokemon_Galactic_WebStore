@@ -33,11 +33,91 @@ code {
 }
 
 
+/* ------------------------------------------- Cards ------------------------------------------- */
+.top-card-row {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  top: 19.6%;
+  margin-left: 123px;
+}
+.bottom-card-row {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  top: 57.6%;
+  margin-left: 123px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  border: 2px solid #EDFF01;
+  border-radius: 16px;
+  width: 260px;
+  height: 339px;
+  margin-left: 60px;
+}
+.card h3 {
+  color: white;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+.card p {
+  color: white;
+}
+.card-sprite {
+  align-self: center;
+}
+.card-typing {
+  display: flex;
+  justify-content: center;
+  margin-top: 9px;
+}
+.type {
+  width: 86px;
+  height: auto;
+  margin-right: 3px;
+  margin-left: 3px;
+}
+.card-wh {
+  display: flex;
+  justify-content: space-around;
+  font-size: 24px;
+}
+.weight {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+.height {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+.card-moves {
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+.card-price {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 16px;
+  margin-bottom: 16px;
+}
+.cart-icon {
+  width: 36px;
+  height: 36px;
+  margin-right: 19px;
+}
+/* -------------------------------------------------------------------------------------------- */
+
+
+/* ------------------------------------------- Filter ------------------------------------------- */
 /* ------------------ Filter button styling ---------------- */
 .filter-button {
   background-color: rgba(0, 0, 0, 0.0) !important;
-  width: 60px;
-  height: 46px;
+  width: 79px;
+  height: 54px;
   opacity: 1;
   border-radius: 9px;
   border-color: #EDFF01;
@@ -49,7 +129,7 @@ code {
   justify-content: center;
   align-items: center;
   transition: opacity 0.1s; /* Add transition for smooth effect */
-  z-index: 33;
+  z-index: 34;
 }
 .filter-button:hover {
   cursor: pointer;
@@ -60,8 +140,8 @@ code {
   opacity: 0;
 }
 .filter-icon {
-  width: 36px;
-  height: 28px;
+  width: 45px;
+  height: 36px;
 }
 /* ------------------------------------------------------ */
 
@@ -83,6 +163,7 @@ code {
   opacity: 0;
   overflow: hidden;
   transition: height 0.3s ease, width 0.3s ease, opacity 0.3s ease;
+  z-index: 33;
 }
 .display.filter-form { /* Display form when button is hidden */
   height: 783px;
@@ -281,9 +362,9 @@ select {
   box-shadow: 0 0 16px 2px #EDFF01;
 }
 /* ---------------------------------------- */
-
-
 /* ------------------------------------------------------------ */
+/* ---------------------------------------------------------------------------------------- */
+
 
 .g {
   position: fixed;
