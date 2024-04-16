@@ -50,7 +50,7 @@ export function Login({ onLogin }) {
 
     return (
         <>
-            <a href="galacticwebstore.com">
+            <a href="/">
                 <img src={logo} alt="logo.png" className='logo' />
             </a>
             {currentPage === "signup" ? <SignUp onLogin={onLogin}/> : (

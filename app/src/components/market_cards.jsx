@@ -33,6 +33,17 @@ export function Market_cards() {
     return capitalizedWords.join(' ');
   }
 
+  function formatCost(costString) {
+    // Reverse the string to make it easier to insert commas from right to left
+    const reversedString = costString.toString().split('').reverse().join('');
+    
+    // Use a regular expression to insert commas after every three digits
+    const formattedString = reversedString.replace(/\d{3}(?=\d)/g, (match) => match + ',');
+    
+    // Reverse the string back to its original order and return it
+    return formattedString.split('').reverse().join('');
+ }
+
   function handleNextPage() {
     setPageIndex(prevIndex => prevIndex + 2);
   }
@@ -68,7 +79,7 @@ export function Market_cards() {
             </p>
             <h3 className='card-level'>{`Lv. ${pokemon.level}`}</h3>
             <div className='card-price'>
-              <h3 className='price'>{`₽${pokemon.marketplace_cost}`}</h3>
+              <h3 className='price'>{`₽ ${formatCost(pokemon.marketplace_cost)}`}</h3>
               <img className="cart-icon" src={cart_icon} alt="cart.png" />
             </div>
           </div>
@@ -97,7 +108,7 @@ export function Market_cards() {
             </p>
             <h3 className='card-level'>{`Lv. ${pokemon.level}`}</h3>
             <div className='card-price'>
-              <h3 className='price'>{`₽${pokemon.marketplace_cost}`}</h3>
+              <h3 className='price'>{`₽ ${formatCost(pokemon.marketplace_cost)}`}</h3>
               <img className="cart-icon" src={cart_icon} alt="cart.png" />
             </div>
           </div>

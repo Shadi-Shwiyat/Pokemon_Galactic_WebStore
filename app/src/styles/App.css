@@ -60,10 +60,10 @@ code {
   box-shadow: 0 0 16px 2px #EDFF01;
   border-radius: 16px;
   background-color: rgba(0, 0, 0, 0.396);
-  width: 273px;
+  width: 283px;
   height: 360px;
-  margin-left: 19px;
-  margin-right: 19px;
+  margin-left: 13px;
+  margin-right: 13px;
 }
 .card h3 {
   color: white;
@@ -127,7 +127,7 @@ code {
 .card-level {
   margin-top: 0px!important;
   margin-bottom: 0px!important;
-  font-size: px;
+  font-size: 23px;
 }
 .card-price {
   display: flex;

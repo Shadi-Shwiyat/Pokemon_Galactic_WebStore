@@ -29,7 +29,7 @@ export function Header() {
   return (
     <>
       <header>
-        <a href="galacticwebstore.com">
+        <a href="/">
           <img src={logo} alt="logo.png" className='logo' />
         </a>
         <nav>
