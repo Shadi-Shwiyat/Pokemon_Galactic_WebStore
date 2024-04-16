@@ -1,0 +1,31 @@
+﻿Writeups of the design
+
+
+What is it your are going to build and how does it fit the theme?
+
+The theme we were given is a “Galactic Market” to make our Custom
+API from scratch. With this in mind we are going to build a Pokémon
+themed marketplace. The user will be given a currency on signup and every
+24 hours after when they login to buy Pokémon from our marketplace.
+The marketplace holds 100 random pokemon that are assigned levels, moves,
+abilities, etc… that circulate every 24 hours. The user will be able to see
+what pokemon they have bought and also research Pokémon from Pokémon
+generations 1-8. There also will be some items that we liked from the Pokémon world to view.
+
+
+What tools will you use?
+
+For this project we will be using Firebase to host our side,
+Firebase database/storage, Firebase Functions, Node, and React as our
+main tech stack. This allows a steep learning curve in a short time to
+learn React and how serverless functions work with Firebase Functions.
+
+
+
+
+How long do you expect to spend on development of each part?
+
+Initially we gave ourselves 7 days to have the backend built out
+and 7 days for the frontend to be built out even though we know
+this wasn't a huge requirement. Throughout the frontend being built
+this would allow us to modify and adapt our backend as necessary to meet the goal of a nice frontend.
