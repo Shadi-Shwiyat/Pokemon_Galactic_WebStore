@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import logo from '../assets/logo.png'
 import { Market } from './market.jsx';
 import { Pokemon } from './pokemon.jsx';
 import { Items } from './items.jsx';
@@ -28,6 +29,9 @@ export function Header() {
   return (
     <>
       <header>
+        <a href="galacticwebstore.com">
+          <img src={logo} alt="logo.png" className='logo' />
+        </a>
         <nav>
           <ul className='nav-links'>
             <li onClick={() => setCurrentPage('market')}>

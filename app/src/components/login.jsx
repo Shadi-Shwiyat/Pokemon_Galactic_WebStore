@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import logo from '../assets/logo.png'
 import "../styles/sign-up.css";
 import { SignUp } from "./sign_up";
 
@@ -49,6 +50,9 @@ export function Login({ onLogin }) {
 
     return (
         <>
+            <a href="galacticwebstore.com">
+                <img src={logo} alt="logo.png" className='logo' />
+            </a>
             {currentPage === "signup" ? <SignUp onLogin={onLogin}/> : (
                 <div className="container">
                     {Object.keys(formErrors).length === 0 && isSubmit ? (

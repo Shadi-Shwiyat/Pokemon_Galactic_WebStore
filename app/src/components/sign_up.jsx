@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import logo from '../assets/logo.png'
 import "../styles/sign-up.css";
 import { Login } from './login.jsx'
 
@@ -62,6 +63,9 @@ export function SignUp({ onLogin }) {
 
     return (
         <>
+            <a href="galacticwebstore.com">
+                <img src={logo} alt="logo.png" className='logo' />
+            </a>
             {currentPage === "login" ? (
                 <Login onLogin={onLogin}/>
             ) : (

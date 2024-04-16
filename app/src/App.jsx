@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './styles/App.css';
-import logo from './assets/logo.png'
 import g from './assets/g.png'
 import { Header } from './components/header.jsx'
 import { Login } from './components/login.jsx'
@@ -15,23 +14,14 @@ function App() {
 
   let content;
   if (isLoggedIn) {
-    content = (
-      <>
-        <Header />
-      </>
-    );
+    content = <Header />;
   } else {
     content = <Login onLogin={handleLogin}/>;
   }
 
   return (
     <>
-      <a href="galacticwebstore.com">
-        <img src={logo} alt="logo.png" className='logo' />
-      </a>
-      <div className='content'>
-        {content}
-      </div>
+      {content}
       <img src={g} alt="g.png" className='g' />
     </>
   );

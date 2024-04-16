@@ -122,7 +122,7 @@ export function Market_filter() {
                         <option value={false}>No</option>
                         <option value={true}>Yes</option>
                     </select>
-                    <img src={arrow} alt="arrow_down.png" className='arrow-icon' />
+                    {/* <img src={arrow} alt="arrow_down.png" className='arrow-icon' /> */}
                 </div>
             </div>
             <div className='typing-entry'>
@@ -248,7 +248,7 @@ export function Market_filter() {
                 <option value="Alola">Alola</option>
                 <option value="Galar">Galar</option>
               </select>
-              <img src={arrow} alt="arrow_down.png" className='arrow-icon' />
+              {/* <img src={arrow} alt="arrow_down.png" className='arrow-icon' /> */}
             </div>
             <div className='form-entry generation-entry'>
               <label className='form-label generation-label'>Generation</label>
@@ -266,7 +266,7 @@ export function Market_filter() {
                 <option value='generation-vii'>7</option>
                 <option value='generation-viii'>8</option>
               </select>
-              <img src={arrow} alt="arrow_down.png" className='arrow-icon' />
+              {/* <img src={arrow} alt="arrow_down.png" className='arrow-icon' /> */}
             </div>
             <div className='two-line-entry-cost'>
                 <div className='form-entry cost-entry'>
@@ -299,7 +299,7 @@ export function Market_filter() {
                   <option value={false}>No</option>
                   <option value={true}>Yes</option>
               </select>
-              <img src={arrow} alt="arrow_down.png" className='arrow-icon' />
+              {/* <img src={arrow} alt="arrow_down.png" className='arrow-icon' /> */}
             </div>
             {/* <p>{type}</p> */}
             <div className='form-buttons'>

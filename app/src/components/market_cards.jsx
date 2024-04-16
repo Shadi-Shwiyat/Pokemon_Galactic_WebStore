@@ -36,43 +36,19 @@ export function Market_cards() {
   }
 
   // Function to adjust image size based on aspect ratio
-  function adjustImageSize(img, data) {
-    if (img && data) {
-      const aspectRatio = img.width / img.height;
-      const maxWidth = 93; // Define your maximum width here
-      const maxHeight = 93; // Define your maximum height here
-      const minWidth = 90; // Define your minimum width here
-      const minHeight = 90; // Define your minimum height here
+function adjustImageSize(img, data) {
+  if (img && data) {
+    const aspectRatio = img.width / img.height;
+    const targetHeight = Math.min(Math.max(89, img.height), 90); // Limit height between 89 and 90
   
-      // Calculate new dimensions while keeping aspect ratio
-      let newWidth = img.width;
-      let newHeight = img.height;
-  
-      // Adjust width and height to fit within maximum dimensions
-      if (newWidth > maxWidth) {
-        newWidth = maxWidth;
-        newHeight = newWidth / aspectRatio;
-      }
-      if (newHeight > maxHeight) {
-        newHeight = maxHeight;
-        newWidth = newHeight * aspectRatio;
-      }
-  
-      // Adjust width and height to meet minimum dimensions
-      if (newWidth < minWidth) {
-        newWidth = minWidth;
-        newHeight = newWidth / aspectRatio;
-      }
-      if (newHeight < minHeight) {
-        newHeight = minHeight;
-        newWidth = newHeight * aspectRatio;
-      }
-  
-      // Set new dimensions to the image
-      img.width = newWidth;
-      img.height = newHeight;
-    }
+    // Calculate new width based on aspect ratio and adjusted height
+    const newWidth = aspectRatio * targetHeight;
+
+    // Set new dimensions to the image
+    img.width = newWidth;
+    img.height = targetHeight;
   }
+}
 
   return (
     <>
@@ -82,7 +58,7 @@ export function Market_cards() {
             {pokemonData && <img className='card-sprite' ref={imageRef} src={pokemonData[0].sprite} alt="pokeImg" onLoad={() => adjustImageSize(imageRef.current, pokemonData[0])} />}
             <div className='card-typing'>
                 <img className='type' src={types.fire} alt="fire" />
-                <img className='type' src={types.flying} alt="flying" />
+                <img className='type' src={types.bug} alt="flying" />
             </div>
             <div className='card-wh'>
                 {pokemonData && <p className='weight'>{`${pokemonData[0].weight} kg`}</p>}
@@ -272,8 +248,8 @@ export function Market_cards() {
             {pokemonData && <h3 className='card-title'>{`#${pokemonData[9].id} ${capitalizeFirstLetter(pokemonData[9].name)}`}</h3>}
             {pokemonData && <img className='card-sprite' ref={imageRef} src={pokemonData[9].sprite} alt="pokeImg" onLoad={() => adjustImageSize(imageRef.current, pokemonData[8])} />}
             <div className='card-typing'>
-                <img className='type' src={types.fire} alt="fire" />
-                <img className='type' src={types.flying} alt="flying" />
+                <img className='type' src={types.water} alt="fire" />
+                <img className='type' src={types.fighting} alt="flying" />
             </div>
             <div className='card-wh'>
                 {pokemonData && <p className='weight'>{`${pokemonData[9].weight} kg`}</p>}

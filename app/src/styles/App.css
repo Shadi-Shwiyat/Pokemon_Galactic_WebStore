@@ -9,11 +9,16 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('../assets/galaxy.png');
+  background-image: url('../assets/galaxy.png'); /* Apply background image to the body */
   background-color: #060605;
   background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100% 123%;
+  background-position: center center; /* Center the background image */
+  background-attachment: fixed; /* Ensure the background image stays fixed while scrolling */
+  background-size: cover; /* Cover the entire viewport with the background image */
+  height: 100vh; /* Set the height of the body to the full viewport height */
+  display: flex;
+  align-items: center; /* Center content vertically */
+  justify-content: center; /* Center content horizontally */
 }
 body::before {
   content: ""; /* Necessary for pseudo-elements */
@@ -23,8 +28,9 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: -1;
   /* Set the background color to create a darkening effect */
-  background-color: rgba(0, 0, 0, 0.23); /* Adjust the alpha (last value) to control darkness */
+  background-color: rgba(0, 0, 0, 0.26); /* Adjust the alpha (last value) to control darkness */
 }
 
 code {
@@ -36,27 +42,27 @@ code {
 /* ------------------------------------------- Cards ------------------------------------------- */
 .top-card-row {
   display: flex;
-  justify-content: space-between;
-  position: fixed;
-  top: 19.6%;
-  margin-left: 123px;
+  justify-content: center;
+  z-index: 3;
 }
 .bottom-card-row {
   display: flex;
-  justify-content: space-between;
-  position: fixed;
-  top: 57.6%;
-  margin-left: 123px;
+  justify-content: center;
+  z-index: 3;
 }
 .card {
   display: flex;
   flex-direction: column;
   text-align: center;
   border: 2px solid #EDFF01;
+  box-shadow: 0 0 16px 2px #EDFF01;
   border-radius: 16px;
+  background-color: rgba(0, 0, 0, 0.396);
   width: 260px;
   height: 339px;
-  margin-left: 60px;
+  margin-left: 23px;
+  margin-right: 23px;
+  margin-bottom: 26px;
 }
 .card h3 {
   color: white;
@@ -68,6 +74,8 @@ code {
 }
 .card-sprite {
   align-self: center;
+  height: 90px;
+  width: auto;
 }
 .card-typing {
   display: flex;
@@ -94,8 +102,13 @@ code {
   margin-bottom: 3px;
 }
 .card-moves {
-  margin-top: 6px;
-  margin-bottom: 6px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  font-size: 19px;
+}
+.card-level {
+  margin-top: 0px!important;
+  margin-bottom: 0px!important;
 }
 .card-price {
   display: flex;
@@ -108,6 +121,11 @@ code {
   width: 36px;
   height: 36px;
   margin-right: 19px;
+}
+.cart-icon:hover {
+  cursor: pointer;
+  width: 37px;
+  height: 37px;
 }
 /* -------------------------------------------------------------------------------------------- */
 
@@ -124,7 +142,7 @@ code {
   box-shadow: 0 0 10px 2px #EDFF01;
   position: fixed;
   top: 11.3%;
-  left: 9.9%;
+  left: 3.9%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -150,7 +168,7 @@ code {
 .filter-form {
   position: fixed;
   top: 11.3%;
-  left: 9.9%;
+  left: 3.9%;
   padding: 20px;
   padding-left: 30px;
   padding-right: 30px;
@@ -330,6 +348,9 @@ select {
 }
 .close-icon:hover {
   cursor: pointer;
+  width: 33px;
+  height: auto;
+  margin-left: 30px;
 }
 .form-buttons {
   display: flex;
@@ -369,13 +390,12 @@ select {
 .g {
   position: fixed;
   z-index: 999;
-  bottom: 26px; /* Set to 30px from the bottom */
-  right: 20px; /* Set to 30px from the right */
+  bottom: 26px;
+  right: 20px;
   height: 163px;
 }
 
 header {
-  min-height: 100vh;
   display: flex;
   align-items: start;
   justify-content: end;
@@ -431,4 +451,10 @@ transform-origin: bottom left;
 .nav-links li {
   margin-right: 46px;
   cursor: pointer;
+}
+
+#root {
+  margin: 0!important;
+  height: 100vh;
+  width: 100vw;
 }
