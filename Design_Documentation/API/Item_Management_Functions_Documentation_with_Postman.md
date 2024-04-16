@@ -106,3 +106,69 @@
     - **Description:** Retrieves a list of items that match the search query.
     - **Query Parameters:**
       - `query`: String
+
+5. **Search Items**
+    - **Endpoint:** `/searchItems`
+    - **Method:** GET
+    - **Description:** Retrieves a list of items that match the search query.
+    - **Query Parameters:**
+      - `query`: String
+    - **Response:**
+      ```json
+      {
+        "items": [
+          {
+            "id": 101,
+            "name": "Potion",
+            "cost": 200,
+            "type": "Healing",
+            "flavor_text": "Heals 20 HP",
+            "sprite": "http://example.com/sprite.png"
+          },
+          {
+            "id": 102,
+            "name": "Super Potion",
+            "cost": 250,
+            "type": "Healing",
+            "flavor_text": "Heals 50 HP",
+            "sprite": "http://example.com/super_potion.png"
+          }
+        ]
+      }
+      ```
+    - **Postman Test:**
+      - URL: `https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/searchItems?query=potion`
+      - Method: GET
+      - Expected Response: `{"items": [{"id": 101, "name": "Potion", "cost": 200, "type": "Healing", "flavor_text": "Heals 20 HP", "sprite": "http://example.com/sprite.png"}, {"id": 102, "name": "Super Potion", "cost": 250, "type": "Healing", "flavor_text": "Heals 50 HP", "sprite": "http://example.com/super_potion.png"}]}`
+      
+6. **Get All Items**
+    - **Endpoint:** `/getAllItems`
+    - **Method:** GET
+    - **Description:** Retrieves a list of all items.
+    - **Response:**
+      ```json
+      {
+        "items": [
+          {
+            "id": 101,
+            "name": "Potion",
+            "cost": 200,
+            "type": "Healing",
+            "flavor_text": "Heals 20 HP",
+            "sprite": "http://example.com/sprite.png"
+          },
+          {
+            "id": 102,
+            "name": "Super Potion",
+            "cost": 250,
+            "type": "Healing",
+            "flavor_text": "Heals 50 HP",
+            "sprite": "http://example.com/super_potion.png"
+          }
+        ]
+      }
+      ```
+    - **Postman Test:**
+      - URL: `https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllItems`
+      - Method: GET
+      - Expected Response: `{"items": [{"id": 101, "name": "Potion", "cost": 200, "type": "Healing", "flavor_text": "Heals 20 HP", "sprite": "http://example.com/sprite.png"}, {"id": 102, "name": "Super Potion", "cost": 250, "type": "Healing", "flavor_text": "Heals 50 HP", "sprite": "http://example.com/super_potion.png"}]}`

@@ -46,8 +46,8 @@ To execute some of the script you need to have credentials for the service accou
 # API Documentation
 All API requests should be made to: `https://pokemon-galactic-webstore.web.app`
 
-## Authentication
-
+API Endpoint documentation can be found in the `Design_Documentation/API` directory.
+As well as Postman tests for each endpoint.
 
 ### Troubleshooting
 
