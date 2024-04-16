@@ -12,11 +12,16 @@
 
 .container > form {
     width: 70%;
-    border: 1px solid #dfdfdf;
-    padding: 20px;
-    border-radius: 5px;
-    background: #fff;
+    border: 3px solid #e7dc00;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 0 13px 2px #EDFF01;
+    background: rgba(0, 0, 0, 0.3);
     z-index: 999;
+}
+
+.error {
+    font-size: 23px;
 }
 
 .field {
@@ -25,20 +30,36 @@
 }
 
 h1 {
-    margin-block-start: 0;
+    margin-block-start: -19px;
+    color: white;
+    font-size: 46px;
 }
 
 input {
-    padding-top: 6px;
-    padding-bottom: 6px;
-    padding-left: 6px;
-    padding-right: 6px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    padding-left: 9px;
+    padding-right: 9px;
     border-radius: 6px;
+    font-size: 23px;
+    height: 30px;
+    color: white;
+    border-radius: 9px;
+    border-color: #EDFF01;
+    box-shadow: 0 0 5px 2px #EDFF01;
+    background-color: rgba(0, 0, 0, .6);
+}
+
+input::placeholder {
+    color: #eeff0185;
+    font-size: 19px;
 }
 
 label {
     padding-bottom: 10px;
     padding-left: 3px;
+    color: white;
+    font-size: 33px;
 }
 
 pre {
@@ -48,15 +69,20 @@ pre {
 }
 
 .signup-button {
-    background: #e7dc00 !important;
+    background-color: rgba(0, 0, 0, .3) !important;
     padding: 5px;
     border-radius: 10px;
+    border: 2px solid #e7dc00;
+    box-shadow: 0 0 9px 2px #EDFF01;
     width: 100%;
+    color: white;
+    font-size: 23px;
 }
 
 .signup-button:hover {
     background-color: #fffb00 !important;
     cursor: pointer;
+    color: black;
 }
 
 p {

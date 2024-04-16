@@ -77,7 +77,7 @@ export function Login({ onLogin }) {
                                     onChange={handleChange}
                                 />
                             </div>
-                            <p>{formErrors.username}</p>
+                            <p className="error">{formErrors.username}</p>
                             <div className="field">
                                 <label>Password</label>
                                 <input
@@ -88,7 +88,7 @@ export function Login({ onLogin }) {
                                     onChange={handleChange}
                                 />
                             </div>
-                            <p>{formErrors.password}</p>
+                            <p className="error">{formErrors.password}</p>
                             <button className="fluid ui signup-button">Submit</button>
                         </div>
                     </form>
