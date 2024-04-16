@@ -60,7 +60,3 @@ exports.getUserPokemons = getUserPokemons;
 // Export the new Marketplace update function
 exports.updateMarketplace = updateMarketplace;
 exports.purchasePokemon = purchasePokemon;
-
-
-// Export for testing purposes
-module.exports = firebaseFunctionsTest;
