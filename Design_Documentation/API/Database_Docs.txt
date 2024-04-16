@@ -1,11 +1,9 @@
-﻿API Documentation
+﻿Database Documentation
 Pokemon Galactic Webstore
 
 About
 This is a web page that allows users to purchase pokemon and items from a marketplace. This also allows users to view different pokemon from generations from 1-8. 
-
 Pokemon can be viewed that shows there available moves to learn, base stats, abilities, region, name, typing, height, weight, pokedex id, default/shiny .gif, cry, and pokedex text entry.
-
 The marketplace is on a 24 hour cycle and auto assigns pokemon level, shiny chance, and cost(based on an algorithm) to a page where users can purchase these pokemon with pokedollars. The users sign up and receive 100,000 pokedollars to use on the marketplace. Then are allotted another 25,000 pokedollars every 24 hours after this when logged in. The users can view the pokemon they have bought on their profile page.
 
 Database
