@@ -1,8 +1,13 @@
 # Pokemon_Galactic_WebStore
-Team Galactic's online store offering top quality stolen mons galaxy wide!
 
-## Description
+## About
+This is a web page that allows users to purchase pokemon and items from a marketplace. This also allows users to view different pokemon from generations from 1-8. 
 
+Pokemon can be viewed that shows there available moves to learn, base stats, abilities, region, name, typing, height, weight, pokedex id, default/shiny .gif, cry, and pokedex text entry.
+
+The marketplace is on a 24 hour cycle and auto assigns pokemon level, shiny chance, and cost(based off an algorithm) to a page where users can purchase these pokemon with pokedollars. The users sign up and receive 100,000 pokedollars to use on the marketplace. Then are allotted another 25,000 pokedollars every 24 hours after this when logged in. The users can view the pokemon they have bought on there profile page.
+
+https://pokemon-galactic-webstore.web.app
 
 # Installation and Setup
 [![Tech Stack](https://skillicons.dev/icons?i=js,nodejs,css,express,react,firebase,firestore,vscode,github)](https://skillicons.dev)
@@ -38,47 +43,11 @@ First you need to create a new project in Firebase and Firestore. You can do thi
 To execute some of the script you need to have credentials for the service account. You can generate a new private key file for your service account by going to the Firebase Console and clicking on the "Project Settings" button. In the "Service Accounts" tab, click on the "Generate New Private Key" button. This will download a JSON file with your service account credentials. You will need to save this file to your project directory and rename it to "serviceAccountKey.json" which I renamed "credentials.json".
 ## Step 1: Navigate to the Database Script Directory
 
-# Endpoints to test
-- To search all attributes of all pokemon:
-Example
-http://localhost:8080/pokemon/search?type=grass&generation=generation-i&region=Kanto
+# API Documentation
+All API requests should be made to: `https://pokemon-galactic-webstore.web.app`
 
-- To get pokemon by id:
-Example
-http://localhost:8080/pokemon/# (replace # with the id of the pokemon you want to get)
-
-- To get pokemon sprites:
-Example
-http://localhost:8080/sprites/pokemon/pokemon_# (replace # with the id of the pokemon you want to get)
-
-- To get pokemon by type:
-Example
-http://localhost:8080/pokemon/type/grass
-
-- To get pokemon by generation:
-Example
-http://localhost:8080/pokemon/generation/generation-i
-
-- To get pokemon by region:
-Example
-http://localhost:8080/pokemon/region/Kanto
-
-- To get pokemon by name:
-Example
-http://localhost:8080/pokemon/name/bulbasaur
-
-- To get pokemon by moves:
-Example
-http://localhost:8080/pokemon/moves/absorb
-
-- To get pokemon by ability:
-Example
-http://localhost:8080/pokemon/abilities/overgrow
-
-## JSDoc
-- To generate JSDoc documentation, run the following command that will generate a directory called docs in the root of the project:
-This lives inside package.json
-npm run generate-docs
+API Endpoint documentation can be found in the `Design_Documentation/API` directory.
+As well as Postman tests for each endpoint.
 
 ### Troubleshooting
 
