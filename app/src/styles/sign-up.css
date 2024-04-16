@@ -21,7 +21,8 @@
 }
 
 .error {
-    font-size: 23px;
+    font-size: 16px;
+    margin: 9px;
 }
 
 .field {
@@ -99,7 +100,22 @@ p {
 }
 
 .success {
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    margin-bottom: 0px;
+}
+.success-text {
+    color: #EDFF01;
+    font-size: 60px;
+    border: 2px solid #EDFF01;
+    border-radius: 300px;
+    box-shadow: 0 0 15px 3px #EDFF01;
+    background-color: rgba(0, 0, 0, .6);
+    padding: 23px;
+    padding-bottom: 33px;
 }
 
 span{

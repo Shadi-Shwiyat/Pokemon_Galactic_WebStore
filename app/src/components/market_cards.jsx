@@ -75,7 +75,8 @@ export function Market_cards() {
             </div>
             <p className='card-moves'>
               Moves:<br />
-              {`${capitalizeEachWord(pokemon.moves[0])} | ${capitalizeEachWord(pokemon.moves[1])}`}
+              {pokemon.moves[1] && `${capitalizeEachWord(pokemon.moves[0])} | ${capitalizeEachWord(pokemon.moves[1])}`}
+              {!pokemon.moves[1] && `${capitalizeEachWord(pokemon.moves[0])}`}
             </p>
             <h3 className='card-level'>{`Lv. ${pokemon.level}`}</h3>
             <div className='card-price'>
@@ -104,7 +105,8 @@ export function Market_cards() {
             </div>
             <p className='card-moves'>
               Moves:<br />
-              {`${capitalizeEachWord(pokemon.moves[0])} | ${capitalizeEachWord(pokemon.moves[1])}`}
+              {pokemon.moves[1] && `${capitalizeEachWord(pokemon.moves[0])} | ${capitalizeEachWord(pokemon.moves[1])}`}
+              {!pokemon.moves[1] && `${capitalizeEachWord(pokemon.moves[0])}`}
             </p>
             <h3 className='card-level'>{`Lv. ${pokemon.level}`}</h3>
             <div className='card-price'>

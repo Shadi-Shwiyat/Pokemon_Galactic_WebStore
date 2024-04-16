@@ -10,9 +10,14 @@ export function SignUp({ onLogin }) {
         password: "",
         confirmPassword: "",
     };
+    const signupUrl = 'https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/signup';
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [failed, setFailed] = useState(false);
+    const [requestErrors, setRequestErrors] = useState({});
     const [currentPage, setCurrentPage] = useState("signup");
 
     const handleChange = (e) => {
@@ -23,12 +28,49 @@ export function SignUp({ onLogin }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         setFormErrors(validate(formValues));
+        const body = {
+            username: formValues.username,
+            email: formValues.email,
+            password: formValues.password
+        }
+        // console.log("Body is", body);
         setIsSubmit(true);
+        fetch(signupUrl, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        })
+        .then(setLoading(true))
+        .then(res => res.json())
+        .then((data) => {
+            // setLoading(true);
+            console.log("loading is:", loading)
+            console.log("Data is:",data);
+            if (!data.userId) {
+                console.log('FAILED');
+                setLoading(false);
+                setFailed(true);
+                setRequestErrors({error: data.error});
+                setTimeout(() => {
+                    setFailed(false);
+                }, 3000)
+            } else {
+                setTimeout(() => {
+                    console.log('success!');
+                    setLoading(false);
+                    setSuccess(true);
+                    setTimeout(() => {
+                        setSuccess(false);
+                        setCurrentPage("login");
+                    }, 3000)
+                }, 900)
+            }
+        })
     };
 
     useEffect(() => {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
-            console.log(formValues);
+            // console.log(formValues);
         }
     }, [formErrors, formValues, isSubmit]);
 
@@ -62,78 +104,78 @@ export function SignUp({ onLogin }) {
     };
 
     return (
-        <>
+        <> 
+            {loading && <div className="ring">Loading<span className='ring-span'></span></div>}
             <a href="galacticwebstore.com">
                 <img src={logo} alt="logo.png" className='logo' />
             </a>
-            {currentPage === "login" ? (
-                <Login onLogin={onLogin}/>
-            ) : (
-                <div className="container">
-                    {Object.keys(formErrors).length === 0 && isSubmit ? (
-                        <div className="ui message success">
-                            Signed in successfully
+            {!loading && !success && !failed && <div>
+                {currentPage === "login" ? 
+                    <Login onLogin={onLogin}/> : (
+                    <div className="container">
+                        <form onSubmit={handleSubmit}>
+                            <h1>Sign Up</h1>
+                            <div className="ui divider"></div>
+                            <div className="ui form">
+                                <div className="field">
+                                    <label>Username</label>
+                                    <input
+                                        type="text"
+                                        name="username"
+                                        placeholder="Choose a username"
+                                        value={formValues.username}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <p className="error">{formErrors.username}</p>
+                                <div className="field">
+                                    <label>Email</label>
+                                    <input
+                                        type="text"
+                                        name="email"
+                                        placeholder="Email"
+                                        value={formValues.email}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <p className="error">{formErrors.email}</p>
+                                <div className="field">
+                                    <label>Password</label>
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        placeholder="Password"
+                                        value={formValues.password}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <p className="error">{formErrors.password}</p>
+                                <div className="field">
+                                    <label>Confirm Password</label>
+                                    <input
+                                        type="password"
+                                        name="confirmPassword"
+                                        placeholder="Confirm password"
+                                        value={formValues.confirmPassword}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <p className="error">{formErrors.confirmPassword}</p>
+                                <button className="fluid ui signup-button">Submit</button>
+                            </div>
+                        </form>
+                        <div className="create-account">
+                            Already have an account? <span onClick={handleLoginClick}>Login</span>
                         </div>
-                    ) : (
-                        console.log("Entered Details", formValues)
-                    )}
-
-                    <form onSubmit={handleSubmit}>
-                        <h1>Sign Up</h1>
-                        <div className="ui divider"></div>
-                        <div className="ui form">
-                            <div className="field">
-                                <label>Username</label>
-                                <input
-                                    type="text"
-                                    name="username"
-                                    placeholder="Choose a username"
-                                    value={formValues.username}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <p className="error">{formErrors.username}</p>
-                            <div className="field">
-                                <label>Email</label>
-                                <input
-                                    type="text"
-                                    name="email"
-                                    placeholder="Email"
-                                    value={formValues.email}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <p className="error">{formErrors.email}</p>
-                            <div className="field">
-                                <label>Password</label>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    placeholder="Password"
-                                    value={formValues.password}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <p className="error">{formErrors.password}</p>
-                            <div className="field">
-                                <label>Confirm Password</label>
-                                <input
-                                    type="password"
-                                    name="confirmPassword"
-                                    placeholder="Confirm password"
-                                    value={formValues.confirmPassword}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <p className="error">{formErrors.confirmPassword}</p>
-                            <button className="fluid ui signup-button">Submit</button>
-                        </div>
-                    </form>
-                    <div className="create-account">
-                        Already have an account? <span onClick={handleLoginClick}>Login</span>
                     </div>
-                </div>
-            )}
+                )}
+            </div>}
+            {success && !loading && <div className="success">
+                <h1 className="success-text">Thank you for joining {formValues.username}!</h1>
+            </div>}
+            {failed && !loading && <div className="success">
+                <h1 className="success-text">Cannot create account, {requestErrors.error}</h1>
+            </div>}
         </>
     );
 }
