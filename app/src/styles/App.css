@@ -204,7 +204,7 @@ code {
   z-index: 33;
 }
 .display.filter-form { /* Display form when button is hidden */
-  height: 783px;
+  height: 796px;
   width: 430px;
   opacity: 1;
 }
@@ -377,6 +377,7 @@ select {
   justify-content: space-around;
   margin-bottom: 0;
   margin-top: 23px;
+  /* margin-bottom: 23px; */
 }
 .form-buttons button {
   width: 190px;
