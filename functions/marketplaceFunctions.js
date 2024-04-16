@@ -58,8 +58,8 @@ function calculateMarketPrice(level, cost) {
   return Math.round(price); // Round to the nearest whole number
 }
 
-// Cloud function to update the Marketplace
-exports.updateMarketplace = functions.pubsub.schedule('0 2 * * *').timeZone('America/New_York').onRun(async () => {
+// Cloud function to update the Marketplace every 24 hours('0 2 * * *') ('*/30 * * * *' for every 30 minutes)
+exports.updateMarketplace = functions.pubsub.schedule('*/30 * * * *').timeZone('America/New_York').onRun(async () => {
     const randomPokemon = await getRandomPokemon();
     const db = admin.firestore();
     const marketplaceRef = db.collection('Marketplace');

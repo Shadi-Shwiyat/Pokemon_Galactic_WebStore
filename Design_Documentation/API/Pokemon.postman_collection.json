@@ -1,0 +1,1490 @@
+{
+	"info": {
+		"_postman_id": "5e4a3779-5475-4d54-a26e-37440ff93c6e",
+		"name": "Pokemon",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Tests\" tab**\n\nTests help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/b5f280a7-4b09-48ec-857f-0a7ed99d7ef8/U2NyZWVuc2hvdCAyMDIzLTAzLTI3IGF0IDkuNDcuMjggUE0ucG5n\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) in \"Tests\" to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28520047",
+		"_collection_link": "https://restless-meadow-973408.postman.co/workspace/My-Workspace~786eddc2-6959-41c1-8ead-5a627161a555/collection/28520047-5e4a3779-5475-4d54-a26e-37440ff93c6e?action=share&source=collection_link&creator=28520047"
+	},
+	"item": [
+		{
+			"name": "Pokemon",
+			"item": [
+				{
+					"name": "searchPokemon",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/searchPokemon?type=fighting&generation=generation-i&region=Kanto",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"searchPokemon"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "fighting"
+								},
+								{
+									"key": "generation",
+									"value": "generation-i"
+								},
+								{
+									"key": "name",
+									"value": "Hitmonlee",
+									"disabled": true
+								},
+								{
+									"key": "region",
+									"value": "Kanto"
+								},
+								{
+									"key": "moves",
+									"value": "double-kick",
+									"disabled": true
+								},
+								{
+									"key": "abilities",
+									"value": "limber",
+									"disabled": true
+								},
+								{
+									"key": "typing",
+									"value": "fighting",
+									"disabled": true
+								},
+								{
+									"key": "id",
+									"value": "106",
+									"disabled": true
+								}
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "searchPokemon Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/searchPokemon?typing=grass,poison&generation=generation-i&region=Kanto",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"searchPokemon"
+							],
+							"query": [
+								{
+									"key": "typing",
+									"value": "grass,poison"
+								},
+								{
+									"key": "generation",
+									"value": "generation-i"
+								},
+								{
+									"key": "region",
+									"value": "Kanto"
+								}
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonById?id=754",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonById"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "754"
+								}
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonSpriteById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonSpriteById?id=pokemon_2",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonSpriteById"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "pokemon_2"
+								}
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonByType",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonByType?type=grass",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonByType"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "grass"
+								}
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonByType Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonByType?type=grass",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonByType"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "grass"
+								}
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "createPokemon",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 999,\r\n  \"name\": \"bulbasaursssssss\",\r\n  \"abilities\": [\"overgrow\", \"chlorophyll\"],\r\n  \"base_cost\": 76225,\r\n  \"base_stat_total\": 318,\r\n  \"cry\": \"https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg\",\r\n  \"flavor_text\": \"A strange seed was planted on its back at birth. The plant sprouts and grows with this POKéMON.\",\r\n  \"generation\": \"generation-i\",\r\n  \"height\": 0.7,\r\n  \"moves\": [\r\n    \"razor-wind\",\r\n    \"swords-dance\",\r\n    \"cut\",\r\n    // Add as many moves as you like here\r\n    \"tera-blast\",\r\n    \"trailblaze\"\r\n  ],\r\n  \"region\": \"Kanto\",\r\n  \"shiny_cost\": 152450,\r\n  \"sprites\": {\r\n    \"default\": \"https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/pokemon/pokemon_1.gif\",\r\n    \"shiny\": \"https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/pokemon/pokemon_shiny_1.gif\"\r\n  },\r\n  \"stats\": {\r\n    \"attack\": 49,\r\n    \"defense\": 49,\r\n    \"hp\": 45,\r\n    \"special-attack\": 65,\r\n    \"special-defense\": 65,\r\n    \"speed\": 45\r\n  },\r\n  \"typing\": [\"grass\", \"poison\"],\r\n  \"weight\": 0.69\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/createPokemon",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"createPokemon"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonGifByName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/pokemon/pokemon_1.gif",
+							"protocol": "https",
+							"host": [
+								"storage",
+								"googleapis",
+								"com"
+							],
+							"path": [
+								"pokemon-galactic-webstore.appspot.com",
+								"sprites",
+								"pokemon",
+								"pokemon_1.gif"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllPokemon",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllPokemon",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getAllPokemon"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllPokemon Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllPokemon?startAfter=10",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getAllPokemon"
+							],
+							"query": [
+								{
+									"key": "startAfter",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonByAbilities",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonByAbilities?abilities=overgrow",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonByAbilities"
+							],
+							"query": [
+								{
+									"key": "abilities",
+									"value": "overgrow"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonGifByName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonGifByName?name=pokemon_1",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonGifByName"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "pokemon_1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonByGeneration",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonByGeneration?generation=generation-i",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonByGeneration"
+							],
+							"query": [
+								{
+									"key": "generation",
+									"value": "generation-i"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonByMoves",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonByMoves?moves=body-press",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonByMoves"
+							],
+							"query": [
+								{
+									"key": "moves",
+									"value": "body-press"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonByName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonByName?name=bulbasaur",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonByName"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "bulbasaur"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonByRegion",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonByRegion?region=Kanto",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonByRegion"
+							],
+							"query": [
+								{
+									"key": "region",
+									"value": "Kanto"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"testuser22@example.com\",\r\n    \"password\": \"securePassword123\",\r\n    \"username\": \"PokemonFan1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/signup",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"testuser@example.com\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/verifyEmail",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"verifyEmail"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"testuser@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/resetPassword",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"resetPassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset password confirm",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "sign in",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"PokemonFan123\",\r\n    \"password\": \"securePassword123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/signin",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh token",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "sign out",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"uid\": \"PiLU6RPfDoWQ7IlhdPBoR4fVHvg2\"  // You need to replace this with the actual UID of the user you wish to sign out.\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/signout",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"signout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"testuser@example.com\",\r\n  \"newPassword\": \"newSecurePassword456\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/updatePassword",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"updatePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete profile",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"test2@gmail.com\",\r\n  \"password\": \"test2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/profile/NH3QbxkWXPWfz8SanPjTsHxBKvg2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"profile",
+								"NH3QbxkWXPWfz8SanPjTsHxBKvg2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUserPokemons",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getUserPokemons?userId=d7b8lQlxiuNPLbSUraMyjdWlhx72",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getUserPokemons"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "d7b8lQlxiuNPLbSUraMyjdWlhx72"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "token",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"your-copied-token-here\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/verifyToken",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"verifyToken"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Items",
+			"item": [
+				{
+					"name": "getItemById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getItemById?id=1",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getItemById"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchItems",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/searchItems?cost=4000&name=quick-claw",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"searchItems"
+							],
+							"query": [
+								{
+									"key": "cost",
+									"value": "4000"
+								},
+								{
+									"key": "name",
+									"value": "quick-claw"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getItemSprite",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getItemSprite?name=master-ball",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getItemSprite"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "master-ball"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/item/name/master-ball",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"item",
+								"name",
+								"master-ball"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/item",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"item"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cost",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/item/cost/200",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"item",
+								"cost",
+								"200"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"cost\": 999999,\r\n  \"flavor_text\": \"The best BALL that catches a POKéMON without fail.\",\r\n  \"id\": 999,\r\n  \"name\": \"master-ballssssss\",\r\n  \"sprite\": \"https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/items/master-ball.png\",\r\n  \"type\": \"ball\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/createItem",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"createItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteItem",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/deleteItem?id=6c6pTlzuirFlBVc0Tibl",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"deleteItem"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "6c6pTlzuirFlBVc0Tibl"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateItem",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"type\": \"ball\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/updateItem?id=1",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"updateItem"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Marketplace",
+			"item": [
+				{
+					"name": "getAllPokemonMarketplace",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllPokemonMarketplace",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getAllPokemonMarketplace"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createPokemonMarketplace",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 999,\r\n  \"name\": \"test\",\r\n  \"abilities\": [\"hydration\"],\r\n  \"marketplace_cost\": 11537303,\r\n  \"base_stat_total\": 600,\r\n  \"cry\": \"https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/490.ogg\",\r\n  \"flavor_text\": \"Born on a cold seafloor, it will swim great distances to return to its birthplace.\",\r\n  \"generation\": \"generation-iv\",\r\n  \"height\": 0.3,\r\n  \"moves\": [\"return\", \"knock-off\"],\r\n  \"region\": \"Sinnoh\",\r\n  \"sprite\": \"https://storage.googleapis.com/pokemon-galactic-webstore.appspot.com/sprites/pokemon/pokemon_490.gif\",\r\n  \"stats\": {\r\n    \"attack\": 100,\r\n    \"defense\": 100,\r\n    \"hp\": 100,\r\n    \"special-attack\": 100,\r\n    \"special-defense\": 100,\r\n    \"speed\": 100\r\n  },\r\n  \"typing\": [\"water\"],\r\n  \"weight\": 0.14,\r\n  \"is_shiny\": false,\r\n  \"level\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/createPokemonMarketplace",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"createPokemonMarketplace"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonSpriteByIdMarketplace",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonSpriteByIdMarketplace?id=490",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonSpriteByIdMarketplace"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "490"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonByTypeMarketplace",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonByTypeMarketplace?type=grass",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonByTypeMarketplace"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "grass"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonByRegionMarketplace",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonByRegionMarketplace?region=Sinnoh",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonByRegionMarketplace"
+							],
+							"query": [
+								{
+									"key": "region",
+									"value": "Sinnoh"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonByNameMarketplace",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonByNameMarketplace?name=manaphy",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonByNameMarketplace"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "manaphy"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonByMovesMarketplace",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonByMovesMarketplace?moves=return",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonByMovesMarketplace"
+							],
+							"query": [
+								{
+									"key": "moves",
+									"value": "return"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonByIdMarketplace",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonByIdMarketplace?id=490",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonByIdMarketplace"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "490"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonByGenerationMarketplace",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonByGenerationMarketplace?generation=generation-i",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonByGenerationMarketplace"
+							],
+							"query": [
+								{
+									"key": "generation",
+									"value": "generation-i"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonByAbilitiesMarketplace",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonByAbilitiesMarketplace?abilities=hydration",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonByAbilitiesMarketplace"
+							],
+							"query": [
+								{
+									"key": "abilities",
+									"value": "hydration"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPokemonGifByNameMarketplace",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getPokemonGifByNameMarketplace?name=pokemon_482",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"getPokemonGifByNameMarketplace"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "pokemon_482"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchPokemonMarketplace",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/searchPokemonMarketplace?max_marketplace_cost=70000&min_marketplace_cost=50000",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"searchPokemonMarketplace"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "dark",
+									"disabled": true
+								},
+								{
+									"key": "generation",
+									"value": "generation-v",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "finneon",
+									"disabled": true
+								},
+								{
+									"key": "max_marketplace_cost",
+									"value": "70000"
+								},
+								{
+									"key": "min_marketplace_cost",
+									"value": "50000"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "purchasePokemon",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": \"voz49Oxz3Ed7Vn7XzW4qHzCEKvG3\",\r\n  \"pokemonId\": \"Fh8qzJx6ibFQyOpIKUoT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/purchasePokemon",
+							"protocol": "https",
+							"host": [
+								"us-central1-pokemon-galactic-webstore",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"purchasePokemon"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "General Test",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		}
+	]
+}
