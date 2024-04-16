@@ -59,7 +59,7 @@ export function Market_cards() {
       <div className='top-card-row'>
         {pokemonData && pokemonData.slice(pageIndex * 5, (pageIndex * 5) + 5).map((pokemon, index) => (
           <div className='card' key={index}>
-            <h3 className='card-title'>{`#${pokemon.id} ${capitalizeFirstLetter(pokemon.name)}`}</h3>
+            <h3 className='card-title'>{`#${pokemon.id} ${pokemon.name === 'bidoof' && pokemon.is_shiny ? 'God' : capitalizeFirstLetter(pokemon.name)}`}</h3>
             <div className='sprite-div'>
               <img className={`sprite ${pokemon.name === 'stunfisk' ? 'stunfisk' : ''}`} src={pokemon.sprite} alt="pokeImg" />
               {pokemon.is_shiny && <img className='shiny-icon' src={shiny_icon} alt='shiny.png' />}
@@ -79,7 +79,7 @@ export function Market_cards() {
             </p>
             <h3 className='card-level'>{`Lv. ${pokemon.level}`}</h3>
             <div className='card-price'>
-              <h3 className='price'>{`₽ ${formatCost(pokemon.marketplace_cost)}`}</h3>
+              <h3 className='price'>{`₽ ${pokemon.name === 'bidoof' && pokemon.is_shiny === true ? formatCost('9999999999') : formatCost(pokemon.marketplace_cost)}`}</h3>
               <img className="cart-icon" src={cart_icon} alt="cart.png" />
             </div>
           </div>
@@ -88,7 +88,7 @@ export function Market_cards() {
       <div className='bottom-card-row'>
         {pokemonData && pokemonData.slice((pageIndex * 5) + 5, (pageIndex * 5) + 10).map((pokemon, index) => (
           <div className='card' key={index}>
-            <h3 className='card-title'>{`#${pokemon.id} ${capitalizeFirstLetter(pokemon.name)}`}</h3>
+            <h3 className='card-title'>{`#${pokemon.id} ${pokemon.name === 'bidoof' && pokemon.is_shiny ? 'God' : capitalizeFirstLetter(pokemon.name)}`}</h3>
             <div className='sprite-div'>
               <img className={`sprite ${pokemon.name === 'stunfisk' ? 'stunfisk' : ''}`} src={pokemon.sprite} alt="pokeImg" />
               {pokemon.is_shiny && <img className='shiny-icon' src={shiny_icon} alt='shiny.png' />}
@@ -108,7 +108,7 @@ export function Market_cards() {
             </p>
             <h3 className='card-level'>{`Lv. ${pokemon.level}`}</h3>
             <div className='card-price'>
-              <h3 className='price'>{`₽ ${formatCost(pokemon.marketplace_cost)}`}</h3>
+              <h3 className='price'>{`₽ ${pokemon.name === 'bidoof' && pokemon.is_shiny === true ? '' : formatCost(pokemon.marketplace_cost)}`}</h3>
               <img className="cart-icon" src={cart_icon} alt="cart.png" />
             </div>
           </div>
