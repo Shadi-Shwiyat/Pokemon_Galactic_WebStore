@@ -1,6 +1,9 @@
 {
-  "plugins": ["react"],
-  "extends": ["plugin:react/recommended"],
+  "env": {
+    "jest/globals": true 
+  },
+  "plugins": ["react", "jest"],
+  "extends": ["plugin:react/recommended", "eslint:recommended"],
   "settings": {
     "react": {
       "version": "detect"

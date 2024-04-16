@@ -20,7 +20,8 @@ We used Node version 20.10.0 for this project.
 - Follow the installation instructions on the GitHub page.
 
 # Setup database
-## 
+## Firebase
+- Create a new project in Firebase and Firestore. You can do this by going to the Firebase Console and clicking on the "Add Project" button. You will need to give your project a name and then click "Create Project". Once your project is created, you will be taken to the project dashboard. Click on the "Firestore Database" tab in the left-hand menu and then click on the "Create Database" button. You will be asked to choose a location for your database. Choose a location that is closest to your users for the best performance. Once you have chosen a location, click "Next" and then click "Done". Your Firestore database is now created.
 
 
 # Clone the Repository
@@ -35,6 +36,7 @@ nvm use
 ```
 npm install
 ```
+
 # Set Up the Database for Firestore:
 We are using Firestore compared to Realtime Database from firebase due to the cost of bandwidth and storage. Firestore is more scalable and flexible compared to Realtime Database. Firestore is a NoSQL document database that simplifies storing, syncing, and querying data for our web and mobile applications at scale. It's a flexible, scalable database for mobile, web, and server development from Firebase and Google Cloud Platform.
 
@@ -50,6 +52,9 @@ API Endpoint documentation can be found in the `Design_Documentation/API` direct
 As well as Postman tests for each endpoint.
 
 ### Troubleshooting
+If you encounter any issues with the API, please refer to the troubleshooting section in the API documentation.
+There are also Postman tests for each endpoint that can be used to verify that the API is working correctly.
+
 
 ## Resources 
 - Pokemon Sprites from https://projectpokemon.org/home/docs/spriteindex_148/
