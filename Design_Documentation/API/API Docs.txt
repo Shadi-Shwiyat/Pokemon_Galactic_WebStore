@@ -1,0 +1,97 @@
+﻿API Documentation
+Pokemon Galactic Webstore
+
+About
+This is a web page that allows users to purchase pokemon and items from a marketplace. This also allows users to view different pokemon from generations from 1-8. 
+
+Pokemon can be viewed that shows there available moves to learn, base stats, abilities, region, name, typing, height, weight, pokedex id, default/shiny .gif, cry, and pokedex text entry.
+
+The marketplace is on a 24 hour cycle and auto assigns pokemon level, shiny chance, and cost(based on an algorithm) to a page where users can purchase these pokemon with pokedollars. The users sign up and receive 100,000 pokedollars to use on the marketplace. Then are allotted another 25,000 pokedollars every 24 hours after this when logged in. The users can view the pokemon they have bought on their profile page.
+
+Database
+Firebase Database and Storage is where we hold our data and it looks like this:
+
+Firebase Collections:
+PokemonList: This collection stores information about Pokémon from generations 1-8.
+
+
+
+PokemonList Document Fields:
+* id: (Number) Unique identifier for the Pokémon.
+* name: (String) Name of the Pokémon.
+* abilities: (Array) List of abilities possessed by the Pokémon.
+* base_cost: (Number) Base cost of the Pokémon.
+* base_stat_total: (Number) Total base stats of the Pokémon.
+* cry: (String) URL to the cry sound of the Pokémon.
+* flavor_text: (String) Description or flavor text of the Pokémon.
+* generation: (String) Generation of the Pokémon.
+* height: (Number) Height of the Pokémon.
+* moves: (Array) List of moves the Pokémon can learn.
+* region: (String) Region to which the Pokémon belongs.
+* shiny_cost: (Number) Cost for acquiring a shiny version of the Pokémon.
+* sprites: (Map) URLs to Pokémon sprites, including default and shiny versions.
+* stats: (Map) Base stats of the Pokémon, including attack, defense, HP, special attack, special defense, and speed.
+* typing: (Array) List of types of the Pokémon.
+* weight: (Number) Weight of the Pokémon.
+PokemonSprites: Is where the Sprite URL for Pokémon comes from after being attached to Firebase Storage.
+
+
+ItemList: This collection stores some items from  Pokémon that we liked.
+
+
+Fields:
+* cost: Cost of the item (number).
+* flavor_text: Description or flavor text of the item (string).
+* id: Unique identifier for the item (number).
+* name: Name of the item (string).
+* sprite: URL to the sprite/image of the item (string).
+* type: Type of the item (string).
+
+
+ItemSprites: Is where the Sprite URL for items comes from after being attached to Firebase Storage.
+
+
+Marketplace: This is where a random 100 pokemon are assigned some new attributes and placed to be sold to users.
+
+Fields:
+* abilities: Array containing abilities of the Pokémon (array of strings).
+* base_stat_total: Total base stats of the Pokémon (number).
+* cry: URL to the Pokémon's cry sound (string).
+* flavor_text: Description or flavor text of the Pokémon (string).
+* generation: Generation of the Pokémon (string).
+* height: Height of the Pokémon (number).
+* id: Unique identifier for the Pokémon (number).
+* is_shiny: Indicates if the Pokémon is shiny (boolean).
+* level: Level of the Pokémon (number).
+* marketplace_cost: Cost of the Pokémon in the marketplace (number).
+* moves: Array containing moves of the Pokémon (array of strings).
+* name: Name of the Pokémon (string).
+* region: Region where the Pokémon is from (string).
+* sprite: URL to the sprite/image of the Pokémon (string).
+* stats: Map containing various stats of the Pokémon (map of string keys to number values).
+* typing: Array containing types of the Pokémon (array of strings).
+* weight: Weight of the Pokémon (number).
+
+
+
+
+users: This is where we keep users and assign them their currency PokeDollars and any bought Pokemon.
+
+Collection: users
+* Document ID: Users UUID
+   * Subcollection: users
+      * Nested subcollection under the main "users" document.
+      * Document IDs: Same as parent document ID.
+   * Subcollection: pokemons
+      * Nested subcollection under the main "users" document.
+      * Contains documents representing Pokémon owned by the user.
+   * Field: lastLogin
+      * Type: Timestamp
+      * Description: Timestamp indicating the user's last login.
+   * Field: pokeDollars
+      * Type: Integer
+      * Description: Numeric field representing the in-game currency owned by the user
+
+Firebase Storage:
+Sprites/items: Where the .gifs live for our items.
+Sprites/pokemon: Where the .gifs live for our Pokémon
