@@ -6,11 +6,11 @@ const cors = require('cors')({origin: true});
 exports.signup = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
     if (req.method !== 'POST') {
-      return res.status(405).send('Method Not Allowed');
+      return res.status(405).send({ error: 'Method Not Allowed' });
     }
     const { email, password, username } = req.body;
     if (!email || !password || !username) {
-      return res.status(400).send('Email, password, and username are required');
+      return res.status(400).send({ error: 'Email, password, and username are required' });
     }
 
     const db = admin.firestore();
@@ -18,7 +18,7 @@ exports.signup = functions.https.onRequest((req, res) => {
     const usersRef = db.collection('users');
     const snapshot = await usersRef.where('username', '==', username).get();
     if (!snapshot.empty) {
-      return res.status(400).send('Username already taken');
+      return res.status(400).send({ error: 'Username already taken' });
     }
 
     try {
@@ -38,7 +38,7 @@ exports.signup = functions.https.onRequest((req, res) => {
 
       res.status(201).send({ userId: userRecord.uid });
     } catch (error) {
-      res.status(500).send(error.message);
+      res.status(500).send({ error: error.message });
     }
   });
 });
@@ -49,7 +49,7 @@ exports.signup = functions.https.onRequest((req, res) => {
 exports.signin = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
     if (req.method !== 'POST') {
-      return res.status(405).send('Method Not Allowed');
+      return res.status(405).send({ error: 'Method Not Allowed' });
     }
 
     const { username, password } = req.body;
@@ -57,7 +57,7 @@ exports.signin = functions.https.onRequest((req, res) => {
     const usersRef = db.collection('users');
     const snapshot = await usersRef.where('username', '==', username).get();
     if (snapshot.empty) {
-      return res.status(404).send('User not found');
+      return res.status(404).send({ error: 'User not found' });
     }
 
     const userDoc = snapshot.docs[0];
@@ -85,7 +85,7 @@ exports.signin = functions.https.onRequest((req, res) => {
 
       res.status(200).send({ token, uuid: user.uid });
     } catch (error) {
-      res.status(500).send(error.message);
+      res.status(500).send({ error: error.message });
     }
   });
 });
@@ -95,12 +95,12 @@ exports.signin = functions.https.onRequest((req, res) => {
 exports.verifyToken = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
     if (req.method !== 'POST') {
-      return res.status(405).send('Method Not Allowed');
+      return res.status(405).send({ error: 'Method Not Allowed' });
     }
 
     const token = req.body.token;
     if (!token) {
-      return res.status(400).send('Token is required');
+      return res.status(400).send({ error: 'Token is required' });
     }
 
     try {
@@ -110,7 +110,7 @@ exports.verifyToken = functions.https.onRequest((req, res) => {
       // Now that the user is verified, perform any further server-side logic here
       res.status(200).send({ uid, message: 'Authentication successful' });
     } catch (error) {
-      res.status(401).send('Unauthorized: ' + error.message);
+      res.status(401).send({ error: 'Unauthorized: ' + error.message });
     }
   });
 });
@@ -119,18 +119,18 @@ exports.verifyToken = functions.https.onRequest((req, res) => {
 exports.verifyEmail = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
     if (req.method !== 'POST') {
-      return res.status(405).send('Method Not Allowed');
+      return res.status(405).send({ error: 'Method Not Allowed' });
     }
     const { email } = req.body;
     if (!email) {
-      return res.status(400).send('Email is required');
+      return res.status(400).send({ error: 'Email is required' });
     }
     try {
       const link = await admin.auth().generateEmailVerificationLink(email);
       // Implement sending the email with the link
       res.status(200).send({ link });
     } catch (error) {
-      res.status(500).send(error.message);
+      res.status(500).send({ error: error.message });
     }
   });
 });
@@ -139,18 +139,18 @@ exports.verifyEmail = functions.https.onRequest((req, res) => {
 exports.resetPassword = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
     if (req.method !== 'POST') {
-      return res.status(405).send('Method Not Allowed');
+      return res.status(405).send({ error: 'Method Not Allowed' });
     }
     const { email } = req.body;
     if (!email) {
-      return res.status(400).send('Email is required');
+      return res.status(400).send({ error: 'Email is required' });
     }
     try {
       const link = await admin.auth().generatePasswordResetLink(email);
       // Implement sending the email with the link
       res.status(200).send({ link });
     } catch (error) {
-      res.status(500).send(error.message);
+      res.status(500).send({ error: error.message });
     }
   });
 });
@@ -159,53 +159,53 @@ exports.resetPassword = functions.https.onRequest((req, res) => {
 exports.updatePassword = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
     if (req.method !== 'POST') {
-      return res.status(405).send('Method Not Allowed');
+      return res.status(405).send({ error: 'Method Not Allowed' });
     }
 
     // Expect a session token in the Authorization header
     const sessionToken = req.headers.authorization;
     if (!sessionToken) {
-      return res.status(401).send('No session token provided');
+      return res.status(401).send({ error:'No session token provided'});
     }
 
     const { username, newPassword } = req.body;
     if (!username || !newPassword) {
-      return res.status(400).send('Username and new password are required');
+      return res.status(400).send({ error:'Username and new password are required'});
     }
 
     try {
       // Verify the session token and retrieve user information
       const decodedToken = await admin.auth().verifyIdToken(sessionToken);
       if (!decodedToken) {
-        return res.status(403).send('Invalid session token');
+        return res.status(403).send({ error:'Invalid session token'});
       }
 
       const db = admin.firestore();
       const usersRef = db.collection('users');
       const snapshot = await usersRef.where('username', '==', username).get();
       if (snapshot.empty) {
-        return res.status(404).send('User not found');
+        return res.status(404).send({ error: 'User not found' });
       }
 
       const userDoc = snapshot.docs[0];
       const email = userDoc.data().email;
       if (!email) {
-        return res.status(400).send('Email not found for username');
+        return res.status(400).send({ error: 'Email not found for username' });
       }
 
       // Check if the logged-in user matches the user whose password is being changed
       const user = await admin.auth().getUserByEmail(email);
       if (user.uid !== decodedToken.uid) {
-        return res.status(403).send('Unauthorized to change password for this user');
+        return res.status(403).send({ error: 'Unauthorized to change password for this user' });
       }
 
       // Update the password
       await admin.auth().updateUser(user.uid, {
         password: newPassword
       });
-      res.status(200).send('Password updated successfully');
+      res.status(200).send({ message: 'Password updated successfully' });
     } catch (error) {
-      res.status(500).send('Error updating password: ' + error.message);
+      res.status(500).send({ error: 'Error updating password: ' + error.message });
     }
   });
 });
@@ -215,17 +215,17 @@ exports.updatePassword = functions.https.onRequest((req, res) => {
 exports.signout = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
     if (req.method !== 'POST') {
-      return res.status(405).send('Method Not Allowed');
+      return res.status(405).send({ error: 'Method Not Allowed' });
     }
     const { uid } = req.body;
     if (!uid) {
-      return res.status(400).send('User ID is required');
+      return res.status(400).send({ error: 'User ID is required' });
     }
     try {
       await admin.auth().revokeRefreshTokens(uid);
-      res.status(200).send('Successfully signed out user');
+      res.status(200).send({ message: 'Successfully signed out user' });
     } catch (error) {
-      res.status(500).send(error.message);
+      res.status(500).send({ error: error.message });
     }
   });
 });
@@ -234,12 +234,12 @@ exports.signout = functions.https.onRequest((req, res) => {
 exports.getUserPokemons = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
     if (req.method !== 'GET') {
-      return res.status(405).send('Method Not Allowed');
+      return res.status(405).send({ error: 'Method Not Allowed' });
     }
     const { userId } = req.query;
 
     if (!userId) {
-      return res.status(400).send('User ID is required');
+      return res.status(400).send({ error: 'User ID is required' });
     }
 
     const db = admin.firestore();
@@ -248,7 +248,7 @@ exports.getUserPokemons = functions.https.onRequest((req, res) => {
     try {
       const snapshot = await userPokemonsRef.get();
       if (snapshot.empty) {
-        return res.status(404).send('No Pokémon found');
+        return res.status(404).send({ error: 'No Pokémon found' });
       }
 
       const pokemons = snapshot.docs.map(doc => ({
@@ -258,7 +258,7 @@ exports.getUserPokemons = functions.https.onRequest((req, res) => {
 
       res.status(200).json(pokemons);
     } catch (error) {
-      res.status(500).send('Internal Server Error');
+      res.status(500).send({ error: 'Internal Server Error' });
     }
   });
 });

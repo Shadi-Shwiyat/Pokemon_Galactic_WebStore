@@ -59,6 +59,13 @@ There are also Postman tests for each endpoint that can be used to verify that t
 ## Resources 
 - Pokemon Sprites from https://projectpokemon.org/home/docs/spriteindex_148/
 
+## Testing
+- We used Jest for testing the API endpoints functionality.
+- To run the tests, run the following command:
+npm test
+
+
+
 # Contributors
 - [Rob Farley](https://github.com/Nomad-Rob)
 - [Shadi Shwiyat](https://github.com/Shadi-Shwiyat)
