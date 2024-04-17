@@ -28,8 +28,14 @@ export function SignUp({ setIsLoggedIn }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setFormErrors(validate(formValues));
+        const errors = validate(formValues);
+        setFormErrors(errors);
         setIsSubmit(true);
+
+        if (Object.keys(formErrors).length > 0) {
+            setIsSubmit(false);
+            return;
+        }
 
         if (Object.keys(formErrors).length === 0) {
             setLoading(true);
@@ -107,8 +113,8 @@ export function SignUp({ setIsLoggedIn }) {
         }
         if (!values.password) {
             errors.password = "Password is required";
-        } else if (values.password.length < 4) {
-            errors.password = "Password must be more than 4 characters";
+        } else if (values.password.length < 6) {
+            errors.password = "Password must be more than 5 characters and include a number";
         } else if (values.password.length > 16) {
             errors.password = "Password cannot exceed more than 10 characters";
         }
@@ -159,7 +165,7 @@ export function SignUp({ setIsLoggedIn }) {
                                     <input
                                         type="password"
                                         name="password"
-                                        placeholder="Password"
+                                        placeholder="Password (Must include a-z and 1-9)"
                                         value={formValues.password}
                                         onChange={handleChange}
                                     />

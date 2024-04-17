@@ -21,8 +21,13 @@
 }
 
 .error {
-    font-size: 16px;
     margin: 9px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 1px;
+    border-radius: 9px;
+    font-size: 19px!important;
+    border-color: #EDFF01;
 }
 
 .field {
@@ -41,7 +46,6 @@ input {
     padding-bottom: 9px;
     padding-left: 9px;
     padding-right: 9px;
-    border-radius: 6px;
     font-size: 23px;
     height: 30px;
     color: white;
