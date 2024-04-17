@@ -2,7 +2,7 @@ const { admin } = require('./firebaseAdminConfig');
 const functions = require('firebase-functions');
 const cors = require('cors')({origin: true});
 
-// Create a new user with email, password, and username
+// Create a new user with email, password, and username in user collection
 exports.signup = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
     if (req.method !== 'POST') {
@@ -39,7 +39,7 @@ exports.signup = functions.https.onRequest((req, res) => {
 
 
 
-// Sign in a user with username and password
+// Grants user 25000 dollars on signin
 exports.signin = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
     if (req.method !== 'POST') {
@@ -65,7 +65,7 @@ exports.signin = functions.https.onRequest((req, res) => {
         const now = new Date();
         const diff = now - lastLogin;
 
-        if (diff >= 1000 * 60 * 60 * 24) {
+        if (diff >= 1000 * 60 * 60 * 6) {
           await usersRef.doc(uid).update({
             pokeDollars: admin.firestore.FieldValue.increment(25000),
             lastLogin: admin.firestore.FieldValue.serverTimestamp()

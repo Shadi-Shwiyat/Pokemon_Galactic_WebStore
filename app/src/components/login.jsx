@@ -10,6 +10,7 @@ export function Login({ setIsLoggedIn }) {
         email: "",
         password: "",
     };
+    const loginUrl = 'https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/signin';
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [failed, setFailed] = useState(false);
@@ -41,6 +42,26 @@ export function Login({ setIsLoggedIn }) {
                 // The signed-in user info
                 const user = userCredential.user;
                 console.log(user);
+
+                const uid = userCredential.user.uid;
+                const loginPost = {
+                    email: formValues.email,
+                    uid: uid
+                }
+                try {
+                    fetch(loginUrl, {
+                        method: 'POST',
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(loginPost)
+                    })
+                    .then(res => res.json())
+                    .then((data) =>{
+                        console.log(data);
+                    })
+                } catch (error) {
+                    console.log('FAILED TO ADD POKEDOLLAR ON SIGNIN');
+                    console.log(error);
+                }
 
                 // Store logged-in state and login timestamp in local storage
                 localStorage.setItem('isLoggedIn', true);

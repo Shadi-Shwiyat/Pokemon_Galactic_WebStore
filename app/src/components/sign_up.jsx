@@ -12,6 +12,7 @@ export function SignUp({ setIsLoggedIn }) {
         password: "",
         confirmPassword: "",
     };
+    const signupUrl = 'https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/signup';
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
@@ -34,15 +35,40 @@ export function SignUp({ setIsLoggedIn }) {
             setLoading(true);
             try {
                 const auth = getAuth(app);
-                const { email, password } = formValues;
-                await createUserWithEmailAndPassword(auth, email, password);
+                const { username, email, password } = formValues;
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const uid = userCredential.user.uid;
+
+                const signupPost = {
+                    email: email,
+                    password: password,
+                    username: username,
+                    uid: uid
+                }
+                try {
+                    fetch(signupUrl, {
+                        method: 'POST',
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(signupPost)
+                    })
+                } catch (error) {
+                    console.log('FAILED');
+                    console.log(error);
+                    setLoading(false);
+                    setFailed(true);
+                    setTimeout(() => {
+                        setFailed(false);
+                        setIsSubmit(false);
+                    }, 3000)
+                }
+
                 setTimeout(() => {
                     setLoading(false);
                     setSuccess(true);
-                }, 1300)
+                }, 900)
                 setTimeout(() => {
                     setSuccess(false);
-                    setCurrentPage("login");
+                    setCurrentPage('login');
                 }, 3333)
             } catch (error) {
                 console.log('FAILED');
