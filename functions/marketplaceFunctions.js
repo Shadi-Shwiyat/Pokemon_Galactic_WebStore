@@ -58,28 +58,31 @@ function calculateMarketPrice(level, cost) {
   return Math.round(price); // Round to the nearest whole number
 }
 
-// Cloud function to update the Marketplace every 24 hours('0 2 * * *') ('*/30 * * * *' for every 30 minutes)
-exports.updateMarketplace = functions.pubsub.schedule('*/30 * * * *').timeZone('America/New_York').onRun(async () => {
-    const randomPokemon = await getRandomPokemon();
-    const db = admin.firestore();
-    const marketplaceRef = db.collection('Marketplace');
+// Cloud function to update the Marketplace every 6 hours starting at 06:00 CST
+exports.updateMarketplace = functions.pubsub.schedule('0 12,18,0,6 * * *')
+    .timeZone('UTC') // Keep the timezone as UTC
+    .onRun(async (context) => {
+        const randomPokemon = await getRandomPokemon();
+        const db = admin.firestore();
+        const marketplaceRef = db.collection('Marketplace');
 
-    await db.runTransaction(async (transaction) => {
-        const marketSnapshot = await marketplaceRef.get();
-        // Delete existing documents
-        marketSnapshot.forEach(doc => {
-            transaction.delete(marketplaceRef.doc(doc.id));
+        await db.runTransaction(async (transaction) => {
+            const marketSnapshot = await marketplaceRef.get();
+            // Delete existing documents
+            marketSnapshot.forEach(doc => {
+                transaction.delete(marketplaceRef.doc(doc.id));
+            });
+
+            // Add new random Pokemon with calculated marketplace costs
+            randomPokemon.forEach(pokemon => {
+                const newDocRef = marketplaceRef.doc(); // Create a new document reference
+                transaction.set(newDocRef, pokemon);
+            });
         });
 
-        // Add new random pokemon with calculated marketplace costs
-        randomPokemon.forEach(pokemon => {
-            const newDocRef = marketplaceRef.doc(); // Create a new document reference
-            transaction.set(newDocRef, pokemon);
-        });
+        console.log('Marketplace updated with new random Pokemon set.');
     });
 
-    console.log('Marketplace updated with new random Pokemon set.');
-});
 
 // Purchase a Pokemon from the Marketplace
 exports.purchasePokemon = functions.https.onRequest((req, res) => {
