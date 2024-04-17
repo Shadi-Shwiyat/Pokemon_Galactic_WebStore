@@ -1,0 +1,130 @@
+/* About.css */
+.about-section {
+  text-align: center;
+  padding: 20px;
+  color: white;
+}
+
+.about-creator-cards {
+  display: flex;
+  justify-content: center;
+  gap: 50px; /* Space between cards */
+}
+
+.about-creator-card {
+  width: 566px;
+  height: 720px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white; /* Ensures all text is white */
+  border: 2px solid #EDFF01;
+  box-shadow: 0 0 20px rgba(255, 255, 0, 0.75);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
+  position: relative; /* Needed for absolute positioning of the role */
+}
+
+.about-creator-image {
+  width: 100%;
+  height: auto;
+  max-height: 280px;
+  object-fit: cover;
+  object-position: center 10%; /* Adjusted object position */
+  border-radius: 8px;
+}
+
+.about-creator-image-first {
+  width: 100%;
+  height: auto;
+  max-height: 280px;
+  object-fit: cover;
+  object-position: center 30%; /* Adjusted object position for the first card */
+  border-radius: 8px;
+}
+
+.about-card-title, .about-role, .about-description, .about-card-moves, .about-card-level, .about-weight, .about-height {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: white; /* Explicitly set all text to white */
+}
+
+.about-description {
+  font-size: 20px; /* Decrease font size for better alignment */
+  margin-top: 10px; /* Add margin to raise it up */
+}
+
+.about-card-typing {
+  display: flex;
+  justify-content: center;
+  gap: 5px; /* Space between types */
+}
+
+.about-type-icon {
+  width: 160px; /* Adjusted size of type icons */
+  height: auto;
+  margin-right: 5px;
+  margin-top: 5%;
+}
+
+.about-card-wh {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  font-size: 18px; /* Slightly larger for visibility */
+}
+
+.about-card-moves, .about-card-level {
+  font-size: 18px; /* Consistent font size for moves and levels */
+}
+
+.about-role {
+  position: absolute;
+  bottom: 5px; /* Closer to the bottom */
+  left: 10px; /* Closer to the left */
+  font-size: 20px; /* Adjusted font size */
+}
+
+.about-shiny-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 36px; /* Adjust size as necessary */
+  height: 36px; /* Adjust size as necessary */
+}
+
+.sprite-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.8);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .about-creator-cards {
+    flex-direction: column;
+  }
+
+  .about-creator-card {
+    width: 80%;
+    height: auto;
+  }
+
+  .about-creator-image {
+    max-height: 180px;
+  }
+
+  .about-type-icon {
+    width: 80px; /* Adjusted for mobile view */
+  }
+}
