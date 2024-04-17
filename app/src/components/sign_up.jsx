@@ -5,7 +5,7 @@ import { Login } from './login.jsx'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { app } from '../firebase';
 
-export function SignUp() {
+export function SignUp({ setIsLoggedIn }) {
     const initialValues = {
         username: "",
         email: "",
@@ -100,7 +100,7 @@ export function SignUp() {
             </a>
             {!loading && !success && !failed && <div>
                 {currentPage === "login" ? 
-                    <Login /> : (
+                    <Login setIsLoggedIn={setIsLoggedIn} /> : (
                     <div className="container">
                         <form onSubmit={handleSubmit}>
                             <h1>Sign Up</h1>

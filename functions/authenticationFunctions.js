@@ -8,9 +8,9 @@ exports.signup = functions.https.onRequest((req, res) => {
     if (req.method !== 'POST') {
       return res.status(405).send({ error: 'Method Not Allowed' });
     }
-    const { email, password, username } = req.body;
-    if (!email || !password || !username) {
-      return res.status(400).send({ error: 'Email, password, and username are required' });
+    const { email, password, username, uid } = req.body;
+    if (!email || !password || !username || !uid) {
+      return res.status(400).send({ error: 'Email, password, uid, and username are required' });
     }
 
     const db = admin.firestore();
@@ -22,21 +22,15 @@ exports.signup = functions.https.onRequest((req, res) => {
     }
 
     try {
-      const userRecord = await admin.auth().createUser({
-        email,
-        password,
-        emailVerified: false,
-        disabled: false
-      });
-
       // Initialize user data with username
-      await db.collection('users').doc(userRecord.uid).set({
+      await db.collection('users').doc(uid).set({
+        email,
         username,
         pokeDollars: 100000,
         lastLogin: admin.firestore.FieldValue.serverTimestamp()
       });
 
-      res.status(201).send({ userId: userRecord.uid });
+      res.status(201).send({ 'success': uid });
     } catch (error) {
       res.status(500).send({ error: error.message });
     }
@@ -52,38 +46,34 @@ exports.signin = functions.https.onRequest((req, res) => {
       return res.status(405).send({ error: 'Method Not Allowed' });
     }
 
-    const { username, password } = req.body;
+    const { email, uid } = req.body;
+    if (!email || !uid) {
+      return res.status(400).send({ error: 'Email, and uid are required' });
+    }
+
     const db = admin.firestore();
     const usersRef = db.collection('users');
-    const snapshot = await usersRef.where('username', '==', username).get();
+    const snapshot = await usersRef.where('email', '==', email).get();
     if (snapshot.empty) {
       return res.status(404).send({ error: 'User not found' });
     }
 
-    // const userDoc = snapshot.docs[0];
-    // const email = userDoc.data().email;
-
     try {
-      // Authenticate the user with email and password retrieved from username
-      const userCredential = await admin.auth().signInWithEmailAndPassword(username, password);
-      const user = userCredential.user;
-      const token = await admin.auth().createCustomToken(user.uid);
-
-      const doc = await usersRef.doc(user.uid).get();
+      const doc = await usersRef.doc(uid).get();
       if (doc.exists) {
         const lastLogin = doc.data().lastLogin.toDate();
         const now = new Date();
         const diff = now - lastLogin;
 
-        if (diff >= 86400000) {
-          await usersRef.doc(user.uid).update({
+        if (diff >= 1000 * 60 * 60 * 24) {
+          await usersRef.doc(uid).update({
             pokeDollars: admin.firestore.FieldValue.increment(25000),
             lastLogin: admin.firestore.FieldValue.serverTimestamp()
           });
         }
       }
 
-      res.status(200).send({ token: token, uuid: user.uid });
+      res.status(200).send({ 'success': 'Added 25,000 dollars!' });
     } catch (error) {
       res.status(500).send({ error: error.message });
     }
