@@ -106,7 +106,7 @@ export function SignUp({ onLogin }) {
     return (
         <> 
             {loading && <div className="ring">Loading<span className='ring-span'></span></div>}
-            <a href="galacticwebstore.com">
+            <a href="/">
                 <img src={logo} alt="logo.png" className='logo' />
             </a>
             {!loading && !success && !failed && <div>
