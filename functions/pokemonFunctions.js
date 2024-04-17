@@ -158,7 +158,7 @@ exports.searchPokemon = functions.https.onRequest((req, res) => {
 exports.getAllPokemon = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
     const db = admin.firestore();
-    let query = db.collection('PokemonSprites').orderBy('id');
+    let query = db.collection('PokemonList').orderBy('id');
 
     try {
       const snapshot = await query.get();

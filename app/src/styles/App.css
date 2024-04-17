@@ -73,6 +73,28 @@ code {
 .card p {
   color: white;
 }
+.poke-card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-align: center;
+  border: 2px solid #EDFF01;
+  box-shadow: 0 0 16px 2px #EDFF01;
+  border-radius: 16px;
+  background-color: rgba(0, 0, 0, 0.396);
+  width: 283px;
+  height: 383px;
+  margin-left: 13px;
+  margin-right: 13px;
+}
+.poke-card h3 {
+  color: white;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+.poke-card p {
+  color: white;
+}
 .sprite-div {
   position: relative;
 }
@@ -119,6 +141,18 @@ code {
   margin-top: 3px;
   margin-bottom: 3px;
 }
+.card-text {
+  margin-top: 0px;
+  margin-bottom: 16px;
+  padding: 0px;
+}
+.flavor-text {
+  font-size: 14px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-left: 13px;
+  padding-right: 13px;
+}
 .card-moves {
   margin-top: 3px;
   margin-bottom: 3px;
@@ -144,6 +178,10 @@ code {
   margin-left: 16px;
   margin-bottom: 16px;
   font-size: 19px;
+  position: absolute;
+  bottom: -6px;
+  left: 9px;
+  width: calc(100% - 23px);
 }
 .cart-icon {
   width: 36px;
@@ -154,6 +192,16 @@ code {
   cursor: pointer;
   width: 37px;
   height: 37px;
+}
+.poke_shiny_icon {
+  width: 36px!important;
+  height: 36px!important;
+  margin-right: 19px!important;
+}
+.poke_shiny_icon:hover {
+  cursor: pointer;
+  width: 37px!important;
+  height: 37px!important;
 }
 /* -------------------------------------------------------------------------------------------- */
 
@@ -511,13 +559,23 @@ transform-origin: bottom left;
 }
 .prev {
   position: fixed;
-  top: 50%;
+  top: 48.13%;
   left: 1%;
 }
 .next {
   position: fixed;
-  top: 50%;
+  top: 48.13%;
   right: 2%;
+}
+.prevx {
+  position: fixed;
+  top: 57.1%;
+  left: 2.36%;
+}
+.nextx {
+  position: fixed;
+  top: 57.1%;
+  right: 2.19%;
 }
 /* ----------------------------------------- */
 
