@@ -116,8 +116,8 @@ export function Market_cards() {
         ))}
       </div>
       {pokemonData && <div className='pagination-buttons'>
-        <button onClick={() => { handlePreviousPage(); setDisplayIndex(displayIndex - 1); }} disabled={pageIndex === 0} className='prev'>Previous</button>
-        <button onClick={() => { handleNextPage(); setDisplayIndex(displayIndex + 1); }} disabled={(pageIndex + 2) * 5 >= pokemonData.length} className='next'>Next</button>
+        <button onClick={() => { handlePreviousPage(); setDisplayIndex(displayIndex - 1); }} disabled={pageIndex === 0} className='prevm'>Previous</button>
+        <button onClick={() => { handleNextPage(); setDisplayIndex(displayIndex + 1); }} disabled={(pageIndex + 2) * 5 >= pokemonData.length} className='nextm'>Next</button>
       </div>}
     </>
   );

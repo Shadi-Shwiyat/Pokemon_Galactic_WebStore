@@ -115,6 +115,8 @@ p {
     box-shadow: 0 0 15px 3px #EDFF01;
     background-color: rgba(0, 0, 0, .9);
     padding: 23px;
+    padding-left: 29px;
+    padding-right: 29px;
     padding-bottom: 33px;
 }
 

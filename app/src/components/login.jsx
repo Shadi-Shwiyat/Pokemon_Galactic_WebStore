@@ -5,7 +5,7 @@ import { SignUp } from "./sign_up";
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { app } from '../firebase';
 
-export function Login({ onLogin }) {
+export function Login({ setIsLoggedIn }) {
     const initialValues = {
         email: "",
         password: "",
@@ -15,6 +15,7 @@ export function Login({ onLogin }) {
     const [failed, setFailed] = useState(false);
     const [error, setError] = useState(false);
     const [currentPage, setCurrentPage] = useState("login");
+    const loggedIn = localStorage.getItem('isLoggedIn');
 
     // Instantiate the auth service SDK
     const auth = getAuth(app);
@@ -41,8 +42,11 @@ export function Login({ onLogin }) {
                 const user = userCredential.user;
                 console.log(user);
 
-                // Redirect user or update app state after successful login
-                onLogin();
+                // Store logged-in state and login timestamp in local storage
+                localStorage.setItem('isLoggedIn', true);
+                localStorage.setItem('loginTimestamp', new Date().getTime());
+
+                setIsLoggedIn(true);
             } catch (err) {
                 // Handle Errors here.
                 const errorMessage = err.message;
@@ -78,7 +82,7 @@ export function Login({ onLogin }) {
                 <img src={logo} alt="logo.png" className='logo' />
             </a>
             {!failed && <div>
-                {currentPage === "signup" ? <SignUp onLogin={onLogin}/> : (
+                {currentPage === "signup" ? <SignUp setIsLoggedIn={setIsLoggedIn} /> : (
                     <div className="container">
                         <form onSubmit={handleSubmit}>
                             <h1>Log In</h1>

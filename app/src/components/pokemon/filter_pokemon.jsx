@@ -85,7 +85,7 @@ export function Pokemon_filter() {
       <button className={`filter-button ${expanded ? '' : 'hide'}`} onClick={handleButtonClick}>
         <img src={filter_icon} alt="filter_button.png" className='filter-icon' />
       </button>
-      <div className={`filter-form ${expanded ? '' : 'display'}`}>
+      <div className={`poke-filter-form ${expanded ? '' : 'display'}`}>
         <form>
             <div className='form-entry name-entry'>
               <label className='form-label name-label'>Name</label>
@@ -267,27 +267,16 @@ export function Pokemon_filter() {
               </select>
               {/* <img src={arrow} alt="arrow_down.png" className='arrow-icon' /> */}
             </div>
-            <div className='two-line-entry-cost'>
-                <div className='form-entry cost-entry'>
-                    <label className='form-label cost-label'>Cost</label>
-                    <input
-                        className='form-input cost-input'
-                        type="text"
-                        placeholder='Min'
-                        value={minCost}
-                        onChange={(e) => setMinCost(e.target.value)}
-                    />
-                </div>
-                <div className='form-entry'>
-                    <label className='form-label max-label'>{"<->"}</label>
-                    <input
-                        className='form-input cost-input'
-                        type="text"
-                        placeholder='Max'
-                        value={maxCost}
-                        onChange={(e) => setMaxCost(e.target.value)}
-                    />
-                </div>
+            <div className='form-entry match-entry'>
+              <label className='form-label match-label'>Match All Filters</label>
+              <select className='form-input match-input'
+                value={strictMatch}
+                onChange={(e) => setStrictMatch(e.target.value)}
+              >
+                  <option value={false}>No</option>
+                  <option value={true}>Yes</option>
+              </select>
+              {/* <img src={arrow} alt="arrow_down.png" className='arrow-icon' /> */}
             </div>
             {/* <p>{type}</p> */}
             <div className='form-buttons'>

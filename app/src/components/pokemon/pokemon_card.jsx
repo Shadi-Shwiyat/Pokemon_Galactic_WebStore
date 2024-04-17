@@ -7,27 +7,20 @@ export function Pokemon_cards() {
   const [pokemonData, setPokemonData] = useState(null);
   const [pageIndex, setPageIndex] = useState(0);
   const [displayIndex, setDisplayIndex] = useState(1);
+  const [isShiny, setIsShiny] = useState(false);
 
   // Fetch all pokemon data for market on page load
   useEffect(() => {
     fetch("https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllPokemon")
       .then(res => res.json())
       .then((data) => {
-        setPokemonData(data);
+        const newData = data.map(pokemon => ({ ...pokemon, shiny: false }));
+        setPokemonData(newData);
       });
   }, []);
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
-  function capitalizeEachWord(str) {
-    // Split the string into an array of words separated by hyphen
-    const words = str.split('-');
-    // Capitalize the first letter of each word
-    const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
-    // Join the words back into a single string
-    return capitalizedWords.join(' ');
   }
 
   function capitalizeGeneration(str) {
@@ -68,9 +61,9 @@ export function Pokemon_cards() {
       <div className='top-card-row'>
         {pokemonData && pokemonData.slice(pageIndex * 5, (pageIndex * 5) + 5).map((pokemon, index) => (
           <div className='poke-card' key={index}>
-            <h3 className='card-title'>{`#${pokemon.id} ${pokemon.name === 'bidoof' && pokemon.is_shiny ? 'God' : capitalizeFirstLetter(pokemon.name)}`}</h3>
+            <h3 className='card-title'>{`#${pokemon.id} ${capitalizeFirstLetter(pokemon.name)}`}</h3>
             <div className='sprite-div'>
-              <img className={`sprite ${pokemon.name === 'stunfisk' ? 'stunfisk' : ''}`} src={pokemon.sprites.default} alt="pokeImg" />
+              <img className={`sprite ${pokemon.name === 'stunfisk' ? 'stunfisk' : ''}`} src={isShiny ? pokemon.sprites.shiny : pokemon.sprites.default} alt="pokeImg" />
             </div>
             <div className='card-typing'>
               {pokemon.typing.map((type, index) => (
@@ -85,8 +78,8 @@ export function Pokemon_cards() {
               <p className='flavor-text'>{pokemon.flavor_text}</p>
             </div>
             <div className='card-bottom'>
-            <h3 className='card-generation'>{`${capitalizeGeneration(pokemon.generation)}`}</h3>
-              <img className="poke_shiny_icon" src={poke_shiny_icon} alt="poke_shiny_icon.png" />
+              <h3 className='card-generation'>{`${capitalizeGeneration(pokemon.generation)}`}</h3>
+              <img className="poke_shiny_icon" src={poke_shiny_icon} alt="poke_shiny_icon.png" onClick={() => setIsShiny(prevState => !prevState)} />
             </div>
           </div>
         ))}
@@ -96,7 +89,7 @@ export function Pokemon_cards() {
           <div className='poke-card' key={index}>
             <h3 className='card-title'>{`#${pokemon.id} ${pokemon.name === 'bidoof' && pokemon.is_shiny ? 'God' : capitalizeFirstLetter(pokemon.name)}`}</h3>
             <div className='sprite-div'>
-              <img className={`sprite ${pokemon.name === 'stunfisk' ? 'stunfisk' : ''}`} src={pokemon.sprites.default} alt="pokeImg" />
+            <img className={`sprite ${pokemon.name === 'stunfisk' ? 'stunfisk' : ''}`} src={isShiny ? pokemon.sprites.shiny : pokemon.sprites.default} alt="pokeImg" />
             </div>
             <div className='card-typing'>
               {pokemon.typing.map((type, index) => (
@@ -112,7 +105,7 @@ export function Pokemon_cards() {
             </div>
             <div className='card-bottom'>
             <h3 className='card-generation'>{`${capitalizeGeneration(pokemon.generation)}`}</h3>
-              <img className="poke_shiny_icon" src={poke_shiny_icon} alt="poke_shiny_icon.png" />
+            <img className="poke_shiny_icon" src={poke_shiny_icon} alt="poke_shiny_icon.png" onClick={() => setIsShiny(prevState => !prevState)} />
             </div>
           </div>
         ))}

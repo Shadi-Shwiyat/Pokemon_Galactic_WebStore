@@ -154,9 +154,9 @@ code {
   padding-right: 13px;
 }
 .card-moves {
-  margin-top: 3px;
-  margin-bottom: 3px;
-  font-size: 19px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  font-size: 16px;
 }
 .card-level {
   margin-top: 0px!important;
@@ -251,7 +251,25 @@ code {
   border-radius: 9px;
   border: 2px solid #EDFF01;
   box-shadow: 0 0 15px 3px #EDFF01;
-  background-color: rgba(0, 0, 0, .8);
+  background-color: rgba(0, 0, 0, .86);
+  height: 0;
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: height 0.3s ease, width 0.3s ease, opacity 0.3s ease;
+  z-index: 33;
+}
+.poke-filter-form {
+  position: fixed;
+  top: 11.3%;
+  left: 3.9%;
+  padding: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 9px;
+  border: 2px solid #EDFF01;
+  box-shadow: 0 0 15px 3px #EDFF01;
+  background-color: rgba(0, 0, 0, .86);
   height: 0;
   width: 0;
   opacity: 0;
@@ -261,6 +279,11 @@ code {
 }
 .display.filter-form { /* Display form when button is hidden */
   height: 796px;
+  width: 430px;
+  opacity: 1;
+}
+.display.poke-filter-form { /* Display form when button is hidden */
+  height: 730px;
   width: 430px;
   opacity: 1;
 }
@@ -566,6 +589,16 @@ transform-origin: bottom left;
   position: fixed;
   top: 48.13%;
   right: 2%;
+}
+.prevm {
+  position: fixed;
+  top: 50.3%;
+  left: 1.3%;
+}
+.nextm {
+  position: fixed;
+  top: 50.3%;
+  right: 2.3%;
 }
 .prevx {
   position: fixed;

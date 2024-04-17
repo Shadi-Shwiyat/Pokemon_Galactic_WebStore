@@ -5,7 +5,7 @@ import { Login } from './login.jsx'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { app } from '../firebase';
 
-export function SignUp({ onLogin }) {
+export function SignUp() {
     const initialValues = {
         username: "",
         email: "",
@@ -18,7 +18,6 @@ export function SignUp({ onLogin }) {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [failed, setFailed] = useState(false);
-    const [requestErrors, setRequestErrors] = useState({});
     const [currentPage, setCurrentPage] = useState("signup");
 
     const handleChange = (e) => {
@@ -47,11 +46,12 @@ export function SignUp({ onLogin }) {
                 }, 3333)
             } catch (error) {
                 console.log('FAILED');
-                setRequestErrors({error: error});
+                console.log(error);
                 setLoading(false);
                 setFailed(true);
                 setTimeout(() => {
                     setFailed(false);
+                    setIsSubmit(false);
                 }, 3000)
             }
         }
@@ -100,7 +100,7 @@ export function SignUp({ onLogin }) {
             </a>
             {!loading && !success && !failed && <div>
                 {currentPage === "login" ? 
-                    <Login onLogin={onLogin}/> : (
+                    <Login /> : (
                     <div className="container">
                         <form onSubmit={handleSubmit}>
                             <h1>Sign Up</h1>
@@ -163,7 +163,7 @@ export function SignUp({ onLogin }) {
                 <h1 className="success-text">Thank you for joining {formValues.username}!</h1>
             </div>}
             {failed && !loading && <div className="success">
-                <h1 className="success-text">Cannot create account, {requestErrors.error}</h1>
+                <h1 className="success-text">There was an error creating your account</h1>
             </div>}
         </>
     );
