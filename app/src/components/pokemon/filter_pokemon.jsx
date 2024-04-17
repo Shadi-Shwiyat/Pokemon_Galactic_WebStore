@@ -4,7 +4,7 @@ import x_icon from '../../assets/icons/x.png'
 import arrow from '../../assets/icons/arrow_down.png'
 import * as types from '../../assets/types/types.js'
 
-export function Pokemon_filter() {
+export function Pokemon_filter({ setFilters }) {
   const [expanded, setExpanded] = useState(true);
   const [name, setName] = useState('');
   const [id, setId] = useState(1);

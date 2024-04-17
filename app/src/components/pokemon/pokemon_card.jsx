@@ -3,7 +3,7 @@ import poke_shiny_icon from '../../assets/icons/shiny.png'
 import cart_icon from '../../assets/icons/cart.png';
 import * as types from '../../assets/types/types.js';
 
-export function Pokemon_cards() {
+export function Pokemon_cards({ filters }) {
   const [pokemonData, setPokemonData] = useState(null);
   const [pageIndex, setPageIndex] = useState(0);
   const [displayIndex, setDisplayIndex] = useState(1);
@@ -11,11 +11,13 @@ export function Pokemon_cards() {
 
   // Fetch all pokemon data for market on page load
   useEffect(() => {
+    if (filters.length > 0) {
+      console.log('filters are:', filters);
+    }
     fetch("https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllPokemon")
       .then(res => res.json())
       .then((data) => {
-        const newData = data.map(pokemon => ({ ...pokemon, shiny: false }));
-        setPokemonData(newData);
+        setPokemonData(data);
       });
   }, []);
 
@@ -52,7 +54,9 @@ export function Pokemon_cards() {
     // console.log(pageIndex)
   }
 
-  useEffect(() => console.log(pageIndex), [pageIndex]);
+  // useEffect(() => console.log(pageIndex), [pageIndex]);
+
+  // useEffect(() => console.log('effect'), [filters]);
 
   return (
     <>

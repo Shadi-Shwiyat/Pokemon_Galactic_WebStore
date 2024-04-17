@@ -38,7 +38,7 @@ export function Header() {
               <span className="hover-underline-animation">Market</span>
             </li>
             <li onClick={() => setCurrentPage('pokemon')}>
-              <span className="hover-underline-animation">Pokemon</span>
+              <span className="hover-underline-animation">Pokémon</span>
             </li>
             <li onClick={() => setCurrentPage('items')}>
               <span className="hover-underline-animation">Items</span>
