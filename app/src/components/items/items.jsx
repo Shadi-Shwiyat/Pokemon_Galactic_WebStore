@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/App.css';
 
 export function Items({spriteUrl}) {
   const [pokemonGifUrl, setPokemonGifUrl] = useState('');

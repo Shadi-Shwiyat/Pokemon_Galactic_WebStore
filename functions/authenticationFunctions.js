@@ -60,8 +60,8 @@ exports.signin = functions.https.onRequest((req, res) => {
       return res.status(404).send({ error: 'User not found' });
     }
 
-    const userDoc = snapshot.docs[0];
-    const email = userDoc.data().email;
+    // const userDoc = snapshot.docs[0];
+    // const email = userDoc.data().email;
 
     try {
       // Authenticate the user with email and password retrieved from username

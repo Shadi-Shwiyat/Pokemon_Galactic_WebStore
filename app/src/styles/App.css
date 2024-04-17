@@ -137,6 +137,14 @@ code {
   margin-bottom: 16px;
   font-size: 19px;
 }
+.card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 16px;
+  margin-bottom: 16px;
+  font-size: 19px;
+}
 .cart-icon {
   width: 36px;
   height: 36px;

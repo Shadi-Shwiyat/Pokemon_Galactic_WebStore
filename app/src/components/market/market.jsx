@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/App.css';
 import { Market_filter } from './filter_market';
 import { Market_cards } from './market_cards';
 

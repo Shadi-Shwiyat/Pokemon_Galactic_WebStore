@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import logo from '../assets/logo.png'
-import { Market } from './market.jsx';
-import { Pokemon } from './pokemon.jsx';
-import { Items } from './items.jsx';
+import { Market } from './market/market.jsx';
+import { Pokemon } from './pokemon/pokemon.jsx';
+import { Items } from './items/items.jsx';
 import { About } from './about.jsx';
 import { Cart } from './cart.jsx';
 

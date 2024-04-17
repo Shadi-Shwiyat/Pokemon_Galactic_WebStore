@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import '../styles/App.css';
-import x_icon from '../assets/icons/x.png';
-import shiny_icon from '../assets/icons/shiny.png'
-import cart_icon from '../assets/icons/cart.png';
-import * as types from '../assets/types/types.js';
+import x_icon from '../../assets/icons/x.png';
+import shiny_icon from '../../assets/icons/shiny.png'
+import cart_icon from '../../assets/icons/cart.png';
+import * as types from '../../assets/types/types.js';
 
 export function Market_cards() {
   const [pokemonData, setPokemonData] = useState(null);
@@ -15,7 +14,7 @@ export function Market_cards() {
     fetch("https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllPokemonMarketplace")
       .then(res => res.json())
       .then((data) => {
-        console.log(data[0]);
+        // console.log(data[0]);
         setPokemonData(data);
       });
   }, []);
