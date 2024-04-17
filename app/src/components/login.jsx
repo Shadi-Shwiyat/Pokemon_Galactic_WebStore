@@ -8,6 +8,7 @@ export function Login({ onLogin }) {
         username: "",
         password: "",
     };
+    const signinUrl = 'https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/signin';
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
@@ -18,18 +19,40 @@ export function Login({ onLogin }) {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setFormErrors(validate(formValues));
         setIsSubmit(true);
-        onLogin();
+        try {
+            const response = await fetch(signinUrl, {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formValues)
+            });
+            const data = await response.json();
+            if (response.ok) {
+                localStorage.setItem('token', data.token); // Store token in local storage
+                onLogin(); // Trigger the onLogin function to update app state
+            } else {
+                // Handle login failure
+                // You can set error state here
+            }
+        } catch (error) {
+            // Handle network errors
+        }
     };
 
+    // Function to check if user is authenticated
+    const isAuthenticated = () => {
+        return !!localStorage.getItem('token');
+    };
+
+    // UseEffect hook to redirect authenticated users
     useEffect(() => {
-        if (Object.keys(formErrors).length === 0 && isSubmit) {
-            console.log(formValues);
+        if (isAuthenticated()) {
+            onLogin(); // Trigger the onLogin function to update app state
         }
-    }, [formErrors, formValues, isSubmit]);
+    }, []);
 
     // Function to handle click event of "Create Account" span
     const handleCreateAccountClick = () => {
@@ -55,14 +78,6 @@ export function Login({ onLogin }) {
             </a>
             {currentPage === "signup" ? <SignUp onLogin={onLogin}/> : (
                 <div className="container">
-                    {Object.keys(formErrors).length === 0 && isSubmit ? (
-                        <div className="ui message success">
-                            Signed in successfully
-                        </div>
-                    ) : (
-                        console.log("Entered Details", formValues)
-                    )}
-
                     <form onSubmit={handleSubmit}>
                         <h1>Log In</h1>
                         <div className="ui divider"></div>
