@@ -65,7 +65,7 @@ exports.signin = functions.https.onRequest((req, res) => {
 
     try {
       // Authenticate the user with email and password retrieved from username
-      const userCredential = await admin.auth().signInWithEmailAndPassword(email, password);
+      const userCredential = await admin.auth().signInWithUsernameAndPassword(username, password);
       const user = userCredential.user;
       const token = await admin.auth().createCustomToken(user.uid);
 
@@ -83,7 +83,7 @@ exports.signin = functions.https.onRequest((req, res) => {
         }
       }
 
-      res.status(200).send({ token, uuid: user.uid });
+      res.status(200).send({ token: token, uuid: user.uid });
     } catch (error) {
       res.status(500).send({ error: error.message });
     }
@@ -108,7 +108,7 @@ exports.verifyToken = functions.https.onRequest((req, res) => {
       const uid = decodedToken.uid;
 
       // Now that the user is verified, perform any further server-side logic here
-      res.status(200).send({ uid, message: 'Authentication successful' });
+      res.status(200).send({ uid: uid, message: 'Authentication successful' });
     } catch (error) {
       res.status(401).send({ error: 'Unauthorized: ' + error.message });
     }
@@ -128,7 +128,7 @@ exports.verifyEmail = functions.https.onRequest((req, res) => {
     try {
       const link = await admin.auth().generateEmailVerificationLink(email);
       // Implement sending the email with the link
-      res.status(200).send({ link });
+      res.status(200).send({ link: link });
     } catch (error) {
       res.status(500).send({ error: error.message });
     }
@@ -148,7 +148,7 @@ exports.resetPassword = functions.https.onRequest((req, res) => {
     try {
       const link = await admin.auth().generatePasswordResetLink(email);
       // Implement sending the email with the link
-      res.status(200).send({ link });
+      res.status(200).send({ link: link });
     } catch (error) {
       res.status(500).send({ error: error.message });
     }
