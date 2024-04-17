@@ -65,7 +65,7 @@ exports.signin = functions.https.onRequest((req, res) => {
 
     try {
       // Authenticate the user with email and password retrieved from username
-      const userCredential = await admin.auth().signInWithUsernameAndPassword(username, password);
+      const userCredential = await admin.auth().signInWithEmailAndPassword(username, password);
       const user = userCredential.user;
       const token = await admin.auth().createCustomToken(user.uid);
 
