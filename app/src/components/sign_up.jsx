@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import logo from '../assets/logo.png'
 import "../styles/sign-up.css";
 import { Login } from './login.jsx'
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { app } from '../firebase';
 
 export function SignUp({ onLogin }) {
     const initialValues = {
@@ -10,7 +12,6 @@ export function SignUp({ onLogin }) {
         password: "",
         confirmPassword: "",
     };
-    const signupUrl = 'https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/signup';
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
@@ -25,47 +26,35 @@ export function SignUp({ onLogin }) {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setFormErrors(validate(formValues));
-        const body = {
-            username: formValues.username,
-            email: formValues.email,
-            password: formValues.password
-        }
-        // console.log("Body is", body);
         setIsSubmit(true);
-        fetch(signupUrl, {
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body)
-        })
-        .then(setLoading(true))
-        .then(res => res.json())
-        .then((data) => {
-            // setLoading(true);
-            console.log("loading is:", loading)
-            console.log("Data is:",data);
-            if (!data.userId) {
+
+        if (Object.keys(formErrors).length === 0) {
+            setLoading(true);
+            try {
+                const auth = getAuth(app);
+                const { email, password } = formValues;
+                await createUserWithEmailAndPassword(auth, email, password);
+                setTimeout(() => {
+                    setLoading(false);
+                    setSuccess(true);
+                }, 1300)
+                setTimeout(() => {
+                    setSuccess(false);
+                    setCurrentPage("login");
+                }, 3333)
+            } catch (error) {
                 console.log('FAILED');
+                setRequestErrors({error: error});
                 setLoading(false);
                 setFailed(true);
-                setRequestErrors({error: data.error});
                 setTimeout(() => {
                     setFailed(false);
                 }, 3000)
-            } else {
-                setTimeout(() => {
-                    console.log('success!');
-                    setLoading(false);
-                    setSuccess(true);
-                    setTimeout(() => {
-                        setSuccess(false);
-                        setCurrentPage("login");
-                    }, 3000)
-                }, 900)
             }
-        })
+        }
     };
 
     useEffect(() => {
