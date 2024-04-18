@@ -319,14 +319,25 @@ exports.getAllItems = functions.https.onRequest((req, res) => {
     const db = admin.firestore();
     let query = db.collection('ItemList').orderBy('id');
 
+    console.log('Executing query to fetch all items...'); // Logging before query execution
+
     try {
       const snapshot = await query.get();
-      const items = snapshot.docs.map(doc => doc.data());
+      if (snapshot.empty) {
+        console.log('No documents found.'); // Logging if no documents are found
+        return res.status(404).send({ message: 'No items found' });
+      }
 
+      const items = snapshot.docs.map(doc => {
+        console.log(`Document found: ${doc.id}`); // Log each document's ID
+        return doc.data();
+      });
+
+      console.log('Items fetched successfully.'); // Logging after items are fetched
       res.status(200).json(items);
     } catch (error) {
-      console.error('Error fetching all items:', error);
-      return res.status(500).send({ message: 'Internal Server Error' });
+      console.error('Error fetching all items:', error); // Logging any errors encountered
+      return res.status(500).send({ message: 'Internal Server Error', error: error.message });
     }
   });
 });
