@@ -4,6 +4,7 @@ import { Pokemon_cards } from './pokemon_card';
 
 export function Pokemon() {
   const [filters, setFilters] = useState({});
+  const [clear, setClear] = useState(false);
 
   // useEffect(() => {
   //   console.log(filters.total_filters);
@@ -11,8 +12,8 @@ export function Pokemon() {
 
   return (
     <>
-      <Pokemon_filter filters={filters} setFilters={setFilters} />
-      <Pokemon_cards filters={filters} />
+      <Pokemon_filter filters={filters} setFilters={setFilters} clear={clear} setClear={setClear} />
+      <Pokemon_cards filters={filters} clear={clear} setClear={setClear} />
     </>
   );
 }
