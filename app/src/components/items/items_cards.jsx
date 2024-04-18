@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import '../../styles/Items.css'; // Ensure this is the correct path to your CSS
+import cart_icon from '../../assets/icons/cart.png';
+import '../../styles/Items.css';
 
 function ItemCards({ filters }) {
   const [itemData, setItemData] = useState(null);
@@ -26,6 +27,26 @@ function ItemCards({ filters }) {
       });
   }, [filters]);
 
+  function formatCost(costString) {
+    // Reverse the string to make it easier to insert commas from right to left
+    const reversedString = costString.toString().split('').reverse().join('');
+    
+    // Use a regular expression to insert commas after every three digits
+    const formattedString = reversedString.replace(/\d{3}(?=\d)/g, (match) => match + ',');
+    
+    // Reverse the string back to its original order and return it
+    return formattedString.split('').reverse().join('');
+ }
+
+  function capitalizeEachWord(str) {
+    // Split the string into an array of words separated by hyphen
+    const words = str.split('-');
+    // Capitalize the first letter of each word
+    const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+    // Join the words back into a single string
+    return capitalizedWords.join(' ');
+  }
+
   const handleNextPage = () => {
     setPageIndex(prevIndex => prevIndex + 14);
   };
@@ -35,39 +56,44 @@ function ItemCards({ filters }) {
   };
 
   return (
-    <div className="item-app">
+    <>
       {loading ? (
         <div className="ring">Loading<span className='ring-span'></span></div>
       ) : (
         <>
-          <div className="top-card-row">
-            {itemData && itemData.slice(pageIndex, pageIndex + 5).map((item, index) => (
-              <div className='card' key={index}>
-                <h3 className='card-title'>{`#${item.id} ${item.name}`}</h3>
-                <img className='sprite' src={item.sprite} alt={item.name} />
-                <p className='flavor-text'>{item.flavor_text}</p>
-                <p className='cost'>{`Cost: ${item.cost}`}</p>
+          <div className="item-top-card-row">
+            {itemData && itemData.slice(pageIndex, pageIndex + 7).map((item, index) => (
+              <div className='item-card' key={index}>
+                <h3 className='item-card-title'>{`${capitalizeEachWord(item.name)}`}</h3>
+                <img className='item-sprite' src={item.sprite} alt={item.name} />
+                <p className='item-flavor-text'>{item.flavor_text}</p>
+                <div className='item-card-price'>
+                  <p className='item-price'>{`₽ ${formatCost(item.cost)}`}</p>
+                  <img className="item-cart-icon" src={cart_icon} alt="cart.png" />
+                </div>
               </div>
             ))}
           </div>
-          <div className="bottom-card-row">
-            {itemData && itemData.slice(pageIndex + 5, pageIndex + 10).map((item, index) => (
-              <div className='card' key={index}>
-                <h3 className='card-title'>{`#${item.id} ${item.name}`}</h3>
-                <img className='sprite' src={item.sprite} alt={item.name} />
-                <p className='flavor-text'>{item.flavor_text}</p>
-                <p className='cost'>{`Cost: ${item.cost}`}</p>
+          <div className="item-bottom-card-row">
+            {itemData && itemData.slice(pageIndex + 7, pageIndex + 14).map((item, index) => (
+              <div className='item-card' key={index}>
+                <h3 className='item-card-title'>{`${capitalizeEachWord(item.name)}`}</h3>
+                <img className='item-sprite' src={item.sprite} alt={item.name} />
+                <p className='item-flavor-text'>{item.flavor_text}</p>
+                <div className='item-card-price'>
+                  <p className='item-price'>{`₽ ${formatCost(item.cost)}`}</p>
+                  <img className="item-cart-icon" src={cart_icon} alt="cart.png" />
+                </div>
               </div>
             ))}
           </div>
-          <div className='pagination-buttons'>
-            <button onClick={handlePreviousPage} disabled={pageIndex === 0} className="pagination-button">Previous</button>
-            <button onClick={handleNextPage} disabled={(pageIndex + 14) >= itemData.length} className="pagination-button">Next</button>
-            <div className="page-status">{`Page ${Math.floor(pageIndex / 14) + 1} of ${Math.ceil(itemData.length / 14)}`}</div>
+          <div className='item-pagination-buttons'>
+            <button onClick={handlePreviousPage} disabled={pageIndex === 0} className="prev-i">{'<'}</button>
+            <button onClick={handleNextPage} disabled={(pageIndex + 14) >= itemData.length} className="next-i">{'>'}</button>
           </div>
         </>
       )}
-    </div>
+    </>
   );
 }
 

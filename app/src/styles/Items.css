@@ -1,20 +1,18 @@
-.item-app {
+.item-top-card-row {
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
+  z-index: 3;
+  margin-top: 23px;
+  margin-bottom: 33px;
 }
-
-.item-container {
+.item-bottom-card-row {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  max-width: 1326px;
-  margin-bottom: 20px;
+  z-index: 3;
 }
 
 .item-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,19 +20,51 @@
   box-shadow: 0 0 16px 2px #EDFF01;
   border-radius: 16px;
   background-color: rgba(0, 0, 0, 0.396);
-  width: 188px;
-  height: 355px;
+  width: 209px;
+  height: 330px;
   margin: 13px;
-  padding: 10px;
   color: rgb(255, 255, 255);
   font-family: Arial, sans-serif;
 }
 
+.item-card-title {
+  margin-top: 9px;
+}
+
 .item-sprite {
   width: auto;
-  height: 100px; 
-  margin-top: 6px;
-  margin-bottom: 6px;
+  height: 90px; 
+  margin-top: 16px;
+  margin-bottom: 0px;
+}
+
+.item-flavor-text {
+  color: white;
+  text-align: center;
+  font-size: 16px;
+  padding-left: 13px;
+  padding-right: 13px;
+}
+
+.item-card-price {
+  display: flex;
+  align-items: center;
+}
+
+.item-price {
+  position: absolute;
+  bottom: -3px;
+  left: 19px;
+  color: white;
+  font-size: 19px;
+}
+
+.item-cart-icon {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  bottom: 13px;
+  right: 16px;
 }
 
 .loading {
@@ -46,21 +76,32 @@
   color: #FFFFFF;
 }
 
-.pagination-buttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.pagination-button {
-  background-color: #333333;
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  margin: 0 5px;
+.item-pagination-buttons button {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid #EDFF01;
+  box-shadow: 0 0 6px 2px #EDFF01;
+  color: #EDFF01;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 23px;
+  margin: 4px 2px;
   cursor: pointer;
-  font-size: 14px;
+  border-radius: 16px;
+}
+.pagination-buttons button:hover {
+  box-shadow: 0 0 13px 3px #EDFF01;
+}
+.prev-i {
+  position: fixed;
+  top: 48.13%;
+  left: 1.6%;
+}
+.next-i {
+  position: fixed;
+  top: 48.13%;
+  right: 1.6%;
 }
 
 .pagination-button:hover {

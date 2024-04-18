@@ -1,7 +1,6 @@
 /* About.css */
 .about-section {
   text-align: center;
-  padding: 20px;
   color: white;
 }
 
@@ -12,14 +11,13 @@
 }
 
 .about-creator-card {
-  width: 566px;
-  height: 720px;
+  width: 630px;
+  height: 760px;
   background-color: rgba(0, 0, 0, 0.7);
   color: white; /* Ensures all text is white */
   border: 2px solid #EDFF01;
   box-shadow: 0 0 20px rgba(255, 255, 0, 0.75);
   border-radius: 16px;
-  padding: 20px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -29,38 +27,71 @@
 }
 
 .about-creator-image {
-  width: 100%;
-  height: auto;
+  width: 60%;
+  height: 360px;
   max-height: 280px;
   object-fit: cover;
   object-position: center 10%; /* Adjusted object position */
   border-radius: 8px;
+  margin-bottom: 0px;
 }
 
 .about-creator-image-first {
-  width: 100%;
-  height: auto;
+  width: 60%;
+  height: 360px;
   max-height: 280px;
   object-fit: cover;
   object-position: center 30%; /* Adjusted object position for the first card */
   border-radius: 8px;
+  margin-bottom: 0px;
 }
 
-.about-card-title, .about-role, .about-description, .about-card-moves, .about-card-level, .about-weight, .about-height {
+.about-card-title {
   font-size: 24px;
-  margin-bottom: 10px;
+  margin-bottom: 13px;
   color: white; /* Explicitly set all text to white */
 }
 
+.about-weight, .about-height {
+  color: white;
+  font-size: 30px;
+  padding-left: 103px;
+  padding-right: 103px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.about-card-moves {
+  font-size: 23px!important;
+  color: white;
+  margin-top: 3px;
+  margin-bottom: 9px;
+  padding-left: 13px;
+  padding-right: 13px;
+}
+
+.about-card-level {
+  font-size: 30px;
+  margin-top: 6px;
+  margin-bottom: 0px;
+}
+
+.about-card-title {
+  margin-top: 13px;
+}
+
 .about-description {
-  font-size: 20px; /* Decrease font size for better alignment */
+  font-size: 23px; /* Decrease font size for better alignment */
   margin-top: 10px; /* Add margin to raise it up */
+  color: white;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .about-card-typing {
   display: flex;
   justify-content: center;
-  gap: 5px; /* Space between types */
+  gap: 39px; /* Space between types */
 }
 
 .about-type-icon {
@@ -72,28 +103,26 @@
 
 .about-card-wh {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding-left: 23px;
+  padding-right: 23px;
   width: 100%;
   font-size: 18px; /* Slightly larger for visibility */
-}
-
-.about-card-moves, .about-card-level {
-  font-size: 18px; /* Consistent font size for moves and levels */
 }
 
 .about-role {
   position: absolute;
   bottom: 5px; /* Closer to the bottom */
-  left: 10px; /* Closer to the left */
+  left: 30px; /* Closer to the left */
   font-size: 20px; /* Adjusted font size */
 }
 
 .about-shiny-icon {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 36px; /* Adjust size as necessary */
-  height: 36px; /* Adjust size as necessary */
+  bottom: 16px;
+  right: 23px;
+  width: 46px; /* Adjust size as necessary */
+  height: 46px; /* Adjust size as necessary */
 }
 
 .sprite-overlay {
