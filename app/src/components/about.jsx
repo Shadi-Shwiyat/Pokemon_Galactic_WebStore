@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/About.css';
-import creator1Image from '../assets/rob.jpg';
-import creator2Image from '../assets/shadi.jpg';
-import * as types from '../assets/types/types';
-import shiny_icon from '../assets/icons/shiny.png';
+import creator1Image from '../assets/rob.jpg'; // Ensure path is correct
+import creator2Image from '../assets/shadi.jpg'; // Ensure path is correct
+import * as types from '../assets/types/types'; // Ensure this module exports correctly
+import shiny_icon from '../assets/icons/shiny.png'; // Ensure path is correct
+import battle_music from '../assets/battle.mp3'; // Add your audio file in the assets directory
 
 function CreatorCard({ name, role, image, typesInfo, height, weight, moves, level, description, isFirstCard, onShinyClick }) {
   return (
@@ -40,9 +41,9 @@ function CreatorCard({ name, role, image, typesInfo, height, weight, moves, leve
 
 export function About() {
   const [pokemonData, setPokemonData] = useState([]);
-  const [showSprites, setShowSprites] = useState(false);
 
   useEffect(() => {
+    // Fetch data from your API; change URL if necessary
     fetch("https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllPokemon")
       .then(res => res.json())
       .then(data => {
@@ -51,8 +52,14 @@ export function About() {
       .catch(err => console.error('Failed to fetch Pokémon', err));
   }, []);
 
+  const [showSprites, setShowSprites] = useState(false);
+
   const handleShinyClick = () => {
-    setShowSprites(true);
+    const audio = new Audio(battle_music);
+    // control the volume
+    audio.volume = 0.2;
+    audio.play(); // This plays the shiny sound
+    setShowSprites(true); // This shows sprites on the screen
   };
 
   return (
