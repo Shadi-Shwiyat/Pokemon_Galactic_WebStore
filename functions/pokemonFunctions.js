@@ -103,46 +103,54 @@ exports.getPokemonById = functions.https.onRequest((req, res) => {
 // Search for a Pokemon based on various criteria
 exports.searchPokemon = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
-    const { name, id, isShiny, type, moves, ability, region, generation, strictMatch } = req.query;
+    const { name, id, type, moves, ability, region, generation, strictMatch } = req.query;
     const db = admin.firestore();
-    let query = db.collection('PokemonList');
-
-    // Check and add each query filter only if the parameter exists
-    if (type) query = query.where('typing', 'array-contains', type);
-    if (generation) query = query.where('generation', '==', generation);
-    if (name) query = query.where('name', '==', name);
-    if (region) query = query.where('region', '==', region);
-    if (moves) query = query.where('moves', 'array-contains', moves);
-    if (ability) query = query.where('abilities', 'array-contains', ability);
-    if (id) query = query.where('id', '==', parseInt(id));
-    if (isShiny) query = query.where(`sprites.shiny`, '!=', null);
+    const collectionRef = db.collection('PokemonList');
 
     try {
-      const snapshot = await query.get();
-      if (snapshot.empty) {
-        return res.status(404).send({message: 'No Pokémon found matching the criteria'});
-      }
+      let querySnapshot = await collectionRef.get();
+      let pokemon = [];
 
-      let pokemon = snapshot.docs.map(doc => doc.data());
+      querySnapshot.forEach(doc => {
+        const data = doc.data();
+        let isMatch = true;
 
-      // Implementing match all filters functionality
+        if (name && data.name !== name) isMatch = false;
+        if (id && data.id !== parseInt(id)) isMatch = false;
+        if (type && strictMatch === 'false' && !type.split(',').some(t => data.typing.includes(t))) isMatch = false;
+        if (type && strictMatch === 'true' && !type.split(',').every(t => data.typing.includes(t))) isMatch = false;
+        if (moves && strictMatch === 'false' && !data.moves.includes(moves)) isMatch = false;
+        if (moves && strictMatch === 'true' && !moves.split(',').every(m => data.moves.includes(m))) isMatch = false;
+        if (ability && strictMatch === 'false' && !data.abilities.includes(ability)) isMatch = false;
+        if (ability && strictMatch === 'true' && !ability.split(',').every(a => data.abilities.includes(a))) isMatch = false;
+        if (region && data.region !== region) isMatch = false;
+        if (generation && data.generation !== generation) isMatch = false;
+
+        if (isMatch) {
+          pokemon.push(data);
+        }
+      });
+
+      // Implementing strictMatch functionality
       if (strictMatch === 'true') {
         Object.keys(req.query).forEach(key => {
-          if (key !== 'match_all_filters' && req.query[key]) {
+          if (key !== 'strictMatch' && key !== 'type' && key !== 'moves' && key !== 'ability' && req.query[key]) {
             pokemon = pokemon.filter(p => p[key] === req.query[key]);
           }
         });
       }
 
+      if (pokemon.length === 0) {
+        return res.status(404).send({ message: 'No Pokémon found matching the criteria' });
+      }
+
       return res.status(200).json(pokemon);
     } catch (error) {
       console.error('Error searching Pokémon:', error);
-      return res.status(500).send({message: 'Internal Server Error'});
+      return res.status(500).send({ message: 'Internal Server Error' });
     }
   });
 });
-
-
 
 // Get all Pokemon
 exports.getAllPokemon = functions.https.onRequest((req, res) => {
@@ -404,53 +412,55 @@ exports.createPokemonMarketplace = functions.https.onRequest(async (req, res) =>
 });
 
 
+// Search for a Pokemon based on various criteria im marketplace
 exports.searchPokemonMarketplace = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
-    const { type, generation, name, region, moves, abilities, id, sprite, min_marketplace_cost, max_marketplace_cost, match_all_filters } = req.query;
+    const { name, id, isShiny, type, moves, ability, region, generation, strictMatch } = req.query;
     const db = admin.firestore();
-    let query = db.collection('Marketplace');
-
-    // Applying filters
-    if (type) query = query.where('typing', 'array-contains', type);
-    if (generation) query = query.where('generation', '==', generation);
-    if (name) query = query.where('name', '==', name);
-    if (region) query = query.where('region', '==', region);
-    if (moves) query = query.where('moves', 'array-contains', moves);
-    if (abilities) query = query.where('abilities', 'array-contains', abilities);
-    if (id) query = query.where('id', '==', parseInt(id));
-    if (sprite) query = query.where(`sprites.${sprite}`, '!=', null);
-
-    // Applying marketplace_cost range filter
-    if (min_marketplace_cost && max_marketplace_cost) {
-      query = query.where('marketplace_cost', '>=', parseInt(min_marketplace_cost))
-                   .where('marketplace_cost', '<=', parseInt(max_marketplace_cost));
-    } else if (min_marketplace_cost) {
-      query = query.where('marketplace_cost', '>=', parseInt(min_marketplace_cost));
-    } else if (max_marketplace_cost) {
-      query = query.where('marketplace_cost', '<=', parseInt(max_marketplace_cost));
-    }
+    const collectionRef = db.collection('Marketplace');
 
     try {
-      const snapshot = await query.get();
-      if (snapshot.empty) {
-        return res.status(404).send({message: 'No Pokémon found matching the criteria'});
-      }
+      let querySnapshot = await collectionRef.get();
+      let pokemon = [];
 
-      let pokemon = snapshot.docs.map(doc => doc.data());
+      querySnapshot.forEach(doc => {
+        const data = doc.data();
+        let isMatch = true;
 
-      // Implementing match all filters functionality
-      if (match_all_filters === 'true') {
+        if (name && data.name !== name) isMatch = false;
+        if (id && data.id !== parseInt(id)) isMatch = false;
+        if (isShiny && isShiny !== data.sprites.is_shiny) isMatch = false;
+        if (type && strictMatch === 'false' && !type.split(',').some(t => data.typing.includes(t))) isMatch = false;
+        if (type && strictMatch === 'true' && !type.split(',').every(t => data.typing.includes(t))) isMatch = false;
+        if (moves && strictMatch === 'false' && !data.moves.includes(moves)) isMatch = false;
+        if (moves && strictMatch === 'true' && !moves.split(',').every(m => data.moves.includes(m))) isMatch = false;
+        if (ability && strictMatch === 'false' && !data.abilities.includes(ability)) isMatch = false;
+        if (ability && strictMatch === 'true' && !ability.split(',').every(a => data.abilities.includes(a))) isMatch = false;
+        if (region && data.region !== region) isMatch = false;
+        if (generation && data.generation !== generation) isMatch = false;
+
+        if (isMatch) {
+          pokemon.push(data);
+        }
+      });
+
+      // Implementing strictMatch functionality
+      if (strictMatch === 'true') {
         Object.keys(req.query).forEach(key => {
-          if (key !== 'match_all_filters' && req.query[key]) {
+          if (key !== 'strictMatch' && key !== 'type' && key !== 'moves' && key !== 'ability' && req.query[key]) {
             pokemon = pokemon.filter(p => p[key] === req.query[key]);
           }
         });
       }
 
+      if (pokemon.length === 0) {
+        return res.status(404).send({ message: 'No Pokémon found matching the criteria' });
+      }
+
       return res.status(200).json(pokemon);
     } catch (error) {
       console.error('Error searching Pokémon:', error);
-      return res.status(500).send({message: 'Internal Server Error'});
+      return res.status(500).send({ message: 'Internal Server Error' });
     }
   });
 });

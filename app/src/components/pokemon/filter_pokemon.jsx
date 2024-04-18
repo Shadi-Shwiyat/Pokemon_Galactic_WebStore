@@ -8,7 +8,6 @@ export function Pokemon_filter({ filters, clear, setFilters, setClear }) {
   const [expanded, setExpanded] = useState(true);
   const [name, setName] = useState('');
   const [id, setId] = useState(0);
-  const [isShiny, setIsShiny] = useState(false);
   const [type, setType] = useState([]);
   const [moves, setMoves] = useState([]);
   const [ability, setAbility] = useState('');
@@ -30,7 +29,6 @@ export function Pokemon_filter({ filters, clear, setFilters, setClear }) {
     const filter_object = {
       name: name,
       id: id,
-      isShiny: isShiny,
       type: type,
       moves: moves,
       ability: ability,
@@ -41,7 +39,7 @@ export function Pokemon_filter({ filters, clear, setFilters, setClear }) {
     }
     // console.log(filter_object.total_filters);
     setFilters(filter_object)
-  }, [name, id, isShiny, type, moves, ability, region, generation, strictMatch, total_filters]);
+  }, [name, id, type, moves, ability, region, generation, strictMatch, total_filters]);
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -62,7 +60,6 @@ export function Pokemon_filter({ filters, clear, setFilters, setClear }) {
     e.preventDefault();
     setName('');
     setId(0);
-    setIsShiny(false);
     setMoves('');
     setAbility('');
     setRegion('');
@@ -154,14 +151,6 @@ export function Pokemon_filter({ filters, clear, setFilters, setClear }) {
                     />
                 </div>
                 <div className='form-entry'>
-                    <label className='form-label shiny-label'>Shiny</label>
-                    <select className='form-input shiny-input'
-                      value={isShiny}
-                      onChange={(e) => setIsShiny(e.target.value)}>
-                        <option value={false}>No</option>
-                        <option value={true}>Yes</option>
-                    </select>
-                    {/* <img src={arrow} alt="arrow_down.png" className='arrow-icon' /> */}
                 </div>
             </div>
             <div className='typing-entry'>

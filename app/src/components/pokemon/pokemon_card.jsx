@@ -46,13 +46,10 @@ export function Pokemon_cards({ filters, clear, setClear }) {
       // console.log('filters are: greater than zero', filters);
       let queryString = 'https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/searchPokemon?'
       if (filters.name != '') {
-        queryString = queryString + `name=${filters.name.toLowerCase()}`;
+        queryString = queryString + `name=${filters.name.toLowerCase()}&`;
       }
       if (filters.id != 0) {
         queryString = queryString + `id=${filters.id}&`;
-      }
-      if (filters.isShiny != false) {
-        queryString = queryString + `isShiny=${filters.isShiny}&`;
       }
       if (filters.type.length != 0) {
         queryString = queryString + `type=${filters.type}&`;
@@ -81,6 +78,7 @@ export function Pokemon_cards({ filters, clear, setClear }) {
           }
         })
         .then((data) => {
+          data.sort((a, b) => a.id - b.id);
           setDisplayIndex(1);
           setPageIndex(0);
           setPokemonData(data);
@@ -162,7 +160,7 @@ export function Pokemon_cards({ filters, clear, setClear }) {
   return (
     <>
       {failed && !pokemonData && <div className="failed">
-                <h1 className="failed-text">Invalid Search Parameters</h1>
+                <h1 className="failed-text">No Pokémon found matching the criteria</h1>
             </div>}
       {!failed && !pokemonData && <div className="ring">Loading<span className='ring-span'></span></div>}
       {!failed && pokemonData && <p className='page-index'>{`${displayIndex}`}</p>}
