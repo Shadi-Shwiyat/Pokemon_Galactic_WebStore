@@ -1,4 +1,3 @@
-/* ItemCardStyles.css */
 .item-app {
   display: flex;
   flex-direction: column;
@@ -9,25 +8,33 @@
 
 .item-container {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  margin: 20px;
+  flex-wrap: wrap;
+  max-width: 1326px;
+  margin-bottom: 20px;
 }
 
 .item-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px solid #FFD700;
-  box-shadow: 0 0 8px #FFD700;
-  border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0.5);
-  width: 120px;
-  height: 150px;
-  margin: 5px;
+  border: 2px solid #EDFF01;
+  box-shadow: 0 0 16px 2px #EDFF01;
+  border-radius: 16px;
+  background-color: rgba(0, 0, 0, 0.396);
+  width: 188px;
+  height: 355px;
+  margin: 13px;
   padding: 10px;
-  color: #FFFFFF;
+  color: rgb(255, 255, 255);
   font-family: Arial, sans-serif;
+}
+
+.item-sprite {
+  width: auto;
+  height: 100px; 
+  margin-top: 6px;
+  margin-bottom: 6px;
 }
 
 .loading {
@@ -66,7 +73,7 @@
 }
 
 .page-status {
-  color: #FFFFFF;
+  color: #EDFF01;
   margin-left: 20px;
   font-size: 16px;
 }

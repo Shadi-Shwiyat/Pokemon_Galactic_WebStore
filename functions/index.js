@@ -3,8 +3,6 @@ const { createPokemon, getPokemonById, searchPokemon, getAllPokemon, getPokemonS
 const { searchItems, getItemById, getItemSprite, createItem, updateItem, deleteItem, getAllItems, getMarketplaceItemById, createMarketplaceItem } = require('./itemsFunctions');
 const { updateMarketplace, purchasePokemon } = require('./marketplaceFunctions');
 const { signup, signin, verifyToken, verifyEmail, resetPassword, updatePassword, signout, getUserPokemons} = require('./authenticationFunctions')
-// const logger = require('./logger');
-// const { sendErrorEmail } = require('./emailAlerts');
 
 // Export the pokemon functions to be used
 exports.createPokemon = createPokemon;
@@ -62,7 +60,3 @@ exports.getUserPokemons = getUserPokemons;
 // Export the new Marketplace update function
 exports.updateMarketplace = updateMarketplace;
 exports.purchasePokemon = purchasePokemon;
-
-// // Export the logger and email functions
-// exports.logger = logger;
-// exports.sendErrorEmail = sendErrorEmail;

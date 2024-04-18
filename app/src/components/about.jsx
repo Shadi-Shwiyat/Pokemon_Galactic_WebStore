@@ -86,7 +86,7 @@ export function About() {
           typesInfo={["grass", "dark"]}
           height={2.03}
           weight={97.5}
-          moves={["Node.js", "SQL"]}
+          moves={["FullStack, Frontend Logic", "UI/UX Design", "API Integration"]}
           level={30}
           description="Shadi is a full-stack developer with a passion for creating user-friendly applications. He specializes in front-end development and connecting the front-end to the back-end."
           onShinyClick={handleShinyClick}
