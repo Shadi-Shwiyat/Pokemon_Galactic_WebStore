@@ -85,57 +85,81 @@ exports.updateMarketplace = functions.pubsub.schedule('0 10,16,22,4 * * *')
 
 // Purchase a Pokemon from the Marketplace
 exports.purchasePokemon = functions.https.onRequest((req, res) => {
-    cors(req, res, async () => {
-      if (req.method !== 'POST') {
-        return res.status(405).send('Method Not Allowed');
-      }
-      const { userId, pokemonId } = req.body;
-  
-      if (!userId || !pokemonId) {
-        return res.status(400).send('User ID and Pokemon ID are required');
-      }
-  
-      const db = admin.firestore();
-      const userRef = db.collection('users').doc(userId);
-      const pokemonRef = db.collection('Marketplace').doc(pokemonId);
-  
-      try {
-        await db.runTransaction(async (transaction) => {
-          const userDoc = await transaction.get(userRef);
-          const pokemonDoc = await transaction.get(pokemonRef);
-  
-          if (!pokemonDoc.exists) {
-            throw new Error('Pokemon not found in marketplace');
-          }
-  
-          if (!userDoc.exists) {
-            throw new Error('User not found');
-          }
-  
-          const user = userDoc.data();
-          const pokemon = pokemonDoc.data();
-          const price = pokemon.marketplace_cost;
-  
-          if (user.pokeDollars < price) {
-            throw new Error('Insufficient PokeDollars');
-          }
-  
-          // Deduct the price from user's PokeDollars
-          transaction.update(userRef, {
-            pokeDollars: admin.firestore.FieldValue.increment(-price)
+  cors(req, res, async () => {
+    if (req.method !== 'POST') {
+      return res.status(405).send('Method Not Allowed');
+    }
+
+    const { userId, totalCost } = req.body;
+
+    if (!userId || totalCost === undefined) {
+      return res.status(400).send('Missing userId or totalCost');
+    }
+
+    const db = admin.firestore();
+    const userRef = db.collection('users').doc(userId);
+
+    try {
+      await db.runTransaction(async (transaction) => {
+        const userDoc = await transaction.get(userRef);
+        if (!userDoc.exists) {
+          throw new Error('User not found');
+        }
+
+        const userData = userDoc.data();
+        if (userData.pokeDollars < totalCost) {
+          res.send({
+            success: false,
+            errorMessage: 'Insufficient funds. Please add more PokeDollars to complete this purchase.'
           });
-  
-          // Add Pokemon to user's collection
-          const userPokemonRef = userRef.collection('pokemons').doc(pokemonId);
-          transaction.set(userPokemonRef, pokemon);
-  
-          // Optional: Remove Pokemon from marketplace
-          transaction.delete(pokemonRef);
-        });
-  
-        res.status(200).send('Purchase successful');
-      } catch (error) {
-        res.status(500).send(error.message);
-      }
-    });
+        } else {
+          transaction.update(userRef, {
+            pokeDollars: admin.firestore.FieldValue.increment(-totalCost)
+          });
+
+          res.send({
+            success: true,
+            userData: {
+              username: userData.username,
+              pokeDollars: userData.pokeDollars - totalCost
+            }
+          });
+        }
+      });
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
   });
+});
+
+// Get UserData for the user
+exports.getUserData = functions.https.onRequest(async (req, res) => {
+  const cors = require('cors')({origin: true});
+  cors(req, res, async () => {
+    // Only allow GET requests
+    if (req.method !== 'GET') {
+      return res.status(405).send({error: 'Method Not Allowed'});
+    }
+
+    // Get user ID from the query string
+    const userId = req.query.userId;
+    if (!userId) {
+      return res.status(400).send({error: 'User ID is required'});
+    }
+
+    try {
+      const userRef = admin.firestore().collection('users').doc(userId);
+      const doc = await userRef.get();
+
+      if (!doc.exists) {
+        return res.status(404).send({error: 'User not found'});
+      }
+
+      const userData = doc.data();
+      return res.status(200).send(userData);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      res.status(500).send({error: 'Internal Server Error'});
+    }
+  });
+});

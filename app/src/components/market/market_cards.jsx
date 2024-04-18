@@ -1,23 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import x_icon from '../../assets/icons/x.png';
+// import x_icon from '../../assets/icons/x.png';
 import shiny_icon from '../../assets/icons/shiny.png'
 import cart_icon from '../../assets/icons/cart.png';
 import * as types from '../../assets/types/types.js';
 
 export function Market_cards() {
-  const [pokemonData, setPokemonData] = useState(null);
+  const [pokemonData, setPokemonData] = useState([]);
+  const [cart, setCart] = useState([]);
   const [pageIndex, setPageIndex] = useState(0);
   const [displayIndex, setDisplayIndex] = useState(1);
 
-  // Fetch all pokemon data for market on page load
   useEffect(() => {
     fetch("https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllPokemonMarketplace")
       .then(res => res.json())
-      .then((data) => {
-        // console.log(data[0]);
-        setPokemonData(data);
-      });
+      .then(setPokemonData);
+
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
   }, []);
+
+  function addToCart(pokemon) {
+    // Check if the Pokémon is already in the cart
+    const isAlreadyAdded = cart.some(item => item.id === pokemon.id);
+
+    if (!isAlreadyAdded) {
+        const updatedCart = [...cart, pokemon];
+        setCart(updatedCart);
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+        alert(`Added ${pokemon.name} to the cart. Total items: ${updatedCart.length}`);
+    } else {
+        alert(`${pokemon.name} is already in the cart.`);
+    }
+}
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -80,7 +96,7 @@ export function Market_cards() {
             <h3 className='card-level'>{`Lv. ${pokemon.level}`}</h3>
             <div className='card-price'>
               <h3 className='price'>{`₽ ${pokemon.name === 'bidoof' && pokemon.is_shiny === true ? formatCost('9999999999') : formatCost(pokemon.marketplace_cost)}`}</h3>
-              <img className="cart-icon" src={cart_icon} alt="cart.png" />
+              <img className="cart-icon" src={cart_icon} alt="cart.png" onClick={() => addToCart(pokemon)} />
             </div>
           </div>
         ))}
