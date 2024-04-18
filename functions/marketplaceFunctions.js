@@ -85,70 +85,79 @@ exports.updateMarketplace = functions.pubsub.schedule('0 10,16,22,4 * * *')
 
 // Purchase a Pokemon from the Marketplace
 exports.purchasePokemon = functions.https.onRequest((req, res) => {
-  cors(req, res, async () => {
-      if (req.method !== 'POST') {
-          return res.status(405).send({ message: 'Method not allowed' });
-      }
-
-      const { userId, pokemonId } = req.body;
-
-      if (!userId || !pokemonId) {
-          return res.status(400).send({ message: 'Missing userId or pokemonId' });
-      }
-
-      const db = admin.firestore();
-      const userRef = db.collection('users').doc(userId);
-      // Query the Marketplace for the Pokemon with the specified ID
-      const pokemonQuery = db.collection('Marketplace').where('id', '==', pokemonId);
-
+    cors(req, res, async () => {
       try {
-          await db.runTransaction(async (transaction) => {
-              const userDoc = await transaction.get(userRef);
-              if (!userDoc.exists) {
-                  throw new Error('User not found');
-              }
-
-              const pokemonQuerySnapshot = await transaction.get(pokemonQuery);
-              if (pokemonQuerySnapshot.empty) {
-                  throw new Error('Pokemon not found in Marketplace');
-              }
-
-              // Assuming there's only one match for each unique Pokémon ID
-              const pokemonDoc = pokemonQuerySnapshot.docs[0];
-              const pokemonData = pokemonDoc.data();
-              const totalCost = pokemonData.marketplace_cost;
-
-              if (userDoc.data().pokeDollars < totalCost) {
-                  throw new Error('Insufficient funds');
-              }
-
-              // Deduct pokeDollars from the user's balance
-              transaction.update(userRef, {
-                  pokeDollars: admin.firestore.FieldValue.increment(-totalCost)
-              });
-
-              // Add the purchased Pokemon data to the user's collection
-              const userPokemonRef = db.collection('user_pokemon').doc();
-              transaction.set(userPokemonRef, pokemonData);
-
-              // Optionally, remove the Pokémon from the marketplace
-              transaction.delete(pokemonDoc.ref);
-
-              return res.status(200).send({
-                  success: true,
-                  message: 'Checkout successful!',
-                  userData: {
-                      username: userDoc.data().username,
-                      pokeDollars: userDoc.data().pokeDollars - totalCost
-                  }
-              });
+        // Validate HTTP method
+        if (req.method !== 'POST') {
+          res.status(405).send({ message: 'Method not allowed' });
+          return;
+        }
+  
+        // Validate presence of userID and pokemonID
+        const { userId, pokemonId } = req.body;
+        if (!userId || !pokemonId) {
+          res.status(400).send({ message: 'Missing userId or pokemonId' });
+          return;
+        }
+  
+        const db = admin.firestore();
+        const userRef = db.collection('users').doc(userId);
+        const pokemonQuery = db.collection('Marketplace').where('id', '==', pokemonId);
+  
+        await db.runTransaction(async (transaction) => {
+          const userDoc = await transaction.get(userRef);
+          if (!userDoc.exists) {
+            throw new Error('User not found');
+          }
+  
+          const pokemonQuerySnapshot = await transaction.get(pokemonQuery);
+          if (pokemonQuerySnapshot.empty) {
+            throw new Error('Pokemon not found in Marketplace');
+          }
+  
+          const pokemonDoc = pokemonQuerySnapshot.docs[0];
+          const pokemonData = pokemonDoc.data();
+          const totalCost = pokemonData.marketplace_cost;
+  
+          if (userDoc.data().pokeDollars < totalCost) {
+            throw new Error('Insufficient funds');
+          }
+  
+          // Deduct pokeDollars from the user's balance and update the user's document
+          transaction.update(userRef, {
+            pokeDollars: admin.firestore.FieldValue.increment(-totalCost)
           });
+  
+          // Add the purchased Pokemon data to the user's collection
+          const userPokemonRef = db.collection('user_pokemon').doc();
+          transaction.set(userPokemonRef, {
+            ...pokemonData,
+            ownedDate: new Date() // add additional data like purchase date
+          });
+  
+          // Optionally, remove the Pokémon from the marketplace
+          transaction.delete(pokemonDoc.ref);
+  
+          // Prepare successful response data to be sent after transaction
+          res.locals.response = {
+            success: true,
+            message: 'Checkout successful!',
+            userData: {
+              username: userDoc.data().username,
+              pokeDollars: userDoc.data().pokeDollars - totalCost
+            }
+          };
+        });
+  
+        // Send the successful response outside of the transaction
+        res.status(200).send(res.locals.response);
+  
       } catch (error) {
-          console.error('Error during purchase:', error);
-          return res.status(500).send({ error: error.message });
+        console.error('Error during purchase:', error);
+        res.status(500).send({ error: error.message });
       }
+    });
   });
-});
 
 
 
