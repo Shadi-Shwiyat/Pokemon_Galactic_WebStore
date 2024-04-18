@@ -4,7 +4,7 @@ import { Market } from './market/market.jsx';
 import { Pokemon } from './pokemon/pokemon.jsx';
 import { Items } from './items/items.jsx';
 import { About } from './about.jsx';
-import { Cart } from './cart.jsx';
+import { Cart } from './cart/cart.jsx';
 
 export function Header() {
   const [currentPage, setCurrentPage] = useState('market');
