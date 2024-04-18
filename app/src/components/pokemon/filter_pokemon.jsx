@@ -26,6 +26,7 @@ export function Pokemon_filter({ filters, setFilters }) {
   });
 
   useEffect(() => {
+    console.log('filter use effect')
     const filter_object = {
       name: name,
       id: id,
@@ -38,7 +39,7 @@ export function Pokemon_filter({ filters, setFilters }) {
       strictMatch: strictMatch,
       total_filters: total_filters
     }
-    // console.log(filter_object)
+    // console.log(filter_object.total_filters);
     setFilters(filter_object)
   }, [name, id, isShiny, type, moves, ability, region, generation, strictMatch, total_filters]);
 
@@ -48,6 +49,7 @@ export function Pokemon_filter({ filters, setFilters }) {
   };
 
   const handleButtonClick = (e) => {
+    console.log('handlebuttonclick')
     // Stop event propagation
     e.stopPropagation();
     e.preventDefault();
@@ -56,6 +58,7 @@ export function Pokemon_filter({ filters, setFilters }) {
   };
 
   const resetFormValues = (e) => {
+    console.log('resetformvalues')
     e.preventDefault();
     setName('');
     setId(0);
@@ -77,7 +80,9 @@ export function Pokemon_filter({ filters, setFilters }) {
   };
 
   const submitForm = (e) => {
+    console.log('submitform')
     e.preventDefault();
+    let totalCount = 0;
     for (const item in filters) {
       if (
         filters[item] !== '' &&
@@ -86,14 +91,17 @@ export function Pokemon_filter({ filters, setFilters }) {
         (!Array.isArray(filters[item]) || filters[item].length > 0)
       ) {
         // Item passes all conditions, add to total filters
-        setTotalFilters(total_filters + 1);
+        totalCount++;
       }
     }
-    console.log(filters.total_filters);
-    // resetFormValues(e);
+    // console.log("Total count is", totalCount);
+    setTotalFilters(totalCount);
+    // console.log("filters.total_filters", total_filters);
+    toggleExpanded();
   }
 
   const handleTypeSelect = (type) => {
+    console.log('handletypeselect')
     // Toggle selection state for the clicked typing image
     setTypingSelection(prevState => ({
       ...prevState,

@@ -11,21 +11,40 @@ export function Pokemon_cards({ filters }) {
 
   // Fetch all pokemon data for market on page load
   useEffect(() => {
+    console.log('filters changed');
     if (filters.total_filters > 0) {
-      console.log('filters are: greater than zero', filters.total_filters);
+      // console.log('filters are: greater than zero', filters);
+      let queryString = 'https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/searchPokemon?'
+      if (filters.name != '') {
+        queryString = queryString + `name=${filters.name}`
+      }
+      fetch(queryString)
+        .then(res => res.json())
+        .then((data) => {
+          setPageIndex(0);
+          setPokemonData(data);
+        });
+    } else {
+        fetch("https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllPokemon")
+          .then(res => res.json())
+          .then((data) => {
+            setPageIndex(0);
+            setPokemonData(data);
+          });
     }
-    fetch("https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllPokemon")
-      .then(res => res.json())
-      .then((data) => {
-        setPokemonData(data);
-      });
   }, [filters]);
 
+  useEffect(() => {
+    console.log("Pokemon data changed:", pokemonData.length);
+  }, [pokemonData])
+
   function capitalizeFirstLetter(string) {
+    // console.log('capitalizefirstletter')
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   function capitalizeGeneration(str) {
+    // console.log('capitalizegeneration')
     // Split the string into an array of words separated by hyphen
     const words = str.split('-');
     // Capitalize the first letter of the first word
@@ -37,6 +56,7 @@ export function Pokemon_cards({ filters }) {
 }
 
   function handleNextPage(bool) {
+    // console.log('handlenexpage')
     if(bool) {
       setPageIndex(prevIndex => prevIndex + 20);
     } else {
@@ -46,6 +66,7 @@ export function Pokemon_cards({ filters }) {
   }
 
   function handlePreviousPage(bool) {
+    // console.log('handleprevpage')
     if(bool) {
       setPageIndex(prevIndex => Math.max(prevIndex - 20, 0));
     } else {
