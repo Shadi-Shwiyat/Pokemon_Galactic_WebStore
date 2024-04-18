@@ -313,11 +313,11 @@ exports.searchMarketplace = functions.https.onRequest((req, res) => {
   });
 });
 
-// Get all items in the Marketplace
+// Get all items
 exports.getAllItems = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
     const db = admin.firestore();
-    let query = db.collection('Marketplace').orderBy('id');
+    let query = db.collection('ItemList').orderBy('id');
 
     try {
       const snapshot = await query.get();
