@@ -216,7 +216,7 @@ export function Market_filter() {
               <input
                 className='form-input move-input'
                 type="text"
-                placeholder='e.g. Vine whip, Mega drain'
+                placeholder='e.g. Vine whip (Enter one move)'
                 value={moves}
                 onChange={(e) => setMoves(e.target.value)}
               />

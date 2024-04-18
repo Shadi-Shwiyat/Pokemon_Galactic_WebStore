@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import filter_icon from '../../assets/icons/filter.png';
 import x_icon from '../../assets/icons/x.png'
 import arrow from '../../assets/icons/arrow_down.png'
 import * as types from '../../assets/types/types.js'
 
-export function Pokemon_filter({ setFilters }) {
+export function Pokemon_filter({ filters, setFilters }) {
   const [expanded, setExpanded] = useState(true);
   const [name, setName] = useState('');
-  const [id, setId] = useState(1);
+  const [id, setId] = useState(0);
   const [isShiny, setIsShiny] = useState(false);
   const [type, setType] = useState([]);
   const [moves, setMoves] = useState([]);
   const [ability, setAbility] = useState('');
   const [region, setRegion] = useState('');
   const [generation, setGeneration] = useState('');
-  const [minCost, setMinCost] = useState('');
-  const [maxCost, setMaxCost] = useState('');
   const [strictMatch, setStrictMatch] = useState(false);
+  const [total_filters, setTotalFilters] = useState(0);
   // Array to store selection state for each typing image
   const [typingSelection, setTypingSelection] = useState({
     normal: false, fire: false, water: false, electric: false,
@@ -24,7 +23,24 @@ export function Pokemon_filter({ setFilters }) {
     ground: false, flying: false, psychic: false, bug: false,
     rock: false, ghost: false, dragon: false, dark: false,
     steel: false, fairy: false
-    });
+  });
+
+  useEffect(() => {
+    const filter_object = {
+      name: name,
+      id: id,
+      isShiny: isShiny,
+      type: type,
+      moves: moves,
+      ability: ability,
+      region: region,
+      generation: generation,
+      strictMatch: strictMatch,
+      total_filters: total_filters
+    }
+    // console.log(filter_object)
+    setFilters(filter_object)
+  }, [name, id, isShiny, type, moves, ability, region, generation, strictMatch, total_filters]);
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -42,15 +58,14 @@ export function Pokemon_filter({ setFilters }) {
   const resetFormValues = (e) => {
     e.preventDefault();
     setName('');
-    setId(1);
+    setId(0);
     setIsShiny(false);
     setMoves('');
     setAbility('');
     setRegion('');
     setGeneration('');
-    setMinCost('');
-    setMaxCost('');
     setStrictMatch(false);
+    setTotalFilters(0);
     setTypingSelection({
       normal: false, fire: false, water: false, electric: false,
       grass: false, ice: false, fighting: false, poison: false,
@@ -60,6 +75,23 @@ export function Pokemon_filter({ setFilters }) {
     });
     setType([]);
   };
+
+  const submitForm = (e) => {
+    e.preventDefault();
+    for (const item in filters) {
+      if (
+        filters[item] !== '' &&
+        filters[item] !== 0 &&
+        filters[item] !== false &&
+        (!Array.isArray(filters[item]) || filters[item].length > 0)
+      ) {
+        // Item passes all conditions, add to total filters
+        setTotalFilters(total_filters + 1);
+      }
+    }
+    console.log(filters.total_filters);
+    // resetFormValues(e);
+  }
 
   const handleTypeSelect = (type) => {
     // Toggle selection state for the clicked typing image
@@ -107,7 +139,7 @@ export function Pokemon_filter({ setFilters }) {
                     <input
                         className='form-input id-input'
                         type="number"
-                        min='1'
+                        min='0'
                         max='893'
                         value={id}
                         onChange={(e) => setId(e.target.value)}
@@ -216,7 +248,7 @@ export function Pokemon_filter({ setFilters }) {
               <input
                 className='form-input move-input'
                 type="text"
-                placeholder='e.g. Vine whip, Mega drain'
+                placeholder='e.g. Vine whip (Enter one move)'
                 value={moves}
                 onChange={(e) => setMoves(e.target.value)}
               />
@@ -281,7 +313,7 @@ export function Pokemon_filter({ setFilters }) {
             {/* <p>{type}</p> */}
             <div className='form-buttons'>
                 <button className='form-clear' onClick={resetFormValues}>Clear</button>
-                <button className='form-submit'>Submit</button>
+                <button className='form-submit' onClick={submitForm}>Submit</button>
             </div>
         </form>
       </div>

@@ -15,7 +15,7 @@ function App() {
     if (loggedIn && loginTimestamp) {
         const currentTime = new Date().getTime();
         const elapsed = currentTime - parseInt(loginTimestamp, 10);
-        const elapsedHours = elapsed / (1000);
+        const elapsedHours = elapsed / (1000 * 60 * 60);
         if (elapsedHours < 1) {
             // Session is still valid
             setIsLoggedIn(true);

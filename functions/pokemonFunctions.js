@@ -103,7 +103,7 @@ exports.getPokemonById = functions.https.onRequest((req, res) => {
 // Search for a Pokemon based on various criteria
 exports.searchPokemon = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
-    const { type, generation, name, region, moves, abilities, id, sprite, min_marketplace_cost, max_marketplace_cost, match_all_filters } = req.query;
+    const { name, id, isShiny, type, moves, ability, region, generation, strictMatch } = req.query;
     const db = admin.firestore();
     let query = db.collection('PokemonList');
 
@@ -113,19 +113,9 @@ exports.searchPokemon = functions.https.onRequest((req, res) => {
     if (name) query = query.where('name', '==', name);
     if (region) query = query.where('region', '==', region);
     if (moves) query = query.where('moves', 'array-contains', moves);
-    if (abilities) query = query.where('abilities', 'array-contains', abilities);
+    if (ability) query = query.where('abilities', 'array-contains', abilities);
     if (id) query = query.where('id', '==', parseInt(id));
-    if (sprite) query = query.where(`sprites.${sprite}`, '!=', null);
-
-    // Applying marketplace_cost range filter
-    if (min_marketplace_cost && max_marketplace_cost) {
-      query = query.where('marketplace_cost', '>=', parseInt(min_marketplace_cost))
-                   .where('marketplace_cost', '<=', parseInt(max_marketplace_cost));
-    } else if (min_marketplace_cost) {
-      query = query.where('marketplace_cost', '>=', parseInt(min_marketplace_cost));
-    } else if (max_marketplace_cost) {
-      query = query.where('marketplace_cost', '<=', parseInt(max_marketplace_cost));
-    }
+    if (isShiny) query = query.where(`sprites.shiny`, '!=', null);
 
     try {
       const snapshot = await query.get();
@@ -136,7 +126,7 @@ exports.searchPokemon = functions.https.onRequest((req, res) => {
       let pokemon = snapshot.docs.map(doc => doc.data());
 
       // Implementing match all filters functionality
-      if (match_all_filters === 'true') {
+      if (strictMatch === 'true') {
         Object.keys(req.query).forEach(key => {
           if (key !== 'match_all_filters' && req.query[key]) {
             pokemon = pokemon.filter(p => p[key] === req.query[key]);

@@ -11,15 +11,15 @@ export function Pokemon_cards({ filters }) {
 
   // Fetch all pokemon data for market on page load
   useEffect(() => {
-    if (filters.length > 0) {
-      console.log('filters are:', filters);
+    if (filters.total_filters > 0) {
+      console.log('filters are: greater than zero', filters.total_filters);
     }
     fetch("https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllPokemon")
       .then(res => res.json())
       .then((data) => {
         setPokemonData(data);
       });
-  }, []);
+  }, [filters]);
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
