@@ -130,7 +130,7 @@ We need to build more test but we have a few to show how we can test the API end
 
 # Contributors ![Pokemon .gif](./data/sprites/pokemon/pokemon_shiny_680.gif)
 
-<div style="display: flex; justify-content: space-around;">
+<div style="display: flex;">
     <div>
         <img src="./pictures/rob.jpg" alt="Rob" width="200"/>
         <p>Rob Farley</p>
