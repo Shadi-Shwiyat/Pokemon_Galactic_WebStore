@@ -113,7 +113,7 @@ exports.searchPokemon = functions.https.onRequest((req, res) => {
     if (name) query = query.where('name', '==', name);
     if (region) query = query.where('region', '==', region);
     if (moves) query = query.where('moves', 'array-contains', moves);
-    if (ability) query = query.where('abilities', 'array-contains', abilities);
+    if (ability) query = query.where('abilities', 'array-contains', ability);
     if (id) query = query.where('id', '==', parseInt(id));
     if (isShiny) query = query.where(`sprites.shiny`, '!=', null);
 

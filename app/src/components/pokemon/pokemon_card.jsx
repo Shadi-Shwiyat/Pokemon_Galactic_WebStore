@@ -49,26 +49,28 @@ export function Pokemon_cards({ filters, clear, setClear }) {
         queryString = queryString + `name=${filters.name.toLowerCase()}`;
       }
       if (filters.id != 0) {
-        queryString = queryString + `id=${filters.id}`;
+        queryString = queryString + `id=${filters.id}&`;
       }
       if (filters.isShiny != false) {
-        queryString = queryString + `isShiny=${filters.isShiny}`;
+        queryString = queryString + `isShiny=${filters.isShiny}&`;
       }
       if (filters.type.length != 0) {
-        queryString = queryString + `type=${filters.type}`;
+        queryString = queryString + `type=${filters.type}&`;
       }
       if (filters.moves != '') {
-        queryString = queryString + `moves=${formatString(filters.moves)}`;
+        queryString = queryString + `moves=${formatString(filters.moves)}&`;
       }
       if (filters.ability != '') {
-        queryString = queryString + `ability=${formatString(filters.ability)}`;
+        queryString = queryString + `ability=${formatString(filters.ability)}&`;
       }
       if (filters.region != '') {
-        queryString = queryString + `region=${filters.region}`;
+        queryString = queryString + `region=${filters.region}&`;
       }
       if (filters.generation != '') {
-        queryString = queryString + `generation=${filters.generation}`;
+        queryString = queryString + `generation=${filters.generation}&`;
       }
+      queryString = queryString + `strictMatch=${filters.strictMatch}`;
+      console.log(queryString);
       try {
         fetch(queryString)
         .then((res) => {
