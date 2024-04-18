@@ -1,6 +1,6 @@
 const { admin } = require('./firebaseAdminConfig');
 const functions = require('firebase-functions');
-const cors = require('cors')({origin: true});
+const cors = require('cors')({ origin: true });
 
 // Helper function to randomly select documents, assign a random level, and determine if shiny
 async function getRandomPokemon() {
@@ -47,20 +47,20 @@ async function getRandomPokemon() {
 
 // Function to calculate market price based on level
 function calculateMarketPrice(level, cost) {
-  let price;
-  if (level === 100) {
-      price = cost * 2;
-  } else if (level === 1) {
-      price = cost * 0.5;
-  } else {
-      price = cost * (0.5 + (1.5 * (level - 1) / 99));
-  }
-  return Math.round(price); // Round to the nearest whole number
+    let price;
+    if (level === 100) {
+        price = cost * 2;
+    } else if (level === 1) {
+        price = cost * 0.5;
+    } else {
+        price = cost * (0.5 + (1.5 * (level - 1) / 99));
+    }
+    return Math.round(price); // Round to the nearest whole number
 }
 
 // Cloud function to update the Marketplace every 6 hours starting at 04:00 CST
 exports.updateMarketplace = functions.pubsub.schedule('0 10,16,22,4 * * *')
-    .timeZone('UTC') // Set the timezone to UTC
+    .timeZone('America/Chicago') // Set the timezone to your desired timezone
     .onRun(async () => {
         const randomPokemon = await getRandomPokemon();
         const db = admin.firestore();
@@ -86,80 +86,100 @@ exports.updateMarketplace = functions.pubsub.schedule('0 10,16,22,4 * * *')
 // Purchase a Pokemon from the Marketplace
 exports.purchasePokemon = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
-    if (req.method !== 'POST') {
-      return res.status(405).send('Method Not Allowed');
-    }
+      if (req.method !== 'POST') {
+          return res.status(405).send({ message: 'Method not allowed' });
+      }
 
-    const { userId, totalCost } = req.body;
+      const { userId, pokemonId } = req.body;
 
-    if (!userId || totalCost === undefined) {
-      return res.status(400).send('Missing userId or totalCost');
-    }
+      if (!userId || !pokemonId) {
+          return res.status(400).send({ message: 'Missing userId or pokemonId' });
+      }
 
-    const db = admin.firestore();
-    const userRef = db.collection('users').doc(userId);
+      const db = admin.firestore();
+      const userRef = db.collection('users').doc(userId);
+      // Query the Marketplace for the Pokemon with the specified ID
+      const pokemonQuery = db.collection('Marketplace').where('id', '==', pokemonId);
 
-    try {
-      await db.runTransaction(async (transaction) => {
-        const userDoc = await transaction.get(userRef);
-        if (!userDoc.exists) {
-          throw new Error('User not found');
-        }
+      try {
+          await db.runTransaction(async (transaction) => {
+              const userDoc = await transaction.get(userRef);
+              if (!userDoc.exists) {
+                  throw new Error('User not found');
+              }
 
-        const userData = userDoc.data();
-        if (userData.pokeDollars < totalCost) {
-          res.send({
-            success: false,
-            errorMessage: 'Insufficient funds. Please add more PokeDollars to complete this purchase.'
+              const pokemonQuerySnapshot = await transaction.get(pokemonQuery);
+              if (pokemonQuerySnapshot.empty) {
+                  throw new Error('Pokemon not found in Marketplace');
+              }
+
+              // Assuming there's only one match for each unique Pokémon ID
+              const pokemonDoc = pokemonQuerySnapshot.docs[0];
+              const pokemonData = pokemonDoc.data();
+              const totalCost = pokemonData.marketplace_cost;
+
+              if (userDoc.data().pokeDollars < totalCost) {
+                  throw new Error('Insufficient funds');
+              }
+
+              // Deduct pokeDollars from the user's balance
+              transaction.update(userRef, {
+                  pokeDollars: admin.firestore.FieldValue.increment(-totalCost)
+              });
+
+              // Add the purchased Pokemon data to the user's collection
+              const userPokemonRef = db.collection('user_pokemon').doc();
+              transaction.set(userPokemonRef, pokemonData);
+
+              // Optionally, remove the Pokémon from the marketplace
+              transaction.delete(pokemonDoc.ref);
+
+              return res.status(200).send({
+                  success: true,
+                  message: 'Checkout successful!',
+                  userData: {
+                      username: userDoc.data().username,
+                      pokeDollars: userDoc.data().pokeDollars - totalCost
+                  }
+              });
           });
-        } else {
-          transaction.update(userRef, {
-            pokeDollars: admin.firestore.FieldValue.increment(-totalCost)
-          });
-
-          res.send({
-            success: true,
-            userData: {
-              username: userData.username,
-              pokeDollars: userData.pokeDollars - totalCost
-            }
-          });
-        }
-      });
-    } catch (error) {
-      res.status(500).send(error.message);
-    }
+      } catch (error) {
+          console.error('Error during purchase:', error);
+          return res.status(500).send({ error: error.message });
+      }
   });
 });
 
+
+
+
 // Get UserData for the user
 exports.getUserData = functions.https.onRequest(async (req, res) => {
-  const cors = require('cors')({origin: true});
-  cors(req, res, async () => {
-    // Only allow GET requests
-    if (req.method !== 'GET') {
-      return res.status(405).send({error: 'Method Not Allowed'});
-    }
+    cors(req, res, async () => {
+        // Only allow GET requests
+        if (req.method !== 'GET') {
+            return res.status(405).send({ error: 'Method Not Allowed' });
+        }
 
-    // Get user ID from the query string
-    const userId = req.query.userId;
-    if (!userId) {
-      return res.status(400).send({error: 'User ID is required'});
-    }
+        // Get user ID from the query string
+        const userId = req.query.userId;
+        if (!userId) {
+            return res.status(400).send({ error: 'User ID is required' });
+        }
 
-    try {
-      const userRef = admin.firestore().collection('users').doc(userId);
-      const doc = await userRef.get();
+        try {
+            const userRef = admin.firestore().collection('users').doc(userId);
+            const doc = await userRef.get();
 
-      if (!doc.exists) {
-        return res.status(404).send({error: 'User not found'});
-      }
+            if (!doc.exists) {
+                return res.status(404).send({ error: 'User not found' });
+            }
 
-      const userData = doc.data();
-      return res.status(200).send(userData);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-      res.status(500).send({error: 'Internal Server Error'});
-    }
-  });
+            const userData = doc.data();
+            return res.status(200).send(userData);
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            res.status(500).send({ error: 'Internal Server Error' });
+        }
+    });
 });

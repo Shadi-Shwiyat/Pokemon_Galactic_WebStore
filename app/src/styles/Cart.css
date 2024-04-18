@@ -1,0 +1,81 @@
+.cart-container {
+  text-align: center;
+  color: #FFFFFF;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.cart-header, .cart-footer {
+  color: #EDFF01;
+  margin-bottom: 20px;
+  font-size: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 23px;
+  margin-bottom: 33px;
+}
+
+.cart-item {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid #EDFF01;
+  box-shadow: 0 0 16px 2px #EDFF01;
+  border-radius: 16px;
+  background-color: rgba(0, 0, 0, 0.396);
+  width: 90%; /* Adjust width to match your design */
+  margin: 13px;
+  padding: 10px;
+}
+
+.cart-item-image {
+  height: 90px; /* Adjust height as necessary */
+  width: auto;
+  margin-right: 20px;
+}
+
+.cart-item-details {
+  flex-grow: 1;
+  color: white;
+  text-align: left;
+}
+
+.cart-pagination-buttons button {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid #EDFF01;
+  box-shadow: 0 0 6px 2px #EDFF01;
+  color: #EDFF01;
+  padding: 10px 20px;
+  font-size: 23px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 16px;
+}
+
+.cart-pagination-buttons button:hover {
+  box-shadow: 0 0 13px 3px #EDFF01;
+}
+
+button {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid #EDFF01;
+  color: #EDFF01;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+button:hover {
+  box-shadow: 0 0 10px 3px #EDFF01;
+}

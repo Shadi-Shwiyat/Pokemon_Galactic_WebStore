@@ -1,7 +1,7 @@
 // Import the functions from the other files
 const { createPokemon, getPokemonById, searchPokemon, getAllPokemon, getPokemonSpriteById, getPokemonGifByName, getPokemonByType, getPokemonByGeneration, getPokemonByName, getPokemonByRegion, getPokemonByMoves, getPokemonByAbilities, getAllPokemonMarketplace, getPokemonByAbilitiesMarketplace, getPokemonByGenerationMarketplace, getPokemonByIdMarketplace, getPokemonByMovesMarketplace, getPokemonByNameMarketplace, getPokemonByRegionMarketplace, getPokemonByTypeMarketplace, getPokemonGifByNameMarketplace, getPokemonSpriteByIdMarketplace, searchPokemonMarketplace, createPokemonMarketplace } = require('./pokemonFunctions');
 const { searchItems, getItemById, getItemSprite, createItem, updateItem, deleteItem, getAllItems, getMarketplaceItemById, createMarketplaceItem } = require('./itemsFunctions');
-const { updateMarketplace, purchasePokemon } = require('./marketplaceFunctions');
+const { updateMarketplace, purchasePokemon, getUserData} = require('./marketplaceFunctions');
 const { signup, signin, verifyToken, verifyEmail, resetPassword, updatePassword, signout, getUserPokemons} = require('./authenticationFunctions')
 
 // Export the pokemon functions to be used
@@ -60,3 +60,4 @@ exports.getUserPokemons = getUserPokemons;
 // Export the new Marketplace update function
 exports.updateMarketplace = updateMarketplace;
 exports.purchasePokemon = purchasePokemon;
+exports.getUserData = getUserData;
