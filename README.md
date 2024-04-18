@@ -132,8 +132,9 @@ We need to build more test but we have a few to show how we can test the API end
 
 **Rob Farley**
 
-![Rob](./pictures/rob.jpg) [Github](https://github.com/Nomad-Rob) - [LinkedIn](https://www.linkedin.com/in/robertfarley89/)
+# Contributors
 
-**Shadi Shwiyat**
-
-![Shadi](./pictures/shadi.jpg) [Github](https://github.com/Shadi-Shwiyat) - [LinkedIn](https://www.linkedin.com/in/shadi-the-programmer/)
+Rob Farley                  | Shadi Shwiyat
+-------------------------- | -------------------------
+![Rob](./pictures/rob.jpg) | ![Shadi](./pictures/shadi.jpg)
+[Github](https://github.com/Nomad-Rob) - [LinkedIn](https://www.linkedin.com/in/robertfarley89/) | [Github](https://github.com/Shadi-Shwiyat) - [LinkedIn](https://www.linkedin.com/in/shadi-the-programmer/)
