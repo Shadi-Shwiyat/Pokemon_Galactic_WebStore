@@ -1,0 +1,72 @@
+/* ItemCardStyles.css */
+.item-app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.item-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px;
+}
+
+.item-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid #FFD700;
+  box-shadow: 0 0 8px #FFD700;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 120px;
+  height: 150px;
+  margin: 5px;
+  padding: 10px;
+  color: #FFFFFF;
+  font-family: Arial, sans-serif;
+}
+
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  color: #FFFFFF;
+}
+
+.pagination-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.pagination-button {
+  background-color: #333333;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  margin: 0 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.pagination-button:hover {
+  background-color: #555555;
+}
+
+.pagination-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.page-status {
+  color: #FFFFFF;
+  margin-left: 20px;
+  font-size: 16px;
+}

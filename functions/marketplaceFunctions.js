@@ -58,10 +58,10 @@ function calculateMarketPrice(level, cost) {
   return Math.round(price); // Round to the nearest whole number
 }
 
-// Cloud function to update the Marketplace every 6 hours starting at 06:00 CST
-exports.updateMarketplace = functions.pubsub.schedule('0 12,18,0,6 * * *')
-    .timeZone('UTC') // Keep the timezone as UTC
-    .onRun(async (context) => {
+// Cloud function to update the Marketplace every 6 hours starting at 04:00 CST
+exports.updateMarketplace = functions.pubsub.schedule('0 10,16,22,4 * * *')
+    .timeZone('UTC') // Set the timezone to UTC
+    .onRun(async () => {
         const randomPokemon = await getRandomPokemon();
         const db = admin.firestore();
         const marketplaceRef = db.collection('Marketplace');
@@ -73,7 +73,7 @@ exports.updateMarketplace = functions.pubsub.schedule('0 12,18,0,6 * * *')
                 transaction.delete(marketplaceRef.doc(doc.id));
             });
 
-            // Add new random Pokemon with calculated marketplace costs
+            // Add new random pokemon with calculated marketplace costs
             randomPokemon.forEach(pokemon => {
                 const newDocRef = marketplaceRef.doc(); // Create a new document reference
                 transaction.set(newDocRef, pokemon);
@@ -82,7 +82,6 @@ exports.updateMarketplace = functions.pubsub.schedule('0 12,18,0,6 * * *')
 
         console.log('Marketplace updated with new random Pokemon set.');
     });
-
 
 // Purchase a Pokemon from the Marketplace
 exports.purchasePokemon = functions.https.onRequest((req, res) => {
