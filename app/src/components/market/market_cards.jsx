@@ -125,7 +125,7 @@ export function Market_cards({ mfilters, mclear, setmClear }) {
     } else {
         alert(`${pokemon.name} is already in the cart.`);
     }
-  }
+}
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -240,7 +240,7 @@ export function Market_cards({ mfilters, mclear, setmClear }) {
             <h3 className='card-level'>{`Lv. ${pokemon.level}`}</h3>
             <div className='card-price'>
               <h3 className='price'>{`₽ ${pokemon.name === 'bidoof' && pokemon.is_shiny === true ? '' : formatCost(pokemon.marketplace_cost)}`}</h3>
-              <img className="cart-icon" src={cart_icon} alt="cart.png" />
+              <img className="cart-icon" src={cart_icon} alt="cart.png" onClick={() => addToCart(pokemon)} />
             </div>
           </div>
         ))}

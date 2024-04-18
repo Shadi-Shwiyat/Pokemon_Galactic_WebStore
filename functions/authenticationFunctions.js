@@ -221,34 +221,32 @@ exports.signout = functions.https.onRequest((req, res) => {
 });
 
 // Allow users to see all Pokemon they have purchased
-exports.getUserPokemons = functions.https.onRequest((req, res) => {
+exports.getUserData = functions.https.onRequest(async (req, res) => {
   cors(req, res, async () => {
-    if (req.method !== 'GET') {
-      return res.status(405).send({ error: 'Method Not Allowed' });
-    }
-    const { userId } = req.query;
-
-    if (!userId) {
-      return res.status(400).send({ error: 'User ID is required' });
-    }
-
-    const db = admin.firestore();
-    const userPokemonsRef = db.collection('users').doc(userId).collection('pokemons');
-
-    try {
-      const snapshot = await userPokemonsRef.get();
-      if (snapshot.empty) {
-        return res.status(404).send({ error: 'No Pokémon found' });
+      // Only allow GET requests
+      if (req.method !== 'GET') {
+          return res.status(405).send({ error: 'Method Not Allowed' });
       }
 
-      const pokemons = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
+      // Get user ID from the authenticated user's context
+      const userId = req.user.uid;
+      if (!userId) {
+          return res.status(400).send({ error: 'User ID is required' });
+      }
 
-      res.status(200).json(pokemons);
-    } catch (error) {
-      res.status(500).send({ error: 'Internal Server Error' });
-    }
+      try {
+          const userRef = admin.firestore().collection('users').doc(userId);
+          const doc = await userRef.get();
+
+          if (!doc.exists) {
+              return res.status(404).send({ error: 'User not found' });
+          }
+
+          const userData = doc.data();
+          return res.status(200).send(userData);
+      } catch (error) {
+          console.error('Error fetching user data:', error);
+          res.status(500).send({ error: 'Internal Server Error' });
+      }
   });
 });
