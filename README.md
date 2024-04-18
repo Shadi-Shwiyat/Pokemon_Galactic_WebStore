@@ -20,7 +20,6 @@ The marketplace is on a 24 hour cycle and auto assigns pokemon level, shiny chan
 - Api Documentation
 - Marketplace that is on a 6 hour cycle
 - User Profile page
-- Pokemon Page
 - Cart Page
 - About Page
 
