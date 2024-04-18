@@ -3,40 +3,99 @@ import poke_shiny_icon from '../../assets/icons/shiny.png'
 import cart_icon from '../../assets/icons/cart.png';
 import * as types from '../../assets/types/types.js';
 
-export function Pokemon_cards({ filters }) {
+export function Pokemon_cards({ filters, clear, setClear }) {
   const [pokemonData, setPokemonData] = useState(null);
   const [pageIndex, setPageIndex] = useState(0);
   const [displayIndex, setDisplayIndex] = useState(1);
   const [isShiny, setIsShiny] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   // Fetch all pokemon data for market on page load
   useEffect(() => {
-    console.log('filters changed');
+    setFailed(false);
+    setPokemonData(null);
+    fetch("https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllPokemon")
+      .then(res => res.json())
+      .then((data) => {
+        setDisplayIndex(1);
+        setPageIndex(0);
+        setPokemonData(data);
+      });
+  }, []);
+
+  // Refresh pokemon when clear is toggled
+  useEffect(() => {
+    setFailed(false);
+    setPokemonData(null);
+    // console.log('clearing filters')
+    fetch("https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllPokemon")
+      .then(res => res.json())
+      .then((data) => {
+        setDisplayIndex(1);
+        setPageIndex(0);
+        setPokemonData(data);
+      });
+  }, [clear]);
+
+  // Fetch pokemon based on filters
+  useEffect(() => {
+    setFailed(false);
+    // console.log('filters changed');
     if (filters.total_filters > 0) {
+      setPokemonData(null);
       // console.log('filters are: greater than zero', filters);
       let queryString = 'https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/searchPokemon?'
       if (filters.name != '') {
-        queryString = queryString + `name=${filters.name}`
+        queryString = queryString + `name=${filters.name.toLowerCase()}`;
       }
-      fetch(queryString)
-        .then(res => res.json())
+      if (filters.id != 0) {
+        queryString = queryString + `id=${filters.id}`;
+      }
+      if (filters.isShiny != false) {
+        queryString = queryString + `isShiny=${filters.isShiny}`;
+      }
+      if (filters.type.length != 0) {
+        queryString = queryString + `type=${filters.type}`;
+      }
+      if (filters.moves != '') {
+        queryString = queryString + `moves=${formatString(filters.moves)}`;
+      }
+      if (filters.ability != '') {
+        queryString = queryString + `ability=${formatString(filters.ability)}`;
+      }
+      if (filters.region != '') {
+        queryString = queryString + `region=${filters.region}`;
+      }
+      if (filters.generation != '') {
+        queryString = queryString + `generation=${filters.generation}`;
+      }
+      try {
+        fetch(queryString)
+        .then((res) => {
+          if (res.status === 200) {
+            return res.json();
+          } else {
+            throw new Error("Failed to fetch data");
+          }
+        })
         .then((data) => {
+          setDisplayIndex(1);
           setPageIndex(0);
           setPokemonData(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          setFailed(true)
+          setTimeout(() => {
+            setClear(!clear);
+            setFailed(false);
+          }, 3000)
         });
-    } else {
-        fetch("https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllPokemon")
-          .then(res => res.json())
-          .then((data) => {
-            setPageIndex(0);
-            setPokemonData(data);
-          });
+      } catch(error) {
+        console.log(error);
+      }
     }
   }, [filters]);
-
-  useEffect(() => {
-    console.log("Pokemon data changed:", pokemonData.length);
-  }, [pokemonData])
 
   function capitalizeFirstLetter(string) {
     // console.log('capitalizefirstletter')
@@ -53,7 +112,26 @@ export function Pokemon_cards({ filters }) {
     const restOfWords = words.slice(1).join(' ');
     // Concatenate the first word with the rest of the words
     return firstWord + (restOfWords ? ' ' + restOfWords : '');
-}
+  }
+
+  function formatString(inputString) {
+    // Split the input string into an array of words
+    let words = inputString.split(" ");
+  
+    // Iterate through each word in the array
+    for (let i = 0; i < words.length; i++) {
+      // Remove capital letters from the word
+      words[i] = words[i].replace(/[A-Z]/g, "");
+  
+      // Convert the word to lowercase
+      words[i] = words[i].toLowerCase();
+    }
+  
+    // Join the words with '-' between them
+    let result = words.join("-");
+  
+    return result;
+  }
 
   function handleNextPage(bool) {
     // console.log('handlenexpage')
@@ -81,8 +159,11 @@ export function Pokemon_cards({ filters }) {
 
   return (
     <>
-      {!pokemonData && <div className="ring">Loading<span className='ring-span'></span></div>}
-      {pokemonData && <p className='page-index'>{`${displayIndex}`}</p>}
+      {failed && !pokemonData && <div className="failed">
+                <h1 className="failed-text">Invalid Search Parameters</h1>
+            </div>}
+      {!failed && !pokemonData && <div className="ring">Loading<span className='ring-span'></span></div>}
+      {!failed && pokemonData && <p className='page-index'>{`${displayIndex}`}</p>}
       <div className='top-card-row'>
         {pokemonData && pokemonData.slice(pageIndex * 5, (pageIndex * 5) + 5).map((pokemon, index) => (
           <div className='poke-card' key={index}>
@@ -137,7 +218,7 @@ export function Pokemon_cards({ filters }) {
       </div>
       {pokemonData && <div className='pagination-buttons'>
         <button onClick={() => { handlePreviousPage(true); setDisplayIndex(displayIndex - 10); }} disabled={pageIndex < 20} className='prevx'>10x</button>
-        <button onClick={() => { handleNextPage(true); setDisplayIndex(displayIndex + 10); }} disabled={pageIndex >= 160} className='nextx'>10x</button>
+        <button onClick={() => { handleNextPage(true); setDisplayIndex(displayIndex + 10); }} disabled={(pageIndex + 20) * 5 >= pokemonData.length} className='nextx'>10x</button>
         <button onClick={() => { handlePreviousPage(); setDisplayIndex(displayIndex - 1); }} disabled={pageIndex === 0} className='prev'>Previous</button>
         <button onClick={() => { handleNextPage(); setDisplayIndex(displayIndex + 1); }} disabled={(pageIndex + 2) * 5 >= pokemonData.length} className='next'>Next</button>
       </div>}

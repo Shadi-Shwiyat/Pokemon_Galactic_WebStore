@@ -4,7 +4,7 @@ import x_icon from '../../assets/icons/x.png'
 import arrow from '../../assets/icons/arrow_down.png'
 import * as types from '../../assets/types/types.js'
 
-export function Pokemon_filter({ filters, setFilters }) {
+export function Pokemon_filter({ filters, clear, setFilters, setClear }) {
   const [expanded, setExpanded] = useState(true);
   const [name, setName] = useState('');
   const [id, setId] = useState(0);
@@ -26,7 +26,7 @@ export function Pokemon_filter({ filters, setFilters }) {
   });
 
   useEffect(() => {
-    console.log('filter use effect')
+    // console.log('filter use effect')
     const filter_object = {
       name: name,
       id: id,
@@ -49,7 +49,7 @@ export function Pokemon_filter({ filters, setFilters }) {
   };
 
   const handleButtonClick = (e) => {
-    console.log('handlebuttonclick')
+    // console.log('handlebuttonclick')
     // Stop event propagation
     e.stopPropagation();
     e.preventDefault();
@@ -58,7 +58,7 @@ export function Pokemon_filter({ filters, setFilters }) {
   };
 
   const resetFormValues = (e) => {
-    console.log('resetformvalues')
+    // console.log('resetformvalues')
     e.preventDefault();
     setName('');
     setId(0);
@@ -80,7 +80,7 @@ export function Pokemon_filter({ filters, setFilters }) {
   };
 
   const submitForm = (e) => {
-    console.log('submitform')
+    // console.log('submitform')
     e.preventDefault();
     let totalCount = 0;
     for (const item in filters) {
@@ -101,7 +101,7 @@ export function Pokemon_filter({ filters, setFilters }) {
   }
 
   const handleTypeSelect = (type) => {
-    console.log('handletypeselect')
+    // console.log('handletypeselect')
     // Toggle selection state for the clicked typing image
     setTypingSelection(prevState => ({
       ...prevState,
@@ -320,7 +320,7 @@ export function Pokemon_filter({ filters, setFilters }) {
             </div>
             {/* <p>{type}</p> */}
             <div className='form-buttons'>
-                <button className='form-clear' onClick={resetFormValues}>Clear</button>
+                <button className='form-clear' onClick={(e) => {resetFormValues(e); setClear(!clear);}}>Clear</button>
                 <button className='form-submit' onClick={submitForm}>Submit</button>
             </div>
         </form>

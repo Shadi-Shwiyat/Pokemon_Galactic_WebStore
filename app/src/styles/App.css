@@ -203,6 +203,25 @@ code {
   width: 37px!important;
   height: 37px!important;
 }
+.failed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 79vh;
+  text-align: center;
+}
+.failed-text {
+  color: #EDFF01;
+  font-size: 39px;
+  border: 1px solid #EDFF01;
+  border-radius: 300px;
+  box-shadow: 0 0 15px 3px #EDFF01;
+  background-color: rgba(0, 0, 0, .9);
+  padding: 23px;
+  padding-left: 29px;
+  padding-right: 29px;
+  padding-bottom: 33px;
+}
 /* -------------------------------------------------------------------------------------------- */
 
 
