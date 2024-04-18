@@ -13,19 +13,28 @@ Pokemon can be viewed that shows there available moves to learn, base stats, abi
 
 The marketplace is on a 24 hour cycle and auto assigns pokemon level, shiny chance, and cost(based off an algorithm) to a page where users can purchase these pokemon with pokedollars. The users sign up and receive 100,000 pokedollars to use on the marketplace. Then are allotted another 25,000 pokedollars every 24 hours after this when logged in. The users can view the pokemon they have bought on there profile page.
 
-# Features
+# Versions 1.0 Features
 - User Authentication
 - Client side Pagination
-- 
+- Some unit tests
+- Api Documentation
+- Marketplace that is on a 6 hour cycle
+- User Profile page
+- Pokemon Page
+- Cart Page
+- About Page
 
-
-
+## Future Goals
+- Add more tests
+- Add Selling to the marketplace
+- Add more items
+- Allow evolution of pokemon once bought
 
 # Installation and Setup ![Pokemon .gif](./data/sprites/pokemon/pokemon_7.gif)
 This project was built using the following technologies:
-- JavaScript, Node.js, CSS, Express, React, Firebase, VSCode, GitHub
+- JavaScript, Node.js, CSS, Express, React, Firebase, VSCode, GitHub, Vite
 
-- [![Tech Stack](https://skillicons.dev/icons?i=js,nodejs,css,express,react,firebase,vscode,github)](https://skillicons.dev)
+- [![Tech Stack](https://skillicons.dev/icons?i=js,nodejs,css,express,react,firebase,vscode,github,vite)](https://skillicons.dev)
 
 ## Install Node.js
 - Download the installer from the official website: https://nodejs.org/en/download/
