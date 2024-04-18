@@ -415,7 +415,7 @@ exports.createPokemonMarketplace = functions.https.onRequest(async (req, res) =>
 // Search for a Pokemon based on various criteria im marketplace
 exports.searchPokemonMarketplace = functions.https.onRequest((req, res) => {
   runCorsAndMethod(req, res, 'GET', async () => {
-    const { name, id, isShiny, type, moves, ability, region, generation, strictMatch } = req.query;
+    const { name, id, isShiny, type, moves, ability, region, generation, mincost, maxcost, strictMatch } = req.query;
     const db = admin.firestore();
     const collectionRef = db.collection('Marketplace');
 
@@ -429,7 +429,8 @@ exports.searchPokemonMarketplace = functions.https.onRequest((req, res) => {
 
         if (name && data.name !== name) isMatch = false;
         if (id && data.id !== parseInt(id)) isMatch = false;
-        if (isShiny && isShiny !== data.sprites.is_shiny) isMatch = false;
+        if (isShiny && data.is_shiny !== true) isMatch = false;
+        // if (!isShiny && data.is_shiny !== false) isMatch = false;
         if (type && strictMatch === 'false' && !type.split(',').some(t => data.typing.includes(t))) isMatch = false;
         if (type && strictMatch === 'true' && !type.split(',').every(t => data.typing.includes(t))) isMatch = false;
         if (moves && strictMatch === 'false' && !data.moves.includes(moves)) isMatch = false;
@@ -439,6 +440,11 @@ exports.searchPokemonMarketplace = functions.https.onRequest((req, res) => {
         if (region && data.region !== region) isMatch = false;
         if (generation && data.generation !== generation) isMatch = false;
 
+        // Check minimum cost
+        if (mincost && data.marketplace_cost < parseFloat(mincost)) isMatch = false;
+        // Check maximum cost
+        if (maxcost && data.marketplace_cost > parseFloat(maxcost)) isMatch = false;
+
         if (isMatch) {
           pokemon.push(data);
         }
@@ -447,14 +453,14 @@ exports.searchPokemonMarketplace = functions.https.onRequest((req, res) => {
       // Implementing strictMatch functionality
       if (strictMatch === 'true') {
         Object.keys(req.query).forEach(key => {
-          if (key !== 'strictMatch' && key !== 'type' && key !== 'moves' && key !== 'ability' && req.query[key]) {
+          if (key !== 'strictMatch' && key !== 'type' && key !== 'isShiny' && key !== 'moves' && key !== 'ability' && key !== 'minCost' && key !== 'maxCost' && req.query[key]) {
             pokemon = pokemon.filter(p => p[key] === req.query[key]);
           }
         });
       }
 
       if (pokemon.length === 0) {
-        return res.status(404).send({ message: 'No Pokémon found matching the criteria' });
+        return res.status(404).send({ message: `No Pokémon found matching the criteria ${isShiny}` });
       }
 
       return res.status(200).json(pokemon);

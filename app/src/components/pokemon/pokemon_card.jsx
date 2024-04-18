@@ -10,7 +10,7 @@ export function Pokemon_cards({ filters, clear, setClear }) {
   const [isShiny, setIsShiny] = useState(false);
   const [failed, setFailed] = useState(false);
 
-  // Fetch all pokemon data for market on page load
+  // Fetch all pokemon data for pokemon on page load
   useEffect(() => {
     setFailed(false);
     setPokemonData(null);

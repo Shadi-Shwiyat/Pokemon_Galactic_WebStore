@@ -4,22 +4,114 @@ import shiny_icon from '../../assets/icons/shiny.png'
 import cart_icon from '../../assets/icons/cart.png';
 import * as types from '../../assets/types/types.js';
 
-export function Market_cards() {
+export function Market_cards({ mfilters, mclear, setmClear }) {
   const [pokemonData, setPokemonData] = useState([]);
   const [cart, setCart] = useState([]);
   const [pageIndex, setPageIndex] = useState(0);
   const [displayIndex, setDisplayIndex] = useState(1);
+  const [failed, setFailed] = useState(false);
 
+  // Fetch all pokemon data for market on page load
   useEffect(() => {
+    setFailed(false);
+    setPokemonData(null);
     fetch("https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllPokemonMarketplace")
       .then(res => res.json())
-      .then(setPokemonData);
+      .then((data) => {
+        setDisplayIndex(1);
+        setPageIndex(0);
+        console.log(data[0]);
+        setPokemonData(data);
+      });
 
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       setCart(JSON.parse(storedCart));
     }
   }, []);
+
+  // Refresh pokemon when clear is toggled
+  useEffect(() => {
+    setFailed(false);
+    setPokemonData(null);
+    // console.log('clearing filters')
+    fetch("https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/getAllPokemonMarketplace")
+      .then(res => res.json())
+      .then((data) => {
+        setDisplayIndex(1);
+        setPageIndex(0);
+        setPokemonData(data);
+      });
+  }, [mclear]);
+
+  // Fetch pokemon based on filters
+  useEffect(() => {
+    setFailed(false);
+    // console.log('filters changed');
+    if (mfilters.total_filters > 0) {
+      setPokemonData(null);
+      // console.log('filters are: greater than zero', filters);
+      let queryString = 'https://us-central1-pokemon-galactic-webstore.cloudfunctions.net/searchPokemonMarketplace?'
+      if (mfilters.name != '') {
+        queryString = queryString + `name=${mfilters.name.toLowerCase()}&`;
+      }
+      if (mfilters.isShiny != false) {
+        queryString = queryString + `isShiny=${mfilters.isShiny}&`;
+      }
+      if (mfilters.id != 0) {
+        queryString = queryString + `id=${mfilters.id}&`;
+      }
+      if (mfilters.type.length != 0) {
+        queryString = queryString + `type=${mfilters.type}&`;
+      }
+      if (mfilters.moves != '') {
+        queryString = queryString + `moves=${formatString(mfilters.moves)}&`;
+      }
+      if (mfilters.ability != '') {
+        queryString = queryString + `ability=${formatString(mfilters.ability)}&`;
+      }
+      if (mfilters.region != '') {
+        queryString = queryString + `region=${mfilters.region}&`;
+      }
+      if (mfilters.generation != '') {
+        queryString = queryString + `generation=${mfilters.generation}&`;
+      }
+      if (mfilters.minCost != '') {
+        queryString = queryString + `minCost=${mfilters.minCost}&`;
+      }
+      if (mfilters.maxCost != '') {
+        queryString = queryString + `maxCost=${mfilters.maxCost}&`;
+      }
+      queryString = queryString + `strictMatch=${mfilters.strictMatch}`;
+      console.log(queryString);
+      try {
+        fetch(queryString)
+        .then((res) => {
+          if (res.status === 200) {
+            return res.json();
+          } else {
+            throw new Error("Failed to fetch data");
+          }
+        })
+        .then((data) => {
+          data.sort((a, b) => a.id - b.id);
+          setDisplayIndex(1);
+          setPageIndex(0);
+          setPokemonData(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          setFailed(true)
+          setTimeout(() => {
+            setmClear(!mclear);
+            setFailed(false);
+          }, 3000)
+        });
+      } catch(error) {
+        console.log(error);
+      }
+    }
+  }, [mfilters]);
 
   function addToCart(pokemon) {
     // Check if the Pokémon is already in the cart
@@ -33,7 +125,7 @@ export function Market_cards() {
     } else {
         alert(`${pokemon.name} is already in the cart.`);
     }
-}
+  }
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -59,6 +151,25 @@ export function Market_cards() {
     return formattedString.split('').reverse().join('');
  }
 
+  function formatString(inputString) {
+    // Split the input string into an array of words
+    let words = inputString.split(" ");
+
+    // Iterate through each word in the array
+    for (let i = 0; i < words.length; i++) {
+      // Remove capital letters from the word
+      words[i] = words[i].replace(/[A-Z]/g, "");
+
+      // Convert the word to lowercase
+      words[i] = words[i].toLowerCase();
+    }
+
+    // Join the words with '-' between them
+    let result = words.join("-");
+
+    return result;
+  }
+
   function handleNextPage() {
     setPageIndex(prevIndex => prevIndex + 2);
   }
@@ -69,8 +180,11 @@ export function Market_cards() {
 
   return (
     <>
-      {!pokemonData && <div className="ring">Loading<span className='ring-span'></span></div>}
-      {pokemonData && <p className='page-index'>{`${displayIndex}`}</p>}
+      {failed && !pokemonData && <div className="failed">
+            <h1 className="failed-text">No Pokémon found matching the criteria</h1>
+        </div>}
+      {!failed && !pokemonData && <div className="ring">Loading<span className='ring-span'></span></div>}
+      {!failed && pokemonData && <p className='page-index'>{`${displayIndex}`}</p>}
       <div className='top-card-row'>
         {pokemonData && pokemonData.slice(pageIndex * 5, (pageIndex * 5) + 5).map((pokemon, index) => (
           <div className='card' key={index}>

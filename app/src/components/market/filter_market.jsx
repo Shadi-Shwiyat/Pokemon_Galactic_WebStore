@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import filter_icon from '../../assets/icons/filter.png';
 import x_icon from '../../assets/icons/x.png'
 import arrow from '../../assets/icons/arrow_down.png'
 import * as types from '../../assets/types/types.js'
 
-export function Market_filter() {
+export function Market_filter({ mfilters, mclear, setmFilters, setmClear }) {
   const [expanded, setExpanded] = useState(true);
   const [name, setName] = useState('');
-  const [id, setId] = useState(1);
+  const [id, setId] = useState(0);
   const [isShiny, setIsShiny] = useState(false);
   const [type, setType] = useState([]);
   const [moves, setMoves] = useState([]);
@@ -17,6 +17,7 @@ export function Market_filter() {
   const [minCost, setMinCost] = useState('');
   const [maxCost, setMaxCost] = useState('');
   const [strictMatch, setStrictMatch] = useState(false);
+  const [total_filters, setTotalFilters] = useState(0);
   // Array to store selection state for each typing image
   const [typingSelection, setTypingSelection] = useState({
     normal: false, fire: false, water: false, electric: false,
@@ -24,7 +25,27 @@ export function Market_filter() {
     ground: false, flying: false, psychic: false, bug: false,
     rock: false, ghost: false, dragon: false, dark: false,
     steel: false, fairy: false
-    });
+  });
+
+  useEffect(() => {
+    // console.log('filter use effect')
+    const filter_object = {
+      name: name,
+      id: id,
+      isShiny: isShiny,
+      type: type,
+      moves: moves,
+      ability: ability,
+      region: region,
+      generation: generation,
+      minCost: minCost,
+      maxCost: maxCost,
+      strictMatch: strictMatch,
+      total_filters: total_filters
+    }
+    // console.log(filter_object.total_filters);
+    setmFilters(filter_object)
+  }, [name, id, isShiny, type, moves, ability, region, generation, minCost, maxCost, strictMatch, total_filters]);
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -42,7 +63,7 @@ export function Market_filter() {
   const resetFormValues = (e) => {
     e.preventDefault();
     setName('');
-    setId(1);
+    setId(0);
     setIsShiny(false);
     setMoves('');
     setAbility('');
@@ -51,6 +72,7 @@ export function Market_filter() {
     setMinCost('');
     setMaxCost('');
     setStrictMatch(false);
+    setTotalFilters(0);
     setTypingSelection({
       normal: false, fire: false, water: false, electric: false,
       grass: false, ice: false, fighting: false, poison: false,
@@ -60,6 +82,27 @@ export function Market_filter() {
     });
     setType([]);
   };
+
+  const submitForm = (e) => {
+    // console.log('submitform')
+    e.preventDefault();
+    let totalCount = 0;
+    for (const item in mfilters) {
+      if (
+        mfilters[item] !== '' &&
+        mfilters[item] !== 0 &&
+        mfilters[item] !== false &&
+        (!Array.isArray(mfilters[item]) || mfilters[item].length > 0)
+      ) {
+        // Item passes all conditions, add to total filters
+        totalCount++;
+      }
+    }
+    // console.log("Total count is", totalCount);
+    setTotalFilters(totalCount);
+    // console.log("filters.total_filters", total_filters);
+    toggleExpanded();
+  }
 
   const handleTypeSelect = (type) => {
     // Toggle selection state for the clicked typing image
@@ -107,7 +150,7 @@ export function Market_filter() {
                     <input
                         className='form-input id-input'
                         type="number"
-                        min='1'
+                        min='0'
                         max='893'
                         value={id}
                         onChange={(e) => setId(e.target.value)}
@@ -302,8 +345,8 @@ export function Market_filter() {
             </div>
             {/* <p>{type}</p> */}
             <div className='form-buttons'>
-                <button className='form-clear' onClick={resetFormValues}>Clear</button>
-                <button className='form-submit'>Submit</button>
+                <button className='form-clear' onClick={(e) => {resetFormValues(e); setmClear(!mclear);}}>Clear</button>
+                <button className='form-submit' onClick={submitForm}>Submit</button>
             </div>
         </form>
       </div>
