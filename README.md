@@ -130,17 +130,15 @@ We need to build more test but we have a few to show how we can test the API end
 
 # Contributors ![Pokemon .gif](./data/sprites/pokemon/pokemon_shiny_680.gif)
 
-<div style="display: flex;">
-    <div style="text-align: center;">
-        <img src="./pictures/rob.jpg" alt="Rob" width="200"/>
+<div style="display: flex; justify-content: space-around;">
+    <div style="flex-basis: 200px; text-align: center;">
+        <img src="./pictures/rob.jpg" alt="Rob" width="200">
         <p>Rob Farley</p>
         <a href="https://github.com/Nomad-Rob">Github</a> - <a href="https://www.linkedin.com/in/robertfarley89/">Linkedin</a>
     </div>
-    <div style="text-align: center;">
-        <img src="./pictures/shadi.jpg" alt="Shadi" width="200"/>
+    <div style="flex-basis: 200px; text-align: center;">
+        <img src="./pictures/shadi.jpg" alt="Shadi" width="200">
         <p>Shadi Shwiyat</p>
         <a href="https://github.com/Shadi-Shwiyat">Github</a> - <a href="https://www.linkedin.com/in/shadi-the-programmer/">Linkedin</a>
     </div>
 </div>
-
-
